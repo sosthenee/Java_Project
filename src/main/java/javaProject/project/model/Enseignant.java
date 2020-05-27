@@ -16,6 +16,7 @@ import javax.persistence.OneToOne;
 
 @Entity
 public class Enseignant {
+
 	
 	@Id
 	private long id_utilisateur = 0;
@@ -67,6 +68,7 @@ public class Enseignant {
 		this.cours = cours;
 	}
 	
+
 
 
 }

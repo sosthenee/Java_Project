@@ -1,6 +1,7 @@
 package javaProject.project.model;
 
 import java.util.Date;
+import java.util.HashSet;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,9 +12,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.ManyToMany;
+import java.util.Set;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 
 @Entity
 public class Seance {
+
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -42,6 +48,37 @@ public class Seance {
 	@OneToOne
 	@JoinColumn(name="id_type")
 	private Type_cours type_cours;
+  
+  
+    @ManyToMany
+    @JoinTable(name = "seance_groupes",
+            joinColumns = {
+                    @JoinColumn(name = "seance_id", referencedColumnName = "id",
+                            nullable = false, updatable = false)},
+            inverseJoinColumns = {
+                    @JoinColumn(name = "groupe_id", referencedColumnName = "id",
+                            nullable = false, updatable = false)})
+    private Set<Groupe> groupe = new HashSet<>();
+    
+    @ManyToMany
+    @JoinTable(name = "seance_salles",
+            joinColumns = {
+                    @JoinColumn(name = "seance_id", referencedColumnName = "id",
+                            nullable = false, updatable = false)},
+            inverseJoinColumns = {
+                    @JoinColumn(name = "salle_id", referencedColumnName = "id",
+                            nullable = false, updatable = false)})
+    private Set<Salle> salle = new HashSet<>();
+    
+    @ManyToMany
+    @JoinTable(name = "seance_enseignants",
+            joinColumns = {
+                    @JoinColumn(name = "seance_id", referencedColumnName = "id",
+                            nullable = false, updatable = false)},
+            inverseJoinColumns = {
+                    @JoinColumn(name = "enseignant_id", referencedColumnName = "id_utilisateur",
+                            nullable = false, updatable = false)})
+    private Set<Enseignant> enseignant = new HashSet<>();
 	
 	public Seance() {
 		super();
@@ -120,7 +157,6 @@ public class Seance {
 	public void setType_cours(Type_cours type_cours) {
 		this.type_cours = type_cours;
 	}
-	
 	
 	
 }

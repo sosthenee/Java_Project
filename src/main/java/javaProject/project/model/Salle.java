@@ -1,12 +1,17 @@
 package javaProject.project.model;
 
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import javax.persistence.ManyToMany;
+
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
 
 @Entity
 public class Salle {
@@ -25,15 +30,20 @@ public class Salle {
 	@JoinColumn(name="id_site")
 	private Site site;
 
+        
+      
 	public Salle() {
 		super();
 	}
 
+
 	public Salle(long id, String nom, int capacite) {
+
 		super();
 		this.id = id;
 		this.nom = nom;
 		this.capacite = capacite;
+
 	}
 
 	public long getId() {
