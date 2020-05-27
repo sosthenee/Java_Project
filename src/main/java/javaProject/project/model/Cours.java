@@ -19,10 +19,6 @@ public class Cours {
 	@Column(name = "nom")
 	private String nom ="";
 	
-        @ManyToOne	
-        @JoinColumn(name="id_enseignant")
-	private Enseignant enseignant;
-        
 	public Cours() {}
 	
 	public Cours(long id, String nom) {
