@@ -22,7 +22,7 @@ public class Etudiant {
 	@Column(name = "numero")
 	private long numero = 0;
 	
-	@OneToOne
+	@OneToOne(targetEntity = Utilisateur.class)
     @JoinColumn(name = "id_utilisateur")
     @MapsId
     private Utilisateur utilisateur;
@@ -33,7 +33,7 @@ public class Etudiant {
 	
 	public Etudiant () {}
 	
-	public Etudiant(long id_utilisateur, long numero, Long groupe) {
+	public Etudiant(long id_utilisateur, long numero) {
 		this.id_utilisateur = id_utilisateur;
 		this.numero = numero;
 	}
