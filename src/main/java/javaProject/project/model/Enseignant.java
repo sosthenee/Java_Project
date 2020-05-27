@@ -19,13 +19,20 @@ import javax.persistence.OneToOne;
 
 @Entity
 public class Enseignant {
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long id_utilisateur = 0;
-	
-//	@ManyToOne
-//	@JoinColumn(name="id_cours")
-//	private Cours cours;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id_utilisateur = 0;
+
+    @ManyToOne
+    @JoinColumn(name = "id_cours")
+    private Cours cours;
+
+    public Enseignant() {
+    }
+
+    public Enseignant(long id_utilisateur) {
+        this.id_utilisateur = id_utilisateur;
+    }
 
 }
