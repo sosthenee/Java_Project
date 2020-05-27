@@ -22,7 +22,7 @@ public class Etudiant {
 	@Column(name = "numero")
 	private long numero = 0;
 	
-	@OneToOne
+	@OneToOne(targetEntity = Utilisateur.class)
     @JoinColumn(name = "id_utilisateur")
     @MapsId
     private Utilisateur utilisateur;

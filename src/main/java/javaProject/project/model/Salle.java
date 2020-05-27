@@ -6,7 +6,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
 import javax.persistence.ManyToMany;
+
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 
 @Entity
 public class Salle {
@@ -21,8 +26,9 @@ public class Salle {
 	@Column(name = "capacite")
 	private int capacite = 0;
 	
-	@Column(name = "id_site")
-	private long id_site = 0;
+	@ManyToOne
+	@JoinColumn(name="id_site")
+	private Site site;
 
         
       
@@ -30,13 +36,13 @@ public class Salle {
 		super();
 	}
 
-	public Salle(long id, String nom, int capacite, long id_site  ) {
+
+	public Salle(long id, String nom, int capacite) {
+
 		super();
 		this.id = id;
 		this.nom = nom;
 		this.capacite = capacite;
-		this.id_site = id_site;
-               
 
 	}
 
@@ -64,18 +70,17 @@ public class Salle {
 		this.capacite = capacite;
 	}
 
-	public long getId_site() {
-		return id_site;
+	public Site getSite() {
+		return site;
 	}
 
-	public void setId_site(long id_site) {
-		this.id_site = id_site;
+	public void setSite(Site site) {
+		this.site = site;
 	}
-	
+
 	public String toString(){
 		String str = 	"NOM Salle : " + this.getNom() + "\n";
 		str += 			"CAPACITE : " + this.getCapacite() + "\n";
-		str += 			"ID site : " + this.getId_site() + "\n";
 		str +=			"\n.....................................\n";
 		return str;
 	}

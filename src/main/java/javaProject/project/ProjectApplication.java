@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import javaProject.project.model.Enseignant;
 import javaProject.project.model.Utilisateur;
 
 import org.slf4j.Logger;
@@ -31,6 +32,8 @@ public class ProjectApplication {
 
 
 	    };
+	    
+	    
 	  }
 
 }
