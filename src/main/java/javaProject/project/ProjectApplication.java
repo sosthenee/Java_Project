@@ -7,6 +7,10 @@ import org.springframework.context.annotation.Bean;
 import javaProject.project.model.Enseignant;
 import javaProject.project.model.Utilisateur;
 
+
+import javaProject.project.vue.Fenetre;
+
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -17,13 +21,13 @@ public class ProjectApplication {
 	private static final Logger log = LoggerFactory.getLogger(ProjectApplication.class);
 	
 	public static void main(String[] args) {
-		SpringApplication.run(ProjectApplication.class, args);
+		//SpringApplication.run(ProjectApplication.class, args);
+                 Fenetre fen = new Fenetre();
 	}
 	
-	@Bean
+	/*@Bean
 	  public CommandLineRunner demo(UtilisateurRepository repository) {
 	    return (args) -> {
-	   
 	      log.info("Customers found with findAll():");
 	      log.info("-------------------------------");
 	      for (Utilisateur customer : repository.findAll()) {
@@ -34,6 +38,6 @@ public class ProjectApplication {
 	    };
 	    
 	    
-	  }
+	  }*/
 
 }
