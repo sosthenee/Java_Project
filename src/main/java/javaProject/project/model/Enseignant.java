@@ -21,7 +21,7 @@ public class Enseignant {
 	@Id
 	private long id_utilisateur = 0;
 	
-	@OneToOne(targetEntity = Utilisateur.class)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_utilisateur")
     @MapsId
     private Utilisateur utilisateur;

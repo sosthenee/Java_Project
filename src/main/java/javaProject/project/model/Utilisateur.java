@@ -30,9 +30,7 @@ public class Utilisateur {
 	
 	@Column(name = "droit")
 	private int droit;
-	
-	@OneToOne(mappedBy = "utilisateur")
-    private Etudiant etudiant;
+
 
 	public Utilisateur(){}
 
