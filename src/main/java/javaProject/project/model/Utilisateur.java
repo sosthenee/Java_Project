@@ -32,9 +32,9 @@ public class Utilisateur {
 	private int droit;
 	
 	@OneToOne(mappedBy = "utilisateur")
-    private Etudiant etudiant;
+        private Etudiant etudiant;
 
-	public Utilisateur(){}
+
 
 	public Utilisateur(long id, String email, String password,String nom, String prenom, int droit) {
 		this.id = id;
@@ -44,6 +44,13 @@ public class Utilisateur {
 		this.prenom = prenom;
 		this.droit = droit;
 	}
+        
+        public Utilisateur(String email, String password) {
+		this.email = email;
+		this.password = password;
+	}
+        
+        public Utilisateur(){}
 
 	public long getId() {
 		return id;
