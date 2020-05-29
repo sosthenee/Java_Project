@@ -10,9 +10,7 @@ import javaProject.project.dao.UtilisateurDao;
 import javaProject.project.model.Enseignant;
 import javaProject.project.model.Etudiant;
 import javaProject.project.model.Utilisateur;
-import javaProject.project.service.ApiResponse;
-import javaProject.project.service.EtudiantService;
-import javaProject.project.service.UtilisateurService;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
