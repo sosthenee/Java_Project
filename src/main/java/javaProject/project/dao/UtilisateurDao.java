@@ -1,7 +1,5 @@
 package javaProject.project.dao;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,4 +14,8 @@ public interface UtilisateurDao extends JpaRepository<Utilisateur, Long>{
 	
 	@SuppressWarnings("unchecked")
 	Utilisateur save(Utilisateur utilisateur);
+	
+	//For login return the User or return user = null
+	Utilisateur findFirstByEmailAndPassword(String email,String password);
+	
 }
