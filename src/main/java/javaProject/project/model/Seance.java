@@ -157,6 +157,20 @@ public class Seance {
 	public void setType_cours(Type_cours type_cours) {
 		this.type_cours = type_cours;
 	}
+
+	@Override
+	public String toString() {
+		return "Seance [id=" + id + ", semaine=" + semaine + ", date=" + date
+				+ ", heure_debut=" + heure_debut + ", heure_fin=" + heure_fin + ", etat=" + etat + ", cours=" + cours
+				+ ", type_cours=" + type_cours + "]";
+	}
+
+	
+
+
+
+	
+	
 	
 	
 }
