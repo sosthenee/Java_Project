@@ -14,6 +14,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.ManyToMany;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 
@@ -50,7 +51,7 @@ public class Seance {
 	private Type_cours type_cours;
   
   
-    @ManyToMany
+    @ManyToMany(cascade=CascadeType.ALL)
     @JoinTable(name = "seance_groupes",
             joinColumns = {
                     @JoinColumn(name = "seance_id", referencedColumnName = "id",
@@ -76,7 +77,7 @@ public class Seance {
                     @JoinColumn(name = "seance_id", referencedColumnName = "id",
                             nullable = false, updatable = false)},
             inverseJoinColumns = {
-                    @JoinColumn(name = "enseignant_id", referencedColumnName = "id_utilisateur",
+                    @JoinColumn(name = "enseignant_id", referencedColumnName = "id",
                             nullable = false, updatable = false)})
     private Set<Enseignant> enseignant = new HashSet<>();
 	

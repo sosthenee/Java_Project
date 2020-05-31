@@ -14,7 +14,7 @@ public class Utilisateur {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long id = 0;
+	protected long id = 0;
 	
 	@Column(name = "email")
 	private String email = "";
@@ -29,14 +29,9 @@ public class Utilisateur {
 	private String prenom = "";
 	
 	@Column(name = "droit")
-	private int droit;
-	
-	@OneToOne(mappedBy = "utilisateur")
-        private Etudiant etudiant;
+	private String droit;
 
-
-
-	public Utilisateur(long id, String email, String password,String nom, String prenom, int droit) {
+	public Utilisateur(long id, String email, String password,String nom, String prenom, String droit) {
 		this.id = id;
 		this.email = email;
 		this.password = password;
@@ -48,7 +43,7 @@ public class Utilisateur {
         public Utilisateur(String email, String password) {
 		this.email = email;
 		this.password = password;
-	}
+	}  
         
         public Utilisateur(){}
 
@@ -93,11 +88,11 @@ public class Utilisateur {
 		this.prenom = prenom;
 	}
 
-	public int getDroit() {
+	public String getDroit() {
 		return droit;
 	}
 
-	public void setDroit(int droit) {
+	public void setDroit(String droit) {
 		this.droit = droit;
 	}
 

@@ -14,6 +14,8 @@ import javaProject.project.model.Etudiant;
 import javaProject.project.model.Seance;
 import javaProject.project.model.Utilisateur;
 import javaProject.project.view.Fenetre;
+import javaProject.project.view.LookCalendrier;
+import javax.swing.JOptionPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -23,7 +25,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UtilisateurController {
 
-    @Autowired(required=false)
+    @Autowired
     private UtilisateurDao utilisateurDao;
     
     @Autowired(required=false)
@@ -32,28 +34,37 @@ public class UtilisateurController {
     @Autowired(required=false)
     private SeanceDao seanceDao;
     private Fenetre view;
-
+    
+    private LookCalendrier seanceEdtudiant;
 
     public UtilisateurController() {
     }
     
-//    public void addUser(String email, String password) {
-//        Utilisateur u = new Utilisateur(email, password);
-//        utilisateurDao.save(u);
-//    }
-    
-    public void getAllEnsigna() {
-    	Utilisateur newE;
-    	newE = utilisateurDao.findById(16);
-    	Etudiant nEtudiant;
-    	nEtudiant = etudiantDao.findById(newE.getId());
-    	List<Seance> edtList ;
-    	edtList = seanceDao.findByGroupeContaining(nEtudiant.getGroupe());
-        System.out.println(edtList);
+ 
+    public void addUser(String email, String password) {
+        Utilisateur u = new Utilisateur(email, password);
+        utilisateurDao.save(u);
     }
     
+     public void login(String email, String password) {
+         Utilisateur u = new Utilisateur();
+         u = utilisateurDao.findFirstByEmailAndPassword(email , password);
+         if( u ==  null){
+          JOptionPane.showMessageDialog(null, "veuillez rentrer une bonne combinaison");
+         } else {
+            this.seanceEdtudiant.setVisible(true);
+            this.view.setVisible(false);
+         }
+         System.out.println(u);
+     }
+
     public void initController(Fenetre view) {
-        view.valider.addActionListener(e -> getAllEnsigna());
+       view.valider.addActionListener(e -> login(view.mail.getText(), view.mdp.getText()));
+       this.view = view;
+    }
+    
+    public void setSeanceEtudiant(LookCalendrier seanceEdtudiant) {
+        this.seanceEdtudiant = seanceEdtudiant;
     }
 
 }

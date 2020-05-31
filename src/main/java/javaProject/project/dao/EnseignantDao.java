@@ -10,10 +10,8 @@ import javaProject.project.model.Enseignant;
 
 public interface EnseignantDao extends JpaRepository<Enseignant, Long> {
 	
-	//Renvoie id de tout les enseignants
 	List<Enseignant> findAll();
-	
-	//Ajout Enseignant
+
 	@SuppressWarnings("unchecked")
 	Enseignant save(Enseignant enseignant);
 
