@@ -1,6 +1,7 @@
 package javaProject.project.dao;
 
 import java.util.List;
+import javaProject.project.model.Groupe;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,7 +18,6 @@ public interface SeanceDao extends JpaRepository<Seance, Long> {
 	//Get List seance from list of seance IDs
 	@Query("SELECT s FROM Seance s WHERE s.id IN (:ids_seances)")  
 	List<Seance> findallSeanceList(@Param("ids_seances")List<Long> ids_seances);
-
 	//Get List seance by semaine
 	List<Seance> findBySemaine(int semaine);
 
@@ -25,5 +25,7 @@ public interface SeanceDao extends JpaRepository<Seance, Long> {
 	@Query(value = "SELECT * FROM seance_salles u WHERE u.seance_id = ?",
 			nativeQuery = true)
 	Long findSalleIdforSeance(long id_seance);
+        
+        List<Seance> findByGroupeContaining(Groupe g);
 
 }

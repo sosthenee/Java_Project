@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javaProject.project.model.Etudiant;
+import javaProject.project.model.Utilisateur;
 
 @Repository
 public interface EtudiantDao extends JpaRepository<Etudiant, Long> {
@@ -16,7 +17,15 @@ public interface EtudiantDao extends JpaRepository<Etudiant, Long> {
 	//get all seance id from student
 	@Query(value = "SELECT * FROM seance_groupes u WHERE u.groupe_id = ?",
 			 nativeQuery = true)
+        
+        
+        
 	List<Long> findAllSeancesIdEtudiant(long id_groupe);
+        
+        
+        Etudiant findByEmail(String email);
+        
+        Etudiant findById(long id_groupe);
 	
 	@SuppressWarnings("unchecked")
 	Etudiant save(Etudiant etudiant);
