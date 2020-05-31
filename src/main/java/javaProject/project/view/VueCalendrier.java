@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package javaProject.project.vue;
+package javaProject.project.view;
 
+import javaProject.project.view.TableCalendrier;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
