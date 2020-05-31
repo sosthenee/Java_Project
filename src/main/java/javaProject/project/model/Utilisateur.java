@@ -101,13 +101,11 @@ public class Utilisateur {
 		this.droit = droit;
 	}
 
-	public String toString(){
-		String str = 	"Email : " + this.getEmail() + "\n";
-		str += 			"NOM : " + this.getNom() + "\n";
-		str += 			"PRENOM : " + this.getPrenom() + "\n";
-		str +=			"Droit : " + this.getDroit();
-		str +=			"\n.....................................\n";
-		return str;
+	@Override
+	public String toString() {
+		return "Utilisateur [id=" + id + ", email=" + email + ", password=" + password + ", nom=" + nom + ", prenom="
+				+ prenom + ", droit=" + droit + "]";
 	}
 
+	
 }

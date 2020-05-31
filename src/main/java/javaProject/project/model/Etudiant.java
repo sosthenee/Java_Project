@@ -56,11 +56,21 @@ public class Etudiant {
 	
 	
 
-	public String toString(){
-		String str = 	"NUMERO Etudiant : " + this.getNumero() + "\n";
-		//str += 			"ID Groupe : " + this.getIdGroupe() + "\n";
-		str +=			"\n.....................................\n";
-		return str;
+	public Groupe getGroupe() {
+		return groupe;
 	}
+
+	public void setGroupe(Groupe groupe) {
+		this.groupe = groupe;
+	}
+
+	@Override
+	public String toString() {
+		return "Etudiant [id_utilisateur=" + id_utilisateur + ", numero=" + numero + ", utilisateur=" + utilisateur
+				+ ", groupe=" + groupe + "]";
+	}
+	
+	
+
 
 }

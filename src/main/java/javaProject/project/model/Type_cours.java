@@ -41,11 +41,12 @@ public class Type_cours {
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
-	
-	public String toString(){
-		String str = 	"NOM Type cours : " + this.getNom() + "\n";
-		str +=			"\n.....................................\n";
-		return str;
+
+	@Override
+	public String toString() {
+		return "Type_cours [id=" + id + ", nom=" + nom + "]";
 	}
+	
+	
 	
 }

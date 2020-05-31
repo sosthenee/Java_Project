@@ -67,6 +67,13 @@ public class Enseignant {
 	public void setCours(Set<Cours> cours) {
 		this.cours = cours;
 	}
+
+
+	@Override
+	public String toString() {
+		return "Enseignant [id_utilisateur=" + id_utilisateur
+				+ "]";
+	}
 	
 
 
