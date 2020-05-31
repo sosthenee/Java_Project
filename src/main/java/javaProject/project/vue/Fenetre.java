@@ -78,3 +78,5 @@ public class Fenetre extends JFrame {
     }
   }
 }
+
+//Fenetre fen = new Fenetre(); //Code à mettre dans le main pour appeller la fenêtre

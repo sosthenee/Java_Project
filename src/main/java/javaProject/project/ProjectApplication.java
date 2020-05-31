@@ -21,11 +21,11 @@ public class ProjectApplication {
 	private static final Logger log = LoggerFactory.getLogger(ProjectApplication.class);
 	
 	public static void main(String[] args) {
-		//SpringApplication.run(ProjectApplication.class, args);
-                 Fenetre fen = new Fenetre();
+		SpringApplication.run(ProjectApplication.class, args);
+                 
 	}
 	
-	/*@Bean
+	@Bean
 	  public CommandLineRunner demo(UtilisateurRepository repository) {
 	    return (args) -> {
 	      log.info("Customers found with findAll():");
@@ -38,6 +38,6 @@ public class ProjectApplication {
 	    };
 	    
 	    
-	  }*/
+	  }
 
 }
