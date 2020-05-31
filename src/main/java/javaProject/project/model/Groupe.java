@@ -60,10 +60,10 @@ public class Groupe {
 		this.promotion = promotion;
 	}
 
-	public String toString(){
-		String str = 	"NOM Groupe : " + this.getNom() + "\n";
-		str +=			"\n.....................................\n";
-		return str;
+	@Override
+	public String toString() {
+		return "Groupe [id=" + id + ", nom=" + nom + ", promotion=" + promotion + "]";
 	}
+
 
 }

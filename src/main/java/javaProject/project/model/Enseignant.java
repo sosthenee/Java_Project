@@ -43,6 +43,7 @@ public class Enseignant extends Utilisateur {
         return id;
     }
 
+
     public void setId_utilisateur(long id_utilisateur) {
         this.id = id_utilisateur;
     }

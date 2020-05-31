@@ -78,11 +78,11 @@ public class Salle {
 		this.site = site;
 	}
 
-	public String toString(){
-		String str = 	"NOM Salle : " + this.getNom() + "\n";
-		str += 			"CAPACITE : " + this.getCapacite() + "\n";
-		str +=			"\n.....................................\n";
-		return str;
+
+	@Override
+	public String toString() {
+		return "Salle [id=" + id + ", nom=" + nom + ", capacite=" + capacite + ", site=" + site + "]";
 	}
+
 
 }

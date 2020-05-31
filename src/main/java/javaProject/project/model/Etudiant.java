@@ -28,6 +28,7 @@ public class Etudiant extends Utilisateur {
         super();
     }
 
+
     public Etudiant(long numero) {
         super();
         this.numero = numero;
@@ -55,5 +56,18 @@ public class Etudiant extends Utilisateur {
         str += "\n.....................................\n";
         return str;
     }
+
+	public void setGroupe(Groupe groupe) {
+		this.groupe = groupe;
+	}
+
+	@Override
+	public String toString() {
+		return "Etudiant [id_utilisateur=" + id_utilisateur + ", numero=" + numero + ", utilisateur=" + utilisateur
+				+ ", groupe=" + groupe + "]";
+	}
+	
+	
+
 
 }

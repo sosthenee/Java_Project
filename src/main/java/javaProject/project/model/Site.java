@@ -41,12 +41,13 @@ public class Site {
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
-	
-	public String toString(){
-		String str = 	"NOM Site : " + this.getNom() + "\n";
-		str +=			"\n.....................................\n";
-		return str;
+
+	@Override
+	public String toString() {
+		return "Site [id=" + id + ", nom=" + nom + "]";
 	}
+	
+	
 
 
 }

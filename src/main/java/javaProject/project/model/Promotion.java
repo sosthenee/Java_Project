@@ -38,11 +38,12 @@ public class Promotion {
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
-	
-	public String toString(){
-		String str = 	"NOM Promotion : " + this.getNom() + "\n";
-		str +=			"\n.....................................\n";
-		return str;
+
+	@Override
+	public String toString() {
+		return "Promotion [id=" + id + ", nom=" + nom + "]";
 	}
+	
+	
 
 }

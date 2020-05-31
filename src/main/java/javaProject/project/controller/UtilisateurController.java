@@ -6,7 +6,12 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
+import javaProject.project.dao.EtudiantDao;
+import javaProject.project.dao.PromotionDao;
+import javaProject.project.dao.SeanceDao;
 import javaProject.project.dao.UtilisateurDao;
+import javaProject.project.model.Etudiant;
+import javaProject.project.model.Seance;
 import javaProject.project.model.Utilisateur;
 import javaProject.project.view.Fenetre;
 import javaProject.project.view.LookCalendrier;
@@ -22,6 +27,12 @@ public class UtilisateurController {
 
     @Autowired
     private UtilisateurDao utilisateurDao;
+    
+    @Autowired(required=false)
+    private EtudiantDao etudiantDao;
+    
+    @Autowired(required=false)
+    private SeanceDao seanceDao;
     private Fenetre view;
     
     private LookCalendrier seanceEdtudiant;
@@ -29,7 +40,7 @@ public class UtilisateurController {
     public UtilisateurController() {
     }
     
-    
+ 
     public void addUser(String email, String password) {
         Utilisateur u = new Utilisateur(email, password);
         utilisateurDao.save(u);

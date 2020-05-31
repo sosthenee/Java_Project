@@ -9,14 +9,10 @@ import org.springframework.data.jpa.repository.Query;
 import javaProject.project.model.Enseignant;
 
 public interface EnseignantDao extends JpaRepository<Enseignant, Long> {
-
-	//get all seance id from enseignant
-	@Query(value = "SELECT * FROM seance_enseignants u WHERE u.enseignant_id = ?",
-			nativeQuery = true)
-	List<Long> findAllSeancesIdEnseignant(long id_enseignant);
 	
-        
+	List<Enseignant> findAll();
+
 	@SuppressWarnings("unchecked")
 	Enseignant save(Enseignant enseignant);
-	
+
 }

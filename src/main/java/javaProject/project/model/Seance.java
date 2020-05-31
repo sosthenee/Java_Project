@@ -167,11 +167,4 @@ public class Seance {
 	}
 
 	
-
-
-
-	
-	
-	
-	
 }
