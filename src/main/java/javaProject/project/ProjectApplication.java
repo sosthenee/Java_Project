@@ -13,6 +13,10 @@ import javaProject.project.model.Etudiant;
 import javaProject.project.model.Utilisateur;
 
 
+import javaProject.project.vue.Fenetre;
+
+
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -32,6 +36,7 @@ public class ProjectApplication {
 
 	
 	public static void main(String[] args) {
+
 		//SpringApplication.run(ProjectApplication.class, args);
                 
         
@@ -62,5 +67,6 @@ public class ProjectApplication {
                
 	}
 	
+
 
 }
