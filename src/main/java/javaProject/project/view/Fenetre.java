@@ -29,13 +29,12 @@ public class Fenetre extends JFrame {
   public JFormattedTextField mail = new JFormattedTextField();
   public JPasswordField mdp = new JPasswordField();
   public JButton valider = new JButton ("Valider");
-  
+
   public Fenetre(){
     this.setTitle("Box Layout");
     this.setSize(300, 120);
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.setLocationRelativeTo(null);
-     ;
 
 
     JPanel b1 = new JPanel();
@@ -56,7 +55,8 @@ public class Fenetre extends JFrame {
     //Idem pour cette ligne
     b3.setLayout(new BoxLayout(b3, BoxLayout.LINE_AXIS));
     b3.add(valider);
-
+    
+    
     JPanel b4 = new JPanel();
     //On positionne maintenant ces trois lignes en colonne
     b4.setLayout(new BoxLayout(b4, BoxLayout.PAGE_AXIS));
@@ -64,13 +64,9 @@ public class Fenetre extends JFrame {
     b4.add(b2);
     b4.add(b3);
 
+    
     this.getContentPane().add(b4);
     this.setVisible(true);
   }
   
-  class StateListener implements ActionListener{
-    public void actionPerformed(ActionEvent e) {
-      System.out.println("source : " + ((JCheckBox)e.getSource()).getText() + " - état : " + ((JCheckBox)e.getSource()).isSelected());
-    }
-  }
 }

@@ -1,6 +1,7 @@
 package javaProject.project;
 
 import java.awt.EventQueue;
+import javaProject.project.controller.EtudiantController;
 import javaProject.project.controller.UtilisateurController;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import javaProject.project.view.Fenetre;
+import javaProject.project.view.LookCalendrier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -39,10 +41,21 @@ public class ProjectApplication {
 
             EventQueue.invokeLater(() -> {
                 ConfigurableApplicationContext context = new SpringApplicationBuilder(ProjectApplication.class).headless(false).run(args);
-                UtilisateurController mainMenuController = context.getBean(UtilisateurController.class);
-                Fenetre ex = context.getBean(Fenetre.class);
-                mainMenuController.initController(ex);
-                ex.setVisible(true);
+                
+                // Login
+                UtilisateurController userController = context.getBean(UtilisateurController.class);
+                Fenetre loginView = context.getBean(Fenetre.class);
+                userController.initController(loginView);
+                
+                // Seance edtudiant
+                EtudiantController studController = context.getBean(EtudiantController.class);
+                LookCalendrier ex2 = context.getBean(LookCalendrier.class);
+                studController.initController(ex2, loginView);
+                
+                
+                userController.setSeanceEtudiant(ex2);
+                //userController.addUser("plop", "plop");
+                loginView.setVisible(true);
             });
                 //Fenetre fen = new Fenetre();
                 

@@ -45,12 +45,12 @@ public class LookCalendrier extends JFrame {
 
         panel = new JPanel();
 
-        //panel.add(button1);
+        panel.add(button1);
 
         getContentPane().add(Tab.getTableHeader(), BorderLayout.SOUTH);
         getContentPane().add(Tab, BorderLayout.SOUTH);
 
        this.getContentPane().add(panel);
-       this.setVisible(true);
+       this.setVisible(false);
     }
 }

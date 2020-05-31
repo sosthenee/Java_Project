@@ -7,6 +7,7 @@ package javaProject.project.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javaProject.project.dao.SeanceDao;
 import javaProject.project.view.Calendrier;
 import javaProject.project.view.LookCalendrier;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ import org.springframework.stereotype.Component;
 public class CalendrierController {
 
     @Autowired
-    private CalendrierRepository repository;
+    private SeanceDao repository;
     private Calendrier view;
     private LookCalendrier view2;
 

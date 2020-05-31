@@ -15,6 +15,7 @@ public interface EnseignantDao extends JpaRepository<Enseignant, Long> {
 			nativeQuery = true)
 	List<Long> findAllSeancesIdEnseignant(long id_enseignant);
 	
+        
 	@SuppressWarnings("unchecked")
 	Enseignant save(Enseignant enseignant);
 	
