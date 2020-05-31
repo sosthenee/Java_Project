@@ -61,11 +61,7 @@ public class Etudiant extends Utilisateur {
 		this.groupe = groupe;
 	}
 
-	@Override
-	public String toString() {
-		return "Etudiant [id_utilisateur=" + id_utilisateur + ", numero=" + numero + ", utilisateur=" + utilisateur
-				+ ", groupe=" + groupe + "]";
-	}
+
 	
 	
 
