@@ -1,7 +1,9 @@
 package javaProject.project.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,55 +14,56 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="etudiant") 
-public class Etudiant {
-	
-	@Id
-	private long id_utilisateur = 0;
+@Table(name = "etudiant")
+public class Etudiant extends Utilisateur {
+
+    @Column(name = "numero")
+    private long numero = 0;
+
+    @ManyToOne(targetEntity = Groupe.class, cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_groupe")
+    private Groupe groupe;
+
+    public Etudiant() {
+        super();
+    }
+
+
+    public Etudiant(long numero) {
+        super();
+        this.numero = numero;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public long getNumero() {
+        return numero;
+    }
+    
+    public Groupe getGroupe() {
+        return groupe;
+    }
+
+    public void setNumero(long numero) {
+        this.numero = numero;
+    }
+
+    public String toString() {
+        String str = "NUMERO Etudiant : " + this.getNumero() + "\n";
+        //str += 			"ID Groupe : " + this.getIdGroupe() + "\n";
+        str += "\n.....................................\n";
+        return str;
+    }
+
+	public void setGroupe(Groupe groupe) {
+		this.groupe = groupe;
+	}
+
 
 	
-	@Column(name = "numero")
-	private long numero = 0;
-	
-	@OneToOne(targetEntity = Utilisateur.class)
-    @JoinColumn(name = "id_utilisateur")
-    @MapsId
-    private Utilisateur utilisateur;
-	
-	@ManyToOne(targetEntity = Groupe.class)
-	@JoinColumn(name="id_groupe")
-	private Groupe groupe;
-	
-	public Etudiant () {}
-	
-	public Etudiant(long id_utilisateur, long numero) {
-		this.id_utilisateur = id_utilisateur;
-		this.numero = numero;
-	}
-	
-	public long getId() {
-		return id_utilisateur;
-	}
-
-	public void setId(long id_utilisateur) {
-		this.id_utilisateur = id_utilisateur;
-	}
-	
-	public long getNumero() {
-		return numero;
-	}
-
-	public void setNumero(long numero) {
-		this.numero = numero;
-	}
-	
 	
 
-	public String toString(){
-		String str = 	"NUMERO Etudiant : " + this.getNumero() + "\n";
-		//str += 			"ID Groupe : " + this.getIdGroupe() + "\n";
-		str +=			"\n.....................................\n";
-		return str;
-	}
 
 }

@@ -14,7 +14,7 @@ public class Utilisateur {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long id = 0;
+	protected long id = 0;
 	
 	@Column(name = "email")
 	private String email = "";
@@ -29,14 +29,9 @@ public class Utilisateur {
 	private String prenom = "";
 	
 	@Column(name = "droit")
-	private int droit;
-	
-	@OneToOne(mappedBy = "utilisateur")
-    private Etudiant etudiant;
+	private String droit;
 
-	public Utilisateur(){}
-
-	public Utilisateur(long id, String email, String password,String nom, String prenom, int droit) {
+	public Utilisateur(long id, String email, String password,String nom, String prenom, String droit) {
 		this.id = id;
 		this.email = email;
 		this.password = password;
@@ -44,6 +39,13 @@ public class Utilisateur {
 		this.prenom = prenom;
 		this.droit = droit;
 	}
+        
+        public Utilisateur(String email, String password) {
+		this.email = email;
+		this.password = password;
+	}  
+        
+        public Utilisateur(){}
 
 	public long getId() {
 		return id;
@@ -86,21 +88,19 @@ public class Utilisateur {
 		this.prenom = prenom;
 	}
 
-	public int getDroit() {
+	public String getDroit() {
 		return droit;
 	}
 
-	public void setDroit(int droit) {
+	public void setDroit(String droit) {
 		this.droit = droit;
 	}
 
-	public String toString(){
-		String str = 	"Email : " + this.getEmail() + "\n";
-		str += 			"NOM : " + this.getNom() + "\n";
-		str += 			"PRENOM : " + this.getPrenom() + "\n";
-		str +=			"Droit : " + this.getDroit();
-		str +=			"\n.....................................\n";
-		return str;
+	@Override
+	public String toString() {
+		return "Utilisateur [id=" + id + ", email=" + email + ", password=" + password + ", nom=" + nom + ", prenom="
+				+ prenom + ", droit=" + droit + "]";
 	}
 
+	
 }
