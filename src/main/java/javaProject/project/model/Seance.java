@@ -33,11 +33,11 @@ public class Seance {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 	
-	@Column(name = "heure_debut")
-	private int heure_debut = 0;
-	
 	@Column(name = "heure_fin")
 	private int heure_fin = 0;
+	
+        @Column(name = "minute_fin")
+	private int minute_fin = 0;
 	
 	@Column(name = "etat")
 	private int etat = 0;
@@ -85,13 +85,13 @@ public class Seance {
 		super();
 	}
 
-	public Seance(long id, int semaine, Date date, int heure_debut, int heure_fin, int etat) {
+	public Seance(long id, int semaine, Date date, int heure_fin, int minute_fin , int etat) {
 		super();
 		this.id = id;
 		this.semaine = semaine;
 		this.date = date;
-		this.heure_debut = heure_debut;
 		this.heure_fin = heure_fin;
+                this.minute_fin = minute_fin;
 		this.etat = etat;
 	}
 
@@ -117,14 +117,6 @@ public class Seance {
 
 	public void setDate(Date date) {
 		this.date = date;
-	}
-
-	public int getHeure_debut() {
-		return heure_debut;
-	}
-
-	public void setHeure_debut(int heure_debut) {
-		this.heure_debut = heure_debut;
 	}
 
 	public int getHeure_fin() {
@@ -162,8 +154,17 @@ public class Seance {
 	@Override
 	public String toString() {
 		return "Seance [id=" + id + ", semaine=" + semaine + ", date=" + date
-				+ ", heure_debut=" + heure_debut + ", heure_fin=" + heure_fin + ", etat=" + etat + ", cours=" + cours
+				+  ", heure_fin=" + heure_fin + ", etat=" + etat + ", cours=" + cours
 				+ ", type_cours=" + type_cours + "]";
+	}
+
+    public int getMinute_fin() {
+        return minute_fin;
+    
+    }
+    
+    public void setMinute_fin(int minute_fin) {
+		this.minute_fin = minute_fin;
 	}
 
 	
