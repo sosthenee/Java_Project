@@ -15,6 +15,7 @@ import javaProject.project.model.Seance;
 import javaProject.project.model.Utilisateur;
 import javaProject.project.view.Fenetre;
 import javaProject.project.view.LookCalendrier;
+import javaProject.project.view.VueCalendrier;
 import javax.swing.JOptionPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -35,7 +36,7 @@ public class UtilisateurController {
     private SeanceDao seanceDao;
     private Fenetre view;
     
-    private LookCalendrier seanceEdtudiant;
+    private VueCalendrier seanceEdtudiant;
 
     public UtilisateurController() {
     }
@@ -59,11 +60,12 @@ public class UtilisateurController {
      }
 
     public void initController(Fenetre view) {
+       view.getRootPane().setDefaultButton(view.valider);
        view.valider.addActionListener(e -> login(view.mail.getText(), view.mdp.getText()));
        this.view = view;
     }
     
-    public void setSeanceEtudiant(LookCalendrier seanceEdtudiant) {
+    public void setSeanceEtudiant(VueCalendrier seanceEdtudiant) {
         this.seanceEdtudiant = seanceEdtudiant;
     }
 

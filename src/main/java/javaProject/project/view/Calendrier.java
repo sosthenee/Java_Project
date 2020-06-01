@@ -22,67 +22,60 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class Calendrier extends JFrame {
-    
-    
-          
+
     public JComboBox day;
     public JComboBox month;
-    public JComboBox year ;
+    public JComboBox year;
     public JComboBox hour;
-    public JComboBox minute ;
+    public JComboBox minute;
     public JComboBox profession;
     public JButton button;
 
-    private JLabel messageLabel ;
-    private JPanel panel; 
-    public TextField t1; 
+    private JLabel messageLabel;
+    private JPanel panel;
+    public TextField t1;
 
-    private ArrayList<String> nameList=new ArrayList<>();
-    private ArrayList<String> professionList=new ArrayList<>();
-    
+    private ArrayList<String> nameList = new ArrayList<>();
+    private ArrayList<String> professionList = new ArrayList<>();
+
     private final int WINDOW_WIDTH = 200;   // Window width
     private final int WINDOW_HEIGHT = 200;  // Window height
-      
-    public Calendrier(){
+
+    public Calendrier() {
 
         this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         createPanel();
-       
+
         //add(panel);
-      
-      
-      
-      }
-    
-    private void createPanel()
-   {
-         int  j = professionList.size();
-         profession = new JComboBox ();
-         for(int i = 0; i <= j-1 ; i++){
-          profession.addItem(professionList.get(i));
-         }
-         System.out.println("le cadfgggggggatch ");
+    }
+
+    private void createPanel() {
+        int j = professionList.size();
+        profession = new JComboBox();
+        for (int i = 0; i <= j - 1; i++) {
+            profession.addItem(professionList.get(i));
+        }
+        System.out.println("le cadfgggggggatch ");
 
         messageLabel = new JLabel("Select a Date");
-        String[] months = {"01", "02","03","04","05","06","07","08","09","10","11","12"};
-        String[]  days = {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"};
-        String[]  years ={"2019","2020","2021"};
-        String[]  hours ={"00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23",};
-        String[]  minutes ={"00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28", "29","30","31"," 32"," 33"," 34"," 35"," 36"," 37"," 38","39","40","41","42","43","44","45","46","47","48"," 49","50","51"," 52"," 53"," 54"," 55"," 56"," 57"," 58","59",};
-     
-        t1 = new TextField("your name",20); 
-      
+        String[] months = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
+        String[] days = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
+        String[] years = {"2020", "2021"};
+        String[] hours = {"08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", };
+        String[] minutes = {"00", "30"};
+
+        t1 = new TextField("your name", 20);
+
         month = new JComboBox(months);
-        day = new JComboBox(days);    
+        day = new JComboBox(days);
         year = new JComboBox(years);
-        hour = new JComboBox(hours);    
+        hour = new JComboBox(hours);
         minute = new JComboBox(minutes);
-        
-       button = new JButton("take an appointment");
-      
-       //button.addActionListener(new writeData());
-        
-        panel = new JPanel(new GridLayout(8,1));
+
+        button = new JButton("take an appointment");
+
+        //button.addActionListener(new writeData());
+        panel = new JPanel(new GridLayout(8, 1));
         panel.add(day);
         panel.add(month);
         panel.add(year);
@@ -93,8 +86,7 @@ public class Calendrier extends JFrame {
         panel.add(button);
 
         //add(panel);
-        
         this.getContentPane().add(panel);
         this.setVisible(true);
-}
+    }
 }
