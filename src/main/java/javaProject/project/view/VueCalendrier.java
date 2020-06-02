@@ -25,6 +25,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.TableCellRenderer;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -41,6 +42,7 @@ public class VueCalendrier extends JFrame {
     public JButton button1;
     private JMenuBar navigation = new JMenuBar();
     private JMenu MenuSalles = new JMenu("Salles");
+    private JButton Accueil = new JButton ("Accueil");
     private JMenuItem ItemSalles1 = new JMenuItem("Emploi du Temps");
     private JMenuItem ItemSalles2 = new JMenuItem("Salles Libres");
     private JMenu MenuCours = new JMenu("Cours");
@@ -54,29 +56,42 @@ public class VueCalendrier extends JFrame {
     public List<JButton> buttonList = new ArrayList<JButton>();
     public TableCalendrier model;
     public Color couleur;
+    private JComboBox ComboAff = new JComboBox();
+    private JComboBox ComboRecherche = new JComboBox();
+     private JTextField Recherche = new JTextField("Rechercher");
 
     public VueCalendrier() {
-        String[] MenuSalles = {"Salles", "Emploi du temps", "Salles Libres"};
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setTitle("JTable");
+        this.setTitle("HyperPlanning");
         this.setSize(1000, 1000);
+        Accueil.setForeground(Color.WHITE);
+        Accueil.setBackground(Color.DARK_GRAY);
+        String[] choixAff = {"Planning en grille","Planning en liste"};
+        String[] choixRecherche = {"Rechercher par nom","Rechercher par liste"};
+        ComboAff = new JComboBox(choixAff);
+        ComboRecherche = new JComboBox(choixRecherche);
         semaines.setLayout(new GridLayout(1, 52));
         calendar.setLayout(new BorderLayout());
         principal.setLayout(new BorderLayout());
-        navbar.setLayout(new GridLayout(1, 5));
-        navbar.add(new JButton("Accueil"));
+        navbar.setLayout(new GridLayout(1,4,7,0));
+        /*navbar.add(new JButton("Accueil"));
         navbar.add(new JButton("Planning"));
         navbar.add(new JButton("Vie Scolaire"));
-        navbar.add(new JButton("Promotions"));
-        navbar.add(new JComboBox(MenuSalles));
+        navbar.add(new JButton("Promotions"));*/
 
         this.MenuSalles.add(ItemSalles1);
         this.MenuSalles.add(ItemSalles2);
         this.MenuCours.add(ItemCours1);
         this.MenuCours.add(ItemCours2);
+        this.navigation.add(Accueil);
         this.navigation.add(MenuCours);
-        this.setJMenuBar(navigation);
+        this.navigation.add(MenuSalles);
+        
+        navbar.add(navigation);
+        navbar.add(ComboAff);
+        navbar.add(Recherche);
+        navbar.add(ComboRecherche);
 
         semaines.setPreferredSize(new Dimension(2600, 50));
 
@@ -138,13 +153,11 @@ public class VueCalendrier extends JFrame {
         };
         tableau.setRowHeight(60);
         tableau.setCellSelectionEnabled(false);
-
         calendar.add(new JScrollPane(tableau), BorderLayout.CENTER);
         principal.add(new JScrollPane(semaines), BorderLayout.NORTH);
         principal.add((calendar), BorderLayout.CENTER);
-
+        this.getContentPane().add((navbar), BorderLayout.NORTH);
         this.getContentPane().add((principal), BorderLayout.CENTER);
-
         this.setVisible(true);
     }
 
