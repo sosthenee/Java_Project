@@ -29,9 +29,9 @@ public class Utilisateur {
 	private String prenom = "";
 	
 	@Column(name = "droit")
-	private String droit;
+	private int droit;
 
-	public Utilisateur(long id, String email, String password,String nom, String prenom, String droit) {
+	public Utilisateur(long id, String email, String password,String nom, String prenom, int droit) {
 		this.id = id;
 		this.email = email;
 		this.password = password;
@@ -88,11 +88,11 @@ public class Utilisateur {
 		this.prenom = prenom;
 	}
 
-	public String getDroit() {
+	public int getDroit() {
 		return droit;
 	}
 
-	public void setDroit(String droit) {
+	public void setDroit(int droit) {
 		this.droit = droit;
 	}
 

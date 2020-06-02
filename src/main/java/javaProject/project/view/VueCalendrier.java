@@ -158,7 +158,9 @@ public class VueCalendrier extends JFrame {
         principal.add((calendar), BorderLayout.CENTER);
         this.getContentPane().add((navbar), BorderLayout.NORTH);
         this.getContentPane().add((principal), BorderLayout.CENTER);
-        this.setVisible(true);
+
+        this.setVisible(false);
+
     }
 
     public void setData(Object[][] data) {
