@@ -14,5 +14,5 @@ public interface EnseignantDao extends JpaRepository<Enseignant, Long> {
 
 	@SuppressWarnings("unchecked")
 	Enseignant save(Enseignant enseignant);
-
+	
 }

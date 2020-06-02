@@ -8,10 +8,12 @@ package javaProject.project.controller;
 import java.util.List;
 import java.util.Optional;
 import javaProject.project.dao.EtudiantDao;
+import javaProject.project.dao.PromotionDao;
 import javaProject.project.dao.SeanceDao;
 import javaProject.project.dao.UtilisateurDao;
 import javaProject.project.model.Etudiant;
 import javaProject.project.model.Groupe;
+import javaProject.project.model.Promotion;
 import javaProject.project.model.Seance;
 import javaProject.project.model.Utilisateur;
 import javaProject.project.view.Calendrier;
@@ -33,6 +35,9 @@ public class EtudiantController {
     @Autowired
     private EtudiantDao etudiantDao;
     
+    @Autowired
+    private PromotionDao promotionDao;
+    
     
     private LookCalendrier view;
     
@@ -46,7 +51,9 @@ public class EtudiantController {
      public void allSeances(String email) {
         Etudiant i = (Etudiant) utilisateurDao.findByEmail(email);
         
-        List<Seance> a = seanceDao.findByGroupeContaining(i.getGroupe());
+        Promotion prom = promotionDao.findById(1);
+        
+        List<Seance> a = seanceDao.findByPromotion(prom);
          
         System.out.println(a);
 
