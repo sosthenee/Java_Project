@@ -14,18 +14,15 @@ import javaProject.project.model.Utilisateur;
 
 @Repository
 public interface EtudiantDao extends JpaRepository<Etudiant, Long> {
-	
 
-        
-     
-        
-        
-  Etudiant findByEmail(String email);
-  Etudiant findById(long id_groupe);
+	Etudiant findByEmail(String email);
+	Etudiant findById(long id_groupe);
 
-	
+
 	//Ajout Etudiant
 	@SuppressWarnings("unchecked")
 	Etudiant save(Etudiant etudiant);
 	
+	List<Etudiant> findAll();
+
 }

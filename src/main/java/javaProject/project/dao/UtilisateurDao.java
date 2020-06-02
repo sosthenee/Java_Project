@@ -22,7 +22,4 @@ public interface UtilisateurDao extends JpaRepository<Utilisateur, Long>{
 	//For login return the User or return user = null
 	Utilisateur findFirstByEmailAndPassword(String email,String password);
 	
-	//Renvoie la liste des Utilisateurs en fonction de leur droit 1 : admin / 2 : ref Pedago / 3 : enseignant / 4: etudiant
-	List<Utilisateur> findByDroit(int numDroit);
-	
 }

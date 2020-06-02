@@ -11,10 +11,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.TimeZone;
 import javaProject.project.dao.EtudiantDao;
+import javaProject.project.dao.PromotionDao;
 import javaProject.project.dao.SeanceDao;
 import javaProject.project.dao.UtilisateurDao;
 import javaProject.project.model.Etudiant;
 import javaProject.project.model.Groupe;
+import javaProject.project.model.Promotion;
 import javaProject.project.model.Seance;
 import javaProject.project.model.Utilisateur;
 import javaProject.project.view.Calendrier;
@@ -36,6 +38,9 @@ public class EtudiantController {
     
     @Autowired
     private EtudiantDao etudiantDao;
+    
+    @Autowired
+    private PromotionDao promotionDao;
     
     
     private VueCalendrier view;
@@ -78,6 +83,7 @@ public class EtudiantController {
             {" 20h30 - 21h00", " ", " ", " ", " ", " ", " "},
             {" 21h00 - 21h30", " ", " ", " ", " ", " ", " "},};
         
+
         
         
         for (Seance seance : seances) {
