@@ -22,7 +22,6 @@ import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.ManyToMany;
 import java.util.Set;
 import javax.persistence.CascadeType;
-import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 
 @Entity

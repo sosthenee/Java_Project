@@ -5,6 +5,7 @@
  */
 package javaProject.project.controller;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javaProject.project.dao.SeanceDao;
@@ -24,7 +25,7 @@ public class CalendrierController {
     private SeanceDao repository;
     private Calendrier view;
     private LookCalendrier view2;
-
+  
     public CalendrierController() {
 
     }
@@ -47,8 +48,10 @@ public class CalendrierController {
     public void initController(Calendrier view) {
         view.button.addActionListener(e -> writeData());
     }
-    
+
     public void initControllerLook(LookCalendrier view2) {
         view2.button1.addActionListener(e -> writeData());
     }
+
+    
 }
