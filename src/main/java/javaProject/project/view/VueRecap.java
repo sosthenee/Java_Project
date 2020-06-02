@@ -6,7 +6,9 @@
 package javaProject.project.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -37,17 +39,20 @@ public class VueRecap extends JFrame{
     private JTextField Recherche = new JTextField("Rechercher");
     private JComboBox ComboAff = new JComboBox();
     private JComboBox ComboRecherche = new JComboBox();
+    private JButton Accueil = new JButton ("Accueil");
 
     public VueRecap() {
    
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setTitle("JTable");
+        this.setTitle("Récapitulatif des cours");
         this.setSize(700, 240);
         String[] choixAff = {"Planning en grille","Planning en liste"};
         String[] choixRecherche = {"Rechercher par nom","Rechercher par liste"};
         ComboAff = new JComboBox(choixAff);
         ComboRecherche = new JComboBox(choixRecherche);
+        Accueil.setForeground(Color.WHITE);
+        Accueil.setBackground(Color.DARK_GRAY);
         navbar.setLayout(new GridLayout (1,4, 5,0));
         recap.setLayout(new BorderLayout());
         principal.setLayout(new BorderLayout());
@@ -55,6 +60,7 @@ public class VueRecap extends JFrame{
         this.MenuSalles.add(ItemSalles2);
         this.MenuCours.add(ItemCours1);
         this.MenuCours.add(ItemCours2);
+        this.navigation.add(Accueil);
         this.navigation.add(MenuCours);
         this.navigation.add(MenuSalles);
         //this.setJMenuBar(navigation);
