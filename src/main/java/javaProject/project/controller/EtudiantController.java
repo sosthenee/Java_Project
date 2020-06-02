@@ -112,11 +112,11 @@ public class EtudiantController {
             
             for (int i = index_debut ; i < index_fin ; i++){
 
-                data[i][day_of_week+1]= "<html> type de cours : " + seance.getType_cours().getNom() + "<br>"+"  cours :  " + seance.getCours().getNom() +
+                data[i][day_of_week-1]= "<html> type de cours : " + seance.getType_cours().getNom() + "<br>"+"  cours :  " + seance.getCours().getNom() +
                    "  Professeur :  " + seance.getDate() +  "  salle :  " + seance.getDate()  +"</html>";
             }
             if (index_fin - index_debut < 2 ) {
-                data[index_debut][day_of_week+1]= "<html> type de cours : " + seance.getType_cours().getNom() + "<br>"+"  cours :  " + seance.getCours().getNom() +
+                data[index_debut][day_of_week-1]= "<html> type de cours : " + seance.getType_cours().getNom() + "<br>"+"  cours :  " + seance.getCours().getNom() +
                    "  Professeur :  " + seance.getDate() +  "  salle :  " + seance.getDate()  +"</html>";
             }
        }

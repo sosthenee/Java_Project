@@ -53,6 +53,7 @@ public class VueCalendrier extends JFrame {
     private List<Seance> seance;
     public List<JButton> buttonList = new ArrayList<JButton>();
     public TableCalendrier model;
+    public Color couleur;
 
     public VueCalendrier() {
         String[] MenuSalles = {"Salles", "Emploi du temps", "Salles Libres"};
@@ -70,7 +71,6 @@ public class VueCalendrier extends JFrame {
         navbar.add(new JButton("Promotions"));
         navbar.add(new JComboBox(MenuSalles));
 
-        
         this.MenuSalles.add(ItemSalles1);
         this.MenuSalles.add(ItemSalles2);
         this.MenuCours.add(ItemCours1);
@@ -82,8 +82,8 @@ public class VueCalendrier extends JFrame {
 
         for (int i = 1; i < 53; ++i) {
             String j = Integer.toString(i);
-            JButton nb =  new JButton(j);
-            buttonList.add(nb) ;
+            JButton nb = new JButton(j);
+            buttonList.add(nb);
             semaines.add(nb);
         }
 
@@ -124,11 +124,15 @@ public class VueCalendrier extends JFrame {
             public Component prepareRenderer(TableCellRenderer renderer, int row, int col) {
                 Component comp = super.prepareRenderer(renderer, row, col);
                 String value = (String) getModel().getValueAt(row, col);
-                  if (value.contains("maths")) {
-                        comp.setBackground(Color.red);
-                    }else{
-                  comp.setBackground(Color.white);
-                  }
+                if (value.length() > 1) {
+                    if (col != 0) {
+                        comp.setBackground(setColor(value));
+                    } else {
+                        comp.setBackground(Color.white);
+                    }
+                } else {
+                    comp.setBackground(Color.white);
+                }
                 return comp;
             }
         };
@@ -146,5 +150,26 @@ public class VueCalendrier extends JFrame {
 
     public void setData(Object[][] data) {
         tableau.setModel(new TableCalendrier(data, title));
+    }
+
+    public Color setColor(String color) {
+
+        if (color.contains("maths")) {
+            couleur = Color.red;
+        }
+        if (color.contains("physique")) {
+            couleur = Color.green;
+        }
+        if (color.contains("elec")) {
+            couleur = Color.blue;
+        }
+        if (color.contains("reseau")) {
+            couleur = Color.pink;
+        }
+        if (color.contains("informatique")) {
+            couleur = Color.cyan;
+        }
+
+        return couleur;
     }
 }
