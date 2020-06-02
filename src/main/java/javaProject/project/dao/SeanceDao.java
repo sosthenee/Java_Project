@@ -27,6 +27,7 @@ public interface SeanceDao extends JpaRepository<Seance, Long> {
 
 
   List<Seance> findBySemaineAndGroupeContaining(int semaine , Groupe groupe );
+	
 
 	List<Seance> findByGroupeContaining(Groupe groupe);
 	
