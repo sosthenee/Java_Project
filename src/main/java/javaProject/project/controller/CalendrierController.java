@@ -1,57 +1,125 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package javaProject.project.controller;
 
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javaProject.project.dao.SeanceDao;
-import javaProject.project.view.Calendrier;
-import javaProject.project.view.LookCalendrier;
+import java.util.Calendar;
+import java.util.List;
+import java.util.TimeZone;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/**
- *
- * @author sosthene
- */
+import javaProject.project.dao.SeanceDao;
+import javaProject.project.dao.UtilisateurDao;
+import javaProject.project.model.Enseignant;
+import javaProject.project.model.Etudiant;
+import javaProject.project.model.Salle;
+import javaProject.project.model.Seance;
+import javaProject.project.view.Fenetre;
+import javaProject.project.view.VueCalendrier;
+import util.cst;
+
 @Component
 public class CalendrierController {
+	
+	@Autowired
+	UtilisateurDao utilisateurDao;
+	@Autowired
+	SeanceDao seanceDao;
+	
+    private CurentUserSingleton Singleton = CurentUserSingleton.getInstance();
 
-    @Autowired
-    private SeanceDao repository;
-    private Calendrier view;
-    private LookCalendrier view2;
-  
-    public CalendrierController() {
+	
+	public Object[][] formatData(List<Seance> seances) {
 
-    }
+		Object[][] data = cst.getData();
 
-    public void writeData() {
+		for (Seance seance : seances) {
 
-        Object selected_hour = view.hour.getItemAt(view.hour.getSelectedIndex());
-        Object selected_minute = view.minute.getItemAt(view.minute.getSelectedIndex());
-        Object selected_day = view.day.getItemAt(view.day.getSelectedIndex());
-        Object selected_month = view.month.getItemAt(view.month.getSelectedIndex());
-        Object selected_year = view.year.getItemAt(view.year.getSelectedIndex());
-        Object selected_prof = view.profession.getItemAt(view.profession.getSelectedIndex());
+			Calendar calendar = Calendar.getInstance();
+			TimeZone tzInFrance = TimeZone.getTimeZone("France/Paris");
+			calendar.setTimeZone(tzInFrance);
 
-        String selected_date = selected_year + "-" + selected_month + "-" + selected_day;
-        String selected_time = selected_hour + ":" + selected_minute + ":00";
-        String selected_name = view.t1.getText();
+			calendar.setTime(seance.getDate());
 
-    }
+			int heure_fin = seance.getHeure_fin();
+			int minute_fin = seance.getMinute_fin();
+			int hours = calendar.get(Calendar.HOUR_OF_DAY);
+			int minutes = calendar.get(Calendar.MINUTE);
+			int day_of_week = calendar.get(Calendar.DAY_OF_WEEK);
 
-    public void initController(Calendrier view) {
-        view.button.addActionListener(e -> writeData());
-    }
+			int index_debut = hours - 8;
 
-    public void initControllerLook(LookCalendrier view2) {
-        view2.button1.addActionListener(e -> writeData());
-    }
+			String salleSeance = "";
+			String enseiSenace = "";
 
-    
+
+			if(seance.getSalle().size() > 1) {
+				for(Salle it : seance.getSalle())
+				{
+					salleSeance += it.getNom() + " / ";
+				}
+			}else {
+				salleSeance = seance.getSalle().get(0).getNom();
+			}
+
+			if(seance.getEnseignant().size() > 1) {
+				for(Enseignant it : seance.getEnseignant())
+				{
+					enseiSenace += it.getNom() + " / ";
+				}
+			}else {
+				enseiSenace = seance.getEnseignant().get(0).getNom();
+			}
+
+
+			index_debut=index_debut*2;
+			if(minutes == 30){
+				index_debut+=1;
+			} 
+
+			int index_fin = heure_fin - 8;
+			index_fin=index_fin*2;
+			if (minute_fin == 30 ) {
+				index_fin += 1;
+			}
+
+
+			for (int i = index_debut ; i < index_fin ; i++){
+
+				data[i][day_of_week-1]= "<html> type de cours : " + seance.getType_cours().getNom() + "<br>"+"  cours :  " + seance.getCours().getNom() +
+						"  Professeur :  " + enseiSenace +  "  salle :  " + salleSeance  +"</html>";
+			}
+			if (index_fin - index_debut < 2 ) {
+				data[index_debut][day_of_week-1]= "<html> type de cours : " + seance.getType_cours().getNom() + "<br>"+"  cours :  " + seance.getCours().getNom() +
+						"  Professeur :  " +  enseiSenace +  "  salle :  " + salleSeance   +"</html>";
+			}
+		}
+		return data;
+	}
+	
+	public void allSeances(String email,  VueCalendrier view , int semaine) {
+		
+		if(Singleton.getInfo().getDroit() == 4) {
+			System.out.println("Seance etudiant");
+			Etudiant i = (Etudiant) utilisateurDao.findByEmail(email);
+			List<Seance> a = seanceDao.findBySemaineAndGroupeContaining(semaine,i.getGroupe());
+			Object[][] data = this.formatData(a);
+			view.setData(data);
+		}else if (Singleton.getInfo().getDroit() == 3) {
+			System.out.println("Seance enseignant");
+			Enseignant i = (Enseignant) utilisateurDao.findByEmail(email);
+			List<Seance> a = seanceDao.findBySemaineAndEnseignantContaining(semaine,i);
+			System.out.println(a);
+			Object[][] data = this.formatData(a);
+			view.setData(data);
+		}
+
+	}
+	public void initController(VueCalendrier view , Fenetre view2) {
+		System.out.println("Init Controller");
+		for ( int i =0 ; i< 52 ; i++){
+			final int semaine = Integer.parseInt(view.buttonList.get(i).getText());
+			view.buttonList.get(i).addActionListener(e -> allSeances(view2.mail.getText(),view , semaine ));
+		}
+	}
+
 }

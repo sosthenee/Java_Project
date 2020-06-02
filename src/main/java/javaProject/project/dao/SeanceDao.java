@@ -11,6 +11,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import com.sun.xml.bind.v2.runtime.unmarshaller.IntData;
+
 import javaProject.project.model.Enseignant;
 import javaProject.project.model.Groupe;
 import javaProject.project.model.Seance;
@@ -27,13 +29,13 @@ public interface SeanceDao extends JpaRepository<Seance, Long> {
 
 
 
-  List<Seance> findBySemaineAndGroupeContaining(int semaine , Groupe groupe );
+	List<Seance> findBySemaineAndGroupeContaining(int semaine , Groupe groupe );
 	
 
 	List<Seance> findByGroupeContaining(Groupe groupe);
 
 	//GET BY ENSEIGNANT
-	List<Seance> findByEnseignantContaining(Enseignant enseignant);
+	List<Seance> findBySemaineAndEnseignantContaining(int semaine,Enseignant enseignant);
 
 	//GET BY SALLE
 	List<Seance> findBySalleContaining(Salle salle);
