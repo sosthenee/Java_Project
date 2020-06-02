@@ -11,5 +11,9 @@ import javaProject.project.model.Promotion;
 public interface PromotionDao extends JpaRepository<Promotion, Long> {
 
 	Promotion findByNom(String nom);
+	
+	Promotion findById(long i);
+	
+	List<Promotion> findAll();
 
 }
