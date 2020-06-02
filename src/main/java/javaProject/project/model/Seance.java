@@ -1,10 +1,13 @@
 package javaProject.project.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,6 +15,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.ManyToMany;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -62,6 +69,7 @@ public class Seance {
     private Set<Groupe> groupe = new HashSet<>();
     
     @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "seance_salles",
             joinColumns = {
                     @JoinColumn(name = "seance_id", referencedColumnName = "id",
@@ -69,9 +77,10 @@ public class Seance {
             inverseJoinColumns = {
                     @JoinColumn(name = "salle_id", referencedColumnName = "id",
                             nullable = false, updatable = false)})
-    private Set<Salle> salle = new HashSet<>();
+    private List<Salle> salle = new ArrayList<Salle>();
     
     @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "seance_enseignants",
             joinColumns = {
                     @JoinColumn(name = "seance_id", referencedColumnName = "id",
@@ -79,7 +88,7 @@ public class Seance {
             inverseJoinColumns = {
                     @JoinColumn(name = "enseignant_id", referencedColumnName = "id",
                             nullable = false, updatable = false)})
-    private Set<Enseignant> enseignant = new HashSet<>();
+    private List<Enseignant> enseignant = new ArrayList<>();
 	
 	public Seance() {
 		super();
@@ -149,6 +158,26 @@ public class Seance {
 
 	public void setType_cours(Type_cours type_cours) {
 		this.type_cours = type_cours;
+	}
+	
+	
+	public List<Enseignant> getEnseignant() {
+		System.out.println(enseignant);
+		return enseignant;
+	}
+
+	public void setEnseignant(List<Enseignant> enseignant) {
+		this.enseignant = enseignant;
+	}
+	
+	
+
+	public List<Salle> getSalle() {
+		return salle;
+	}
+
+	public void setSalle(List<Salle> salle) {
+		this.salle = salle;
 	}
 
 	@Override

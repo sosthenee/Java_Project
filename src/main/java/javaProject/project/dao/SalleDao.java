@@ -18,4 +18,5 @@ public interface SalleDao extends JpaRepository<Salle, Long> {
 	List<Salle> findAllBySite(Site site);
 	
 	List<Salle> findAll();
+	
 }
