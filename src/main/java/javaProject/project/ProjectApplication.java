@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import javaProject.project.view.Fenetre;
 import javaProject.project.view.LookCalendrier;
+import javaProject.project.view.VueCalendrier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -54,7 +55,7 @@ public class ProjectApplication {
                 
                 // Seance edtudiant
                 EtudiantController studController = context.getBean(EtudiantController.class);
-                LookCalendrier ex2 = context.getBean(LookCalendrier.class);
+                VueCalendrier ex2 = context.getBean(VueCalendrier.class);
                 studController.initController(ex2, loginView);
                 
                 
