@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import javaProject.project.model.Cours;
 import javaProject.project.model.Enseignant;
 
 public interface EnseignantDao extends JpaRepository<Enseignant, Long> {
@@ -14,5 +15,7 @@ public interface EnseignantDao extends JpaRepository<Enseignant, Long> {
 
 	@SuppressWarnings("unchecked")
 	Enseignant save(Enseignant enseignant);
+	
+	List<Enseignant> findByCours(Cours cours);
 	
 }
