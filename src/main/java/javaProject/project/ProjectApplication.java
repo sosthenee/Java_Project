@@ -5,7 +5,7 @@ import java.awt.EventQueue;
 import javaProject.project.controller.CalendrierController;
 import javaProject.project.controller.LoginController;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import javaProject.project.view.Fenetre;
+import javaProject.project.view.VueLogin;
 import javaProject.project.view.VueCalendrier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -27,7 +27,7 @@ public class ProjectApplication {
                 
                 // Login
                 LoginController userController = context.getBean(LoginController.class);
-                Fenetre loginView = context.getBean(Fenetre.class);
+                VueLogin loginView = context.getBean(VueLogin.class);
                 userController.initController(loginView);
                 
                 //Calendar Controller

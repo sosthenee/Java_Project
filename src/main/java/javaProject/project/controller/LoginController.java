@@ -13,7 +13,7 @@ import javaProject.project.dao.UtilisateurDao;
 import javaProject.project.model.Etudiant;
 import javaProject.project.model.Seance;
 import javaProject.project.model.Utilisateur;
-import javaProject.project.view.Fenetre;
+import javaProject.project.view.VueLogin;
 import javaProject.project.view.VueCalendrier;
 import javax.swing.JOptionPane;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class LoginController {
 	@Autowired
 	private UtilisateurDao utilisateurDao;
 
-	private Fenetre view;
+	private VueLogin view;
 
 	private VueCalendrier calendar;
 
@@ -67,7 +67,7 @@ public class LoginController {
 		System.out.println(u);
 	}
 
-	public void initController(Fenetre view) {
+	public void initController(VueLogin view) {
 		view.getRootPane().setDefaultButton(view.valider);
 		view.valider.addActionListener(e -> login(view.mail.getText(), view.mdp.getText()));
 		this.view = view;

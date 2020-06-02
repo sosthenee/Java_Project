@@ -25,12 +25,12 @@ import javax.swing.JTextField;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Fenetre extends JFrame {
+public class VueLogin extends JFrame {
   public JFormattedTextField mail = new JFormattedTextField();
   public JPasswordField mdp = new JPasswordField();
   public JButton valider = new JButton ("Valider");
 
-  public Fenetre(){
+  public VueLogin(){
     this.setTitle("Box Layout");
     this.setSize(300, 120);
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
