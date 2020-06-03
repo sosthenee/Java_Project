@@ -11,6 +11,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Calendar;
 import static java.util.Calendar.DAY_OF_WEEK;
@@ -60,6 +62,7 @@ public class VueCalendrier extends JFrame {
     public JComboBox ComboRecherche = new JComboBox();
     public JTextField Recherche = new JTextField("Rechercher");
 
+
     public VueCalendrier() {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -67,14 +70,14 @@ public class VueCalendrier extends JFrame {
         this.setSize(1000, 1000);
         Accueil.setForeground(Color.WHITE);
         Accueil.setBackground(Color.DARK_GRAY);
-        String[] choixAff = {"Planning en grille","Planning en liste"};
-        String[] choixRecherche = {"Rechercher par nom","Rechercher par liste"};
+        String[] choixAff = {"Planning en grille", "Planning en liste"};
+        String[] choixRecherche = {"Rechercher par nom", "Rechercher par liste"};
         ComboAff = new JComboBox(choixAff);
         ComboRecherche = new JComboBox(choixRecherche);
         semaines.setLayout(new GridLayout(1, 52));
         calendar.setLayout(new BorderLayout());
         principal.setLayout(new BorderLayout());
-        navbar.setLayout(new GridLayout(1,4,7,0));
+        navbar.setLayout(new GridLayout(1, 4, 7, 0));
         /*navbar.add(new JButton("Accueil"));
         navbar.add(new JButton("Planning"));
         navbar.add(new JButton("Vie Scolaire"));
@@ -87,7 +90,7 @@ public class VueCalendrier extends JFrame {
         this.navigation.add(Accueil);
         this.navigation.add(MenuCours);
         this.navigation.add(MenuSalles);
-        
+
         navbar.add(navigation);
         navbar.add(ComboAff);
         navbar.add(Recherche);
@@ -153,10 +156,26 @@ public class VueCalendrier extends JFrame {
         };
         tableau.setRowHeight(60);
         tableau.setCellSelectionEnabled(false);
+        tableau.getTableHeader().setReorderingAllowed(false);
         calendar.add(new JScrollPane(tableau), BorderLayout.CENTER);
         principal.add(new JScrollPane(semaines), BorderLayout.NORTH);
         principal.add((calendar), BorderLayout.CENTER);
+
+        tableau.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(final MouseEvent e) {
+                if (e.getClickCount() == 1) {
+                    final JTable jTable = (JTable) e.getSource();
+                    final int row = jTable.getSelectedRow();
+                    final int column = jTable.getSelectedColumn();
+                    final String valueInCell = (String) jTable.getValueAt(row, column);
+                    System.out.println(valueInCell);
+                }
+            }
+        });
+
         this.getContentPane().add((navbar), BorderLayout.NORTH);
+
         this.getContentPane().add((principal), BorderLayout.CENTER);
 
         this.setVisible(false);
