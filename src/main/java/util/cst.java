@@ -2,6 +2,7 @@ package util;
 
 public class cst {
 
+
     public static Object[][] getCalendarBlankData() {
         Object[][] data = {
             {"8h00 - 8h30 ", " ", " ", " ", " ", " ", " "},
