@@ -1,8 +1,8 @@
 package util;
 
-public final class cst {
+public class cst {
 	
-	public static Object[][] data = {
+	private Object[][] data = {
 			{"8h00 - 8h30 ", " ", " ", " ", " ", " ", " "},
 			{" 8h30 - 9h00 ", " ", " ", " ", " ", " ", " "},
 			{" 9h00 - 9h30 ", " ", " ", " ", " ", " ", " "},
@@ -30,8 +30,12 @@ public final class cst {
 			{" 20h00 - 20h30", " ", " ", " ", " ", " ", " "},
 			{" 20h30 - 21h00", " ", " ", " ", " ", " ", " "},
 			{" 21h00 - 21h30", " ", " ", " ", " ", " ", " "},};
+	public cst() {
+	}
+	
 
-	public static Object[][] getData() {
+
+	public Object[][] getData() {
 		return data;
 	}
 

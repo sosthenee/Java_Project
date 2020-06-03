@@ -42,12 +42,12 @@ public class VueCalendrier extends JFrame {
     public JButton button1;
     private JMenuBar navigation = new JMenuBar();
     private JMenu MenuSalles = new JMenu("Salles");
-    private JButton Accueil = new JButton ("Accueil");
+    public JButton Accueil = new JButton ("Accueil");
     private JMenuItem ItemSalles1 = new JMenuItem("Emploi du Temps");
     private JMenuItem ItemSalles2 = new JMenuItem("Salles Libres");
     private JMenu MenuCours = new JMenu("Cours");
     private JMenuItem ItemCours1 = new JMenuItem("Emploi du temps");
-    private JMenuItem ItemCours2 = new JMenuItem("Recapitulatif des cours");
+    public JMenuItem ItemCours2 = new JMenuItem("Recapitulatif des cours");
     private JPanel navbar = new JPanel();
     private JPanel principal = new JPanel();
     private JPanel semaines = new JPanel();
@@ -56,9 +56,9 @@ public class VueCalendrier extends JFrame {
     public List<JButton> buttonList = new ArrayList<JButton>();
     public TableCalendrier model;
     public Color couleur;
-    private JComboBox ComboAff = new JComboBox();
-    private JComboBox ComboRecherche = new JComboBox();
-     private JTextField Recherche = new JTextField("Rechercher");
+    public JComboBox ComboAff = new JComboBox();
+    public JComboBox ComboRecherche = new JComboBox();
+    public JTextField Recherche = new JTextField("Rechercher");
 
     public VueCalendrier() {
         this.setLocationRelativeTo(null);

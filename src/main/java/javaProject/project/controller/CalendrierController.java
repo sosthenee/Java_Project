@@ -1,6 +1,7 @@
 package javaProject.project.controller;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -13,8 +14,10 @@ import javaProject.project.model.Enseignant;
 import javaProject.project.model.Etudiant;
 import javaProject.project.model.Salle;
 import javaProject.project.model.Seance;
-import javaProject.project.view.Fenetre;
+import javaProject.project.model.Utilisateur;
+import javaProject.project.view.VueLogin;
 import javaProject.project.view.VueCalendrier;
+import javaProject.project.view.VueRecap;
 import util.cst;
 
 @Component
@@ -27,16 +30,52 @@ public class CalendrierController {
 	
     private CurentUserSingleton Singleton = CurentUserSingleton.getInstance();
 
-	
+    
+    private List<Seance> listSeances;
+    
+	public List<Seance> getListSeances() {
+		return listSeances;
+	}
+
+	public void setListSeances(List<Seance> oui) {
+		this.listSeances = oui;
+	}
+
 	public Object[][] formatData(List<Seance> seances) {
 
-		Object[][] data = cst.getData();
+		Object[][] data = {
+				{"8h00 - 8h30 ", " ", " ", " ", " ", " ", " "},
+				{" 8h30 - 9h00 ", " ", " ", " ", " ", " ", " "},
+				{" 9h00 - 9h30 ", " ", " ", " ", " ", " ", " "},
+				{" 9h30 - 10h00", " ", " ", " ", " ", " ", " "},
+				{" 10h00 - 10h30", " ", " ", " ", " ", " ", " "},
+				{" 10h30 - 11h00", " ", " ", " ", " ", " ", " "},
+				{" 11h00 - 11h30", " ", " ", " ", " ", " ", " "},
+				{"11h30 - 12h00 ", " ", " ", " ", " ", " ", " "},
+				{"12h00 - 12h30 ", " ", " ", " ", " ", " ", " "},
+				{" 12h30 - 13h00 ", " ", " ", " ", " ", " ", " "},
+				{" 13h00 - 13h30 ", " ", " ", " ", " ", " ", " "},
+				{" 13h30 - 14h00", " ", " ", " ", " ", " ", " "},
+				{" 14h00 - 14h30", " ", " ", " ", " ", " ", " "},
+				{" 14h30 - 15h00", " ", " ", " ", " ", " ", " "},
+				{" 15h00 - 15h30", " ", " ", " ", " ", " ", " "},
+				{"15h30 - 16h00 ", " ", " ", " ", " ", " ", " "},
+				{" 16h00 - 16h30 ", " ", " ", " ", " ", " ", " "},
+				{" 16h30 - 17h00 ", " ", " ", " ", " ", " ", " "},
+				{" 17h00 - 17h30", " ", " ", " ", " ", " ", " "},
+				{" 17h30 - 18h00", " ", " ", " ", " ", " ", " "},
+				{" 18h00 - 18h30", " ", " ", " ", " ", " ", " "},
+				{" 18h30 - 19h00", " ", " ", " ", " ", " ", " "},
+				{" 19h00 - 19h30 ", " ", " ", " ", " ", " ", " "},
+				{" 19h30 - 20h00 ", " ", " ", " ", " ", " ", " "},
+				{" 20h00 - 20h30", " ", " ", " ", " ", " ", " "},
+				{" 20h30 - 21h00", " ", " ", " ", " ", " ", " "},
+				{" 21h00 - 21h30", " ", " ", " ", " ", " ", " "},};
 
 		for (Seance seance : seances) {
 
 			Calendar calendar = Calendar.getInstance();
-			TimeZone tzInFrance = TimeZone.getTimeZone("France/Paris");
-			calendar.setTimeZone(tzInFrance);
+		
 
 			calendar.setTime(seance.getDate());
 
@@ -57,8 +96,10 @@ public class CalendrierController {
 				{
 					salleSeance += it.getNom() + " / ";
 				}
-			}else {
+			}else if(seance.getSalle().size() == 1) {
 				salleSeance = seance.getSalle().get(0).getNom();
+			}else {
+				salleSeance = "Null";
 			}
 
 			if(seance.getEnseignant().size() > 1) {
@@ -66,10 +107,12 @@ public class CalendrierController {
 				{
 					enseiSenace += it.getNom() + " / ";
 				}
-			}else {
+			}else if(seance.getEnseignant().size() == 1) {
 				enseiSenace = seance.getEnseignant().get(0).getNom();
 			}
-
+			else {
+				enseiSenace = "Null";
+			}
 
 			index_debut=index_debut*2;
 			if(minutes == 30){
@@ -102,24 +145,61 @@ public class CalendrierController {
 			System.out.println("Seance etudiant");
 			Etudiant i = (Etudiant) utilisateurDao.findByEmail(email);
 			List<Seance> a = seanceDao.findBySemaineAndGroupeContaining(semaine,i.getGroupe());
+			setListSeances(a);
 			Object[][] data = this.formatData(a);
 			view.setData(data);
 		}else if (Singleton.getInfo().getDroit() == 3) {
 			System.out.println("Seance enseignant");
 			Enseignant i = (Enseignant) utilisateurDao.findByEmail(email);
 			List<Seance> a = seanceDao.findBySemaineAndEnseignantContaining(semaine,i);
+			setListSeances(a);
 			System.out.println(a);
 			Object[][] data = this.formatData(a);
 			view.setData(data);
 		}
-
 	}
-	public void initController(VueCalendrier view , Fenetre view2) {
-		System.out.println("Init Controller");
+	
+	public void edtFindByName(String name, VueCalendrier view, int semaine) {
+		
+		Utilisateur utilisateur = utilisateurDao.findByNom(name);
+		List<Seance> a;
+
+		if((Singleton.getInfo().getDroit() == 4)&&(utilisateur.getDroit()==4)) {
+			System.out.println("Seance etudiant");
+			Etudiant i = (Etudiant) utilisateur;
+			a = seanceDao.findBySemaineAndGroupeContaining(semaine,i.getGroupe());
+			Object[][] data = this.formatData(a);
+			System.out.println(a);
+			view.setData(data);
+		}else if ((Singleton.getInfo().getDroit() == 3)&&(utilisateur.getDroit()==3)) {
+			System.out.println("Seance enseignant");
+			Enseignant i = (Enseignant) utilisateur;
+			a = seanceDao.findBySemaineAndEnseignantContaining(semaine,i);
+			System.out.println(a);
+			Object[][] data = this.formatData(a);
+			view.setData(data);
+		}else {
+			a = Collections.<Seance>emptyList();;
+			Object[][] data = this.formatData(a);
+			view.setData(data);
+		}
+		
+	}
+	
+	public void ControlFrames(VueCalendrier view,VueRecap vueRecap,RecapControleur recapControleur) {
+		vueRecap.setVisible(true);
+		view.setVisible(false);
+		vueRecap.setData(recapControleur.formatData(getListSeances()));
+	}
+	
+	public void initController(VueCalendrier view , VueLogin view2,VueRecap vueRecap,RecapControleur recapControleur) {
+		System.out.println("Init Controller Calendrier");
 		for ( int i =0 ; i< 52 ; i++){
 			final int semaine = Integer.parseInt(view.buttonList.get(i).getText());
 			view.buttonList.get(i).addActionListener(e -> allSeances(view2.mail.getText(),view , semaine ));
+			view.Recherche.addActionListener(e -> edtFindByName(view.Recherche.getText(),view , semaine ));		
 		}
+		view.ItemCours2.addActionListener(e -> ControlFrames(view,vueRecap,recapControleur));
 	}
 
 }
