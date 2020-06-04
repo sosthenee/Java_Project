@@ -15,6 +15,8 @@ import javaProject.project.model.Seance;
 import javaProject.project.model.Utilisateur;
 import javaProject.project.view.VueLogin;
 import javaProject.project.view.VueCalendrier;
+import javaProject.project.view.VueRecap;
+
 import javax.swing.JOptionPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -30,8 +32,7 @@ public class LoginController {
 
 	private VueLogin view;
 
-	private VueCalendrier calendar;
-
+	
 	private CurentUserSingleton Singleton = CurentUserSingleton.getInstance();
 
 	public LoginController() {
@@ -43,37 +44,43 @@ public class LoginController {
 		utilisateurDao.save(u);
 	}
 
-	public void login(String email, String password) {
+	public void login(String email, String password, CalendrierController calendrierController,VueCalendrier calendar) {
 		Utilisateur u = new Utilisateur();
 		u = utilisateurDao.findFirstByEmailAndPassword(email , password);
 		if( u ==  null){
 			JOptionPane.showMessageDialog(null, "veuillez rentrer une bonne combinaison");
 		} else {
-			this.calendar.setVisible(true);
+			calendar.setVisible(true);
 			this.view.setVisible(false);
 
 			if (u.getDroit() == 4) {
 				Singleton.setInfo(u);
+				calendrierController.allSeances(email, calendar, 1);
+
 			}
 			if (u.getDroit() == 3) {
 				Singleton.setInfo(u);
+				calendrierController.allSeances(email, calendar, 1);
+
 			}
 			if (u.getDroit() == 2) {
 				Singleton.setInfo(u);
+				calendrierController.allSeances(email, calendar, 1);
+
 			}if (u.getDroit() == 1) {
 				Singleton.setInfo(u);
+				calendrierController.allSeances(email, calendar, 1);
+
 			}
 		}
 		System.out.println(u);
 	}
 
-	public void initController(VueLogin view) {
+	public void initController(VueLogin view, CalendrierController calendrierController,VueCalendrier calendar) {
 		view.getRootPane().setDefaultButton(view.valider);
-		view.valider.addActionListener(e -> login(view.mail.getText(), view.mdp.getText()));
+		view.valider.addActionListener(e -> login(view.mail.getText(), view.mdp.getText(),calendrierController,calendar));
 		this.view = view;
 	}
 
-	public void setCalendrierView(VueCalendrier calendarView) {
-		this.calendar = calendarView;
-	}
+	
 }
