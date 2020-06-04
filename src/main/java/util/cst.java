@@ -35,12 +35,6 @@ public class cst {
         return data;
     }
     
-    public static Object[][] getCalendarBlankData2() {
-        Object[][] data = {
-            {" ", " ", " ", " ", " ", " ", " "},
-         
-            };
-        return data;
-    }
+    
 
 }

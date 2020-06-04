@@ -64,17 +64,18 @@ public class VueCalendrier extends JFrame {
     public JComboBox ComboRecherche = new JComboBox();
     public JTabbedPane Onglets =new JTabbedPane();
     public JTextField Recherche = new JTextField("Rechercher");
+    public JPanel Onglet1 =new JPanel();
+    public JPanel Onglet2 =new JPanel(); 
 
 
-    public VueCalendrier() {
+
+    public VueCalendrier(VueRecap FenRecap) {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("HyperPlanning");
         this.setSize(1000, 1000);
         
-         JPanel Onglet1 =new JPanel();
         Onglet1.setLayout(new GridLayout(1,1));
-        JPanel Onglet2 =new JPanel(); 
         Onglet2.setLayout(new BorderLayout());
         Onglets.setBounds(50,50,200,200); 
         Onglets.add("Planning",Onglet1);  
@@ -187,7 +188,6 @@ public class VueCalendrier extends JFrame {
             }
         });
         
-        VueRecap FenRecap = new VueRecap();
         JPanel PanRecap = new JPanel();
         PanRecap.setLayout(new BorderLayout());
         PanRecap.add(FenRecap.getContentPane(),BorderLayout.CENTER);
