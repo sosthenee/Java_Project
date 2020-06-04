@@ -37,7 +37,7 @@ import util.cst;
  */
 @SpringBootApplication
 public class VuePlanningListe extends JFrame{
-    String[] title ={"Heure", "Matière","Enseignant","Groupe","Salle","Num séance","Type cours"};
+    String[] title ={"Heure", "Matière","Enseignant","Salle","Type cours"};
 
     public JTable tableau;
     public JTable InfoJour;
@@ -121,12 +121,19 @@ public class VuePlanningListe extends JFrame{
         System.out.println("jaiaia : " + getNbJour());
         for(int d = 1; d<7;++d)
         {
+            String day = null;
             JPanel Date = new JPanel(new BorderLayout());
             JPanel Liste = new JPanel(new BorderLayout());
-            String day = Integer.toString(d);
+            if(d == 1)day = "Lundi";
+            if(d == 2)day = "Mardi";
+            if(d == 3)day = "Mercredi";
+            if(d == 4)day = "Jeudi";
+            if(d == 5)day = "Vendredi";
+            if(d == 6)day = "Samedi";
+
             Date.add(new JLabel(day));
             Object[][] data = cst.getCalendarBlankData();
-            String[] titre ={"Heure", "Matière","Enseignant","Groupe","Salle","Num séance","Type cours"};
+            String[] titre ={"Heure", "Matière","Enseignant","Salle","Type cours"};
              
             TableCalendrier model2 = new TableCalendrier(data,titre);
             InfoJour = new JTable(model2);
@@ -147,9 +154,14 @@ public class VuePlanningListe extends JFrame{
 
   }
     
-    public void setData(Object[][] data) {
-    	mesJours.get(0).hide();
-    	//mesJours.get(0).setModel(new TableCalendrier(data, title));
+    public void setData(List<Object[][]> data) {
+    	mesJours.get(0).setModel(new TableCalendrier(data.get(0), title));
+    	mesJours.get(1).setModel(new TableCalendrier(data.get(1), title));
+    	mesJours.get(2).setModel(new TableCalendrier(data.get(2), title));
+    	mesJours.get(3).setModel(new TableCalendrier(data.get(3), title));
+    	mesJours.get(4).setModel(new TableCalendrier(data.get(4), title));
+    	mesJours.get(5).setModel(new TableCalendrier(data.get(5), title));
+
     }
     
     

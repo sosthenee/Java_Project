@@ -44,10 +44,10 @@ public class ProjectApplication {
                 VuePlanningListe vuePlanningListe = context.getBean(VuePlanningListe.class);
                 
                 //initController
-                userController.initController(loginView,calendrierController,calendrier);
+                userController.initController(loginView,calendrierController,calendrier,recapControleur,recap);
                 calendrierController.initController(calendrier, loginView,recap,recapControleur,vuePlanningListe,planListeController);
                 recapControleur.initController(recap,calendrier);
-                                                        
+                planListeController.initController(vuePlanningListe);
                 loginView.setVisible(true);
             });
                          

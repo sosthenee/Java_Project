@@ -44,7 +44,7 @@ public class LoginController {
 		utilisateurDao.save(u);
 	}
 
-	public void login(String email, String password, CalendrierController calendrierController,VueCalendrier calendar) {
+	public void login(String email, String password, CalendrierController calendrierController,VueCalendrier calendar,RecapControleur recapControleur,VueRecap vueRecap) {
 		Utilisateur u = new Utilisateur();
 		u = utilisateurDao.findFirstByEmailAndPassword(email , password);
 		if( u ==  null){
@@ -56,30 +56,31 @@ public class LoginController {
 			if (u.getDroit() == 4) {
 				Singleton.setInfo(u);
 				calendrierController.allSeances(email, calendar, 1);
-
+				recapControleur.allSeances(email, vueRecap);
 			}
 			if (u.getDroit() == 3) {
 				Singleton.setInfo(u);
 				calendrierController.allSeances(email, calendar, 1);
-
+				recapControleur.allSeances(email, vueRecap);
 			}
 			if (u.getDroit() == 2) {
 				Singleton.setInfo(u);
 				calendrierController.allSeances(email, calendar, 1);
-
+				recapControleur.allSeances(email, vueRecap);
 			}if (u.getDroit() == 1) {
 				Singleton.setInfo(u);
 				calendrierController.allSeances(email, calendar, 1);
-
+				recapControleur.allSeances(email, vueRecap);
 			}
 		}
 		System.out.println(u);
 	}
 
-	public void initController(VueLogin view, CalendrierController calendrierController,VueCalendrier calendar) {
+	public void initController(VueLogin view, CalendrierController calendrierController,VueCalendrier calendar,RecapControleur recapControleur,VueRecap vueRecap) {
 		view.getRootPane().setDefaultButton(view.valider);
-		view.valider.addActionListener(e -> login(view.mail.getText(), view.mdp.getText(),calendrierController,calendar));
+		view.valider.addActionListener(e -> login(view.mail.getText(), view.mdp.getText(),calendrierController,calendar,recapControleur,vueRecap));
 		this.view = view;
+		
 	}
 
 	

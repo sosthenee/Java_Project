@@ -165,20 +165,18 @@ public class CalendrierController {
 	}
 	
 	public void ControlFrames(VueCalendrier view,VueRecap vueRecap,RecapControleur recapControleur,String email) {
-		vueRecap.setVisible(true);
-		view.setVisible(false);
-		//vueRecap.setData(recapControleur.formatData(getListSeances()));
+		System.out.println("ezejazejoeojzejiozajozahioe");
 		recapControleur.allSeances(email, vueRecap);
 	}
 	
-	public void ControlFrameStyleAff(String stylePlann, VuePlanningListe vuePlanningListe, VueCalendrier vueCalendrier, PlanListeController planListeController) {
+	public void ControlFrameStyleAff(String stylePlann, VuePlanningListe vuePlanningListe, VueCalendrier vueCalendrier, PlanListeController planListeController,VuePlanningListe planningListe) {
 		if(stylePlann.equals("Planning en grille") == true) {
 			System.out.println("GRILLE");
 		}else if(stylePlann.equals("Planning en liste") == true) {
 			vuePlanningListe.setVisible(true);
 			vueCalendrier.setVisible(false);
 			try {
-				vuePlanningListe.setData(planListeController.formatData(getListSeances()));
+				vuePlanningListe.setData(planListeController.formatData(getListSeances(),planningListe));
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -196,8 +194,8 @@ public class CalendrierController {
 			view.buttonList.get(i).addActionListener(e -> allSeances(view2.mail.getText(),view , semaine ));
 			view.Recherche.addActionListener(e -> edtFindByName(view.Recherche.getText(),view , semaine ));		
 		}
-		view.ItemCours2.addActionListener(e -> ControlFrames(view,vueRecap,recapControleur,view2.mail.getText()));
-		view.ComboAff.addActionListener(f -> ControlFrameStyleAff(view.ComboAff.getSelectedItem().toString(),vuePlanningListe,view,planListeController));
+		//view.Onglets.addActionListener(e -> ControlFrames(view,vueRecap,recapControleur,view2.mail.getText()));
+		view.ComboAff.addActionListener(f -> ControlFrameStyleAff(view.ComboAff.getSelectedItem().toString(),vuePlanningListe,view,planListeController,vuePlanningListe));
 
 	}
 
