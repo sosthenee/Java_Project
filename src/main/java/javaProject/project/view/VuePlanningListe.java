@@ -76,7 +76,7 @@ public class VuePlanningListe extends JFrame{
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("JTable");
         this.setSize(700, 240);
-        String[] choixAff = {"en grille","en liste"};
+        String[] choixAff = {"Planning en liste","Planning en grille"};
         String[] choixRecherche = {"Saisie du nom","Liste"};
         ComboAff = new JComboBox(choixAff);
         ComboRecherche = new JComboBox(choixRecherche);
@@ -95,10 +95,10 @@ public class VuePlanningListe extends JFrame{
         this.navigation.add(MenuCours);
         this.navigation.add(MenuSalles);
         //this.setJMenuBar(navigation);
-        navbar.add(navigation);
+        /*navbar.add(navigation);
         navbar.add(Recherche);
         navbar.add(ComboAff);
-        navbar.add(ComboRecherche);
+        navbar.add(ComboRecherche);*/
         
         GridBagConstraints contraintesNum;
         contraintesNum = new GridBagConstraints();
@@ -149,7 +149,7 @@ public class VuePlanningListe extends JFrame{
         
         principal.add(new JScrollPane(semaines), BorderLayout.NORTH);
         principal.add(new JScrollPane(JourListe), BorderLayout.CENTER);
-        this.getContentPane().add(navbar,BorderLayout.NORTH);
+        //this.getContentPane().add(navbar,BorderLayout.NORTH);
         this.getContentPane().add((principal), BorderLayout.CENTER);
 
   }

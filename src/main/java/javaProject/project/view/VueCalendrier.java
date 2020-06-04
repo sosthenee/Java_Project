@@ -11,6 +11,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -75,14 +77,16 @@ public class VueCalendrier extends JFrame {
         this.setTitle("HyperPlanning");
         this.setSize(1000, 1000);
         
-        Onglet1.setLayout(new GridLayout(1,1));
+         JPanel Onglet1 =new JPanel();
+        Onglet1.setLayout(new BorderLayout());
+        JPanel Onglet2 =new JPanel(); 
         Onglet2.setLayout(new BorderLayout());
         Onglets.setBounds(50,50,200,200); 
         Onglets.add("Planning",Onglet1);  
         Onglets.add("Récapitulatif des cours",Onglet2);
         
-        Accueil.setForeground(Color.WHITE);
-        Accueil.setBackground(Color.DARK_GRAY);
+        //Accueil.setForeground(Color.WHITE);
+        //Accueil.setBackground(Color.DARK_GRAY);
         String[] choixAff = {"Planning en grille", "Planning en liste"};
         String[] choixRecherche = {"Rechercher par nom", "Rechercher par liste"};
         ComboAff = new JComboBox(choixAff);
@@ -90,16 +94,16 @@ public class VueCalendrier extends JFrame {
         semaines.setLayout(new GridLayout(1, 52));
         calendar.setLayout(new BorderLayout());
         principal.setLayout(new BorderLayout());
-        navbar.setLayout(new GridLayout(1, 4, 7, 0));
-         navbarInf.setLayout(new GridLayout (1,4, 7, 0));
+        navbar.setLayout(new BorderLayout());
+        navbarInf.setLayout(new GridLayout (1,4, 7, 0));
 
         this.MenuSalles.add(ItemSalles1);
         this.MenuSalles.add(ItemSalles2);
         this.MenuCours.add(ItemCours1);
         this.MenuCours.add(ItemCours2);
-        this.navigation.add(Accueil);
-        this.navigation.add(MenuCours);
-        this.navigation.add(MenuSalles);
+        //this.navigation.add(Accueil);
+        //this.navigation.add(MenuCours);
+        //this.navigation.add(MenuSalles);
 
         navbar.add(navigation);
         navbarInf.add(ComboAff);
@@ -170,7 +174,7 @@ public class VueCalendrier extends JFrame {
         calendar.add(new JScrollPane(tableau), BorderLayout.CENTER);
         JPanel navinter = new JPanel();
        navinter.setLayout(new BorderLayout());
-       navinter.add(navbarInf, BorderLayout.NORTH);
+       //navinter.add(navbarInf, BorderLayout.NORTH);
        navinter.add(new JScrollPane(semaines), BorderLayout.CENTER);
         principal.add((navinter), BorderLayout.NORTH);
         principal.add((calendar), BorderLayout.CENTER);
@@ -191,13 +195,50 @@ public class VueCalendrier extends JFrame {
         JPanel PanRecap = new JPanel();
         PanRecap.setLayout(new BorderLayout());
         PanRecap.add(FenRecap.getContentPane(),BorderLayout.CENTER);
-
-        Onglet1.add(principal, BorderLayout.NORTH);
-        Onglet2.add(PanRecap, BorderLayout.CENTER);
         
-        this.getContentPane().add((navbar), BorderLayout.NORTH);
+         VuePlanningListe FenListe = new VuePlanningListe();
+        JPanel PanListe = new JPanel();
+        PanListe.setLayout(new BorderLayout());
+        PanListe.add(navbar,BorderLayout.NORTH);
+        PanListe.add(FenListe.getContentPane(),BorderLayout.CENTER);
 
-        this.getContentPane().add((Onglets), BorderLayout.CENTER);
+        Onglet1.add(navbarInf, BorderLayout.NORTH);
+        Onglet1.add(principal, BorderLayout.CENTER);
+       
+        
+         ActionListener testListener = new ActionListener() {//add actionlistner to listen for change
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                String s = (String) ComboAff.getSelectedItem();//get the selected item
+
+                switch (s) {//check for a match
+                    case "Planning en grille":
+                        
+                          principal.setVisible(true);
+                           PanListe.setVisible(false);
+                           Onglet1.add(principal, BorderLayout.CENTER);
+                          
+                        break;
+                    case "Planning en liste":
+                         System.out.println("Planning en liste");
+                           principal.setVisible(false);
+                            PanListe.setVisible(true);
+                            Onglet1.add(PanListe, BorderLayout.CENTER);
+                        break;
+                      
+                }
+            }
+
+        };
+       
+       ComboAff.addActionListener(testListener);
+       principal.setVisible(true);
+       PanListe.setVisible(false);
+        
+        Onglet2.add(PanRecap, BorderLayout.CENTER);
+        this.getContentPane().add(navbar, BorderLayout.NORTH); //CODE BON
+        this.getContentPane().add((Onglets), BorderLayout.CENTER); //CODE BON
 
         this.setVisible(false);
 
