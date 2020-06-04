@@ -34,5 +34,13 @@ public class cst {
             {" 21h00 - 21h30", " ", " ", " ", " ", " ", " "},};
         return data;
     }
+    
+    public static Object[][] getCalendarBlankData2() {
+        Object[][] data = {
+            {" ", " ", " ", " ", " ", " ", " "},
+         
+            };
+        return data;
+    }
 
 }

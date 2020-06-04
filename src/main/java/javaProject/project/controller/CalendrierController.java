@@ -1,5 +1,6 @@
 package javaProject.project.controller;
 
+import java.awt.event.ActionEvent;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
@@ -16,6 +17,7 @@ import javaProject.project.model.Salle;
 import javaProject.project.model.Seance;
 import javaProject.project.model.Utilisateur;
 import javaProject.project.view.VueLogin;
+import javaProject.project.view.VuePlanningListe;
 import javaProject.project.view.VueCalendrier;
 import javaProject.project.view.VueRecap;
 import util.cst;
@@ -162,20 +164,41 @@ public class CalendrierController {
 		
 	}
 	
-	public void ControlFrames(VueCalendrier view,VueRecap vueRecap,RecapControleur recapControleur) {
+	public void ControlFrames(VueCalendrier view,VueRecap vueRecap,RecapControleur recapControleur,String email) {
 		vueRecap.setVisible(true);
 		view.setVisible(false);
-		vueRecap.setData(recapControleur.formatData(getListSeances()));
+		//vueRecap.setData(recapControleur.formatData(getListSeances()));
+		recapControleur.allSeances(email, vueRecap);
 	}
 	
-	public void initController(VueCalendrier view , VueLogin view2,VueRecap vueRecap,RecapControleur recapControleur) {
+	public void ControlFrameStyleAff(String stylePlann, VuePlanningListe vuePlanningListe, VueCalendrier vueCalendrier, PlanListeController planListeController) {
+		if(stylePlann.equals("Planning en grille") == true) {
+			System.out.println("GRILLE");
+		}else if(stylePlann.equals("Planning en liste") == true) {
+			vuePlanningListe.setVisible(true);
+			vueCalendrier.setVisible(false);
+			try {
+				vuePlanningListe.setData(planListeController.formatData(getListSeances()));
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			System.out.println("Liste");
+
+		}
+		
+	}
+	
+	public void initController(VueCalendrier view , VueLogin view2,VueRecap vueRecap,RecapControleur recapControleur,VuePlanningListe vuePlanningListe,PlanListeController planListeController) {
 		System.out.println("Init Controller Calendrier");
 		for ( int i =0 ; i< 52 ; i++){
 			final int semaine = Integer.parseInt(view.buttonList.get(i).getText());
 			view.buttonList.get(i).addActionListener(e -> allSeances(view2.mail.getText(),view , semaine ));
 			view.Recherche.addActionListener(e -> edtFindByName(view.Recherche.getText(),view , semaine ));		
 		}
-		view.ItemCours2.addActionListener(e -> ControlFrames(view,vueRecap,recapControleur));
+		view.ItemCours2.addActionListener(e -> ControlFrames(view,vueRecap,recapControleur,view2.mail.getText()));
+		view.ComboAff.addActionListener(f -> ControlFrameStyleAff(view.ComboAff.getSelectedItem().toString(),vuePlanningListe,view,planListeController));
+
 	}
 
 }
