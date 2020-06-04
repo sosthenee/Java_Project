@@ -12,6 +12,9 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -23,13 +26,19 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 import util.cst;
 
 /**
  *
  * @author Oscar
  */
+@SpringBootApplication
 public class VuePlanningListe extends JFrame{
+    String[] title ={"Heure", "Matière","Enseignant","Groupe","Salle","Num séance","Type cours"};
+
     public JTable tableau;
     public JTable InfoJour;
     public JMenuBar navigation = new JMenuBar();
@@ -48,8 +57,20 @@ public class VuePlanningListe extends JFrame{
     public JComboBox ComboAff = new JComboBox();
     public JComboBox ComboRecherche = new JComboBox();
     public Object[][] data;
+    public List<JTable> mesJours = new ArrayList<JTable>();
     
-    public VuePlanningListe()
+    public int nbJour = 0;
+    
+    
+    public int getNbJour() {
+		return nbJour;
+	}
+
+	public void setNbJour(int nbJour) {
+		this.nbJour = nbJour;
+	}
+
+	public VuePlanningListe()
     {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -97,6 +118,7 @@ public class VuePlanningListe extends JFrame{
             String j = Integer.toString(i);
             semaines.add(new JButton(j));
         }
+        System.out.println("jaiaia : " + getNbJour());
         for(int d = 1; d<7;++d)
         {
             JPanel Date = new JPanel(new BorderLayout());
@@ -110,6 +132,7 @@ public class VuePlanningListe extends JFrame{
             InfoJour = new JTable(model2);
             InfoJour.setTableHeader(null);
             InfoJour.setRowHeight(18);
+            mesJours.add(InfoJour);
             Liste.add((InfoJour), BorderLayout.CENTER);
             JourListe.add(Date,contraintesNum);
             JourListe.add((Liste),contraintesInfo);
@@ -123,8 +146,12 @@ public class VuePlanningListe extends JFrame{
         this.getContentPane().add((principal), BorderLayout.CENTER);
 
   }
-};
-
+    
+    public void setData(Object[][] data) {
+    	mesJours.get(0).hide();
+    	//mesJours.get(0).setModel(new TableCalendrier(data, title));
+    }
     
     
-
+    
+}

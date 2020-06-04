@@ -83,6 +83,27 @@ public class RecapControleur {
 		return data;	
 	}
 
+	public Object[][] allSeances(String email,  VueRecap view) {
+		
+		Object[][] data = null;
+
+		if(Singleton.getInfo().getDroit() == 4) {
+			System.out.println("Seance etudiant");
+			Etudiant i = (Etudiant) utilisateurDaoR.findByEmail(email);
+			List<Seance> a = seanceDao.findByGroupeContaining(i.getGroupe());
+			data = this.formatData(a);
+			view.setData(data);
+		}else if (Singleton.getInfo().getDroit() == 3) {
+			System.out.println("Seance enseignant");
+			Enseignant i = (Enseignant) utilisateurDaoR.findByEmail(email);
+			List<Seance> a = seanceDao.findByEnseignantContaining(i);
+			System.out.println(a);
+			data = this.formatData(a);
+			view.setData(data);
+		}
+		return data;
+	}
+
 	public void ControlFrames(VueCalendrier view,VueRecap vueRecap) {
 		view.setVisible(true);
 		vueRecap.setVisible(false);
