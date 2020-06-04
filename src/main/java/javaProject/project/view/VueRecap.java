@@ -63,14 +63,7 @@ public class VueRecap extends JFrame{
         this.navigation.add(Accueil);
         this.navigation.add(MenuCours);
         this.navigation.add(MenuSalles);
-        //this.setJMenuBar(navigation);
-        navbar.add(navigation);
-        navbar.add(ComboAff);
-        navbar.add(Recherche);
-        navbar.add(ComboRecherche);
-
-        /*test.setMaximumSize( new Dimension(Integer.MAX_VALUE,200));
-    test.setMinimumSize( new Dimension(Integer.MAX_VALUE,200));*/
+        //
 
         Object[][] data = {
             {"", " ", " ", " ", " "},

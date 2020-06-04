@@ -26,6 +26,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableCellRenderer;
@@ -41,7 +42,6 @@ public class VueCalendrier extends JFrame {
     String title[] = {"Heure", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"};
 
     public JTable tableau;
-    public JButton button1;
     private JMenuBar navigation = new JMenuBar();
     private JMenu MenuSalles = new JMenu("Salles");
     private JButton Accueil = new JButton("Accueil");
@@ -51,6 +51,7 @@ public class VueCalendrier extends JFrame {
     private JMenuItem ItemCours1 = new JMenuItem("Emploi du temps");
     private JMenuItem ItemCours2 = new JMenuItem("Recapitulatif des cours");
     private JPanel navbar = new JPanel();
+    private JPanel navbarInf = new JPanel();
     private JPanel principal = new JPanel();
     private JPanel semaines = new JPanel();
     private JPanel calendar = new JPanel();
@@ -60,13 +61,22 @@ public class VueCalendrier extends JFrame {
     public Color couleur;
     private JComboBox ComboAff = new JComboBox();
     private JComboBox ComboRecherche = new JComboBox();
-    private JTextField Recherche = new JTextField("Rechercher");
+    public JTabbedPane Onglets =new JTabbedPane();private JTextField Recherche = new JTextField("Rechercher");
 
     public VueCalendrier() {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("HyperPlanning");
         this.setSize(1000, 1000);
+        
+         JPanel Onglet1 =new JPanel();
+        Onglet1.setLayout(new GridLayout(1,1));
+        JPanel Onglet2 =new JPanel(); 
+        Onglet2.setLayout(new BorderLayout());
+        Onglets.setBounds(50,50,200,200); 
+        Onglets.add("Planning",Onglet1);  
+        Onglets.add("Récapitulatif des cours",Onglet2);
+        
         Accueil.setForeground(Color.WHITE);
         Accueil.setBackground(Color.DARK_GRAY);
         String[] choixAff = {"Planning en grille", "Planning en liste"};
@@ -77,10 +87,7 @@ public class VueCalendrier extends JFrame {
         calendar.setLayout(new BorderLayout());
         principal.setLayout(new BorderLayout());
         navbar.setLayout(new GridLayout(1, 4, 7, 0));
-        /*navbar.add(new JButton("Accueil"));
-        navbar.add(new JButton("Planning"));
-        navbar.add(new JButton("Vie Scolaire"));
-        navbar.add(new JButton("Promotions"));*/
+         navbarInf.setLayout(new GridLayout (1,4, 7, 0));
 
         this.MenuSalles.add(ItemSalles1);
         this.MenuSalles.add(ItemSalles2);
@@ -91,9 +98,9 @@ public class VueCalendrier extends JFrame {
         this.navigation.add(MenuSalles);
 
         navbar.add(navigation);
-        navbar.add(ComboAff);
-        navbar.add(Recherche);
-        navbar.add(ComboRecherche);
+        navbarInf.add(ComboAff);
+        navbarInf.add(Recherche);
+        navbarInf.add(ComboRecherche);
 
         semaines.setPreferredSize(new Dimension(2600, 50));
 
@@ -157,7 +164,11 @@ public class VueCalendrier extends JFrame {
         tableau.setCellSelectionEnabled(false);
         tableau.getTableHeader().setReorderingAllowed(false);
         calendar.add(new JScrollPane(tableau), BorderLayout.CENTER);
-        principal.add(new JScrollPane(semaines), BorderLayout.NORTH);
+        JPanel navinter = new JPanel();
+       navinter.setLayout(new BorderLayout());
+       navinter.add(navbarInf, BorderLayout.NORTH);
+       navinter.add(new JScrollPane(semaines), BorderLayout.CENTER);
+        principal.add((navinter), BorderLayout.NORTH);
         principal.add((calendar), BorderLayout.CENTER);
 
         tableau.addMouseListener(new MouseAdapter() {
@@ -172,10 +183,18 @@ public class VueCalendrier extends JFrame {
                 }
             }
         });
+        
+        VueRecap FenRecap = new VueRecap();
+        JPanel PanRecap = new JPanel();
+        PanRecap.setLayout(new BorderLayout());
+        PanRecap.add(FenRecap.getContentPane(),BorderLayout.CENTER);
 
+        Onglet1.add(principal, BorderLayout.NORTH);
+        Onglet2.add(PanRecap, BorderLayout.CENTER);
+        
         this.getContentPane().add((navbar), BorderLayout.NORTH);
 
-        this.getContentPane().add((principal), BorderLayout.CENTER);
+        this.getContentPane().add((Onglets), BorderLayout.CENTER);
 
         this.setVisible(false);
 
