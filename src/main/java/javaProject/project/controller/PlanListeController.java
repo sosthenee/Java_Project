@@ -72,9 +72,14 @@ public class PlanListeController {
 
 
 			day[n][1] = itDay.getCours().getNom();
+                        if(itDay.getEnseignant().size()>0){
 			day[n][2] = "Mr/Mme " + itDay.getEnseignant().get(0).getNom();
-			day[n][3] = itDay.getSalle().get(0).getNom() + " - " + itDay.getSalle().get(0).getSite().getNom();
-			day[n][4] = itDay.getType_cours().getNom();
+                        }
+                        if(itDay.getSalle().size()>0){
+                        day[n][3] = itDay.getSalle().get(0).getNom() + " - " + itDay.getSalle().get(0).getSite().getNom();
+                        }
+                        
+                        day[n][4] = itDay.getType_cours().getNom();
 
 			n++;
 		}
