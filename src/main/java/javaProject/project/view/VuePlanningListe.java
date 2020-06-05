@@ -26,6 +26,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.TableColumnModel;
+
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -103,14 +105,16 @@ public class VuePlanningListe extends JFrame{
         
         GridBagConstraints contraintesNum;
         contraintesNum = new GridBagConstraints();
+        contraintesNum.weightx = 0.5;
+        contraintesNum.weighty = 0.5;
         contraintesNum.gridwidth = GridBagConstraints.REMAINDER;
         
         GridBagConstraints contraintesInfo;
         contraintesInfo = new GridBagConstraints();
         contraintesInfo.gridwidth = GridBagConstraints.REMAINDER;
-        contraintesInfo.fill = GridBagConstraints.HORIZONTAL;
+        //contraintesInfo.fill = GridBagConstraints.HORIZONTAL;
         contraintesInfo.weightx = 1;
-        contraintesInfo.ipady = 20; 
+        //contraintesInfo.ipady = 10; 
         
 
         
@@ -140,9 +144,17 @@ public class VuePlanningListe extends JFrame{
             String[] titre ={"Heure", "Matière","Enseignant","Salle","Type cours"};
              
             TableCalendrier model2 = new TableCalendrier(data,titre);
+            
             InfoJour = new JTable(model2);
             InfoJour.setTableHeader(null);
             InfoJour.setRowHeight(18);
+            /*TableColumnModel Colonnes = InfoJour.getColumnModel();
+            Colonnes.getColumn(0).setPreferredWidth(500);
+            Colonnes.getColumn(1).setPreferredWidth(500);
+            Colonnes.getColumn(2).setPreferredWidth(500);
+            Colonnes.getColumn(3).setPreferredWidth(500);
+            Colonnes.getColumn(4).setPreferredWidth(500);*/
+            
             mesJours.add(InfoJour);
             Liste.add((InfoJour), BorderLayout.CENTER);
             JourListe.add(Date,contraintesNum);
