@@ -16,6 +16,7 @@ import javaProject.project.model.Utilisateur;
 import javaProject.project.view.VueLogin;
 import javaProject.project.view.VuePlanningListe;
 import javaProject.project.view.VueCalendrier;
+import javaProject.project.view.VueModifier;
 import javaProject.project.view.VueRecap;
 
 import javax.swing.JOptionPane;
@@ -48,6 +49,13 @@ public class LoginController {
 	
 	@Autowired
 	VuePlanningListe vuePlanningListe;
+  
+  @Autowired
+  ModifierController modifierController
+    
+  @Autowired
+  VueModifier vuemodifier
+  
 	
 	private VueLogin vueLogin;
 
@@ -65,6 +73,7 @@ public class LoginController {
 	}
 
 	public void login(String email, String password) {
+
 		Utilisateur u = new Utilisateur();
 		u = utilisateurDao.findFirstByEmailAndPassword(email , password);
 		if( u ==  null){
@@ -85,10 +94,11 @@ public class LoginController {
 			}if (u.getDroit() == 1) {
 				Singleton.setInfo(u);
 			}
-            calendrierController.initController(vueCalendrier,vueLogin);
+            calendrierController.initController(vueCalendrier,vueLogin,vuemodifier);
             recapControleur.initController(vueRecap,vueCalendrier);
             planListeController.initController(vuePlanningListe);
-
+            modifierController.initController(vuemodifier);
+                
 		}
 		System.out.println(u);
 	}
@@ -96,6 +106,7 @@ public class LoginController {
 	public void initController(VueLogin view) {
 		view.getRootPane().setDefaultButton(view.valider);
 		view.valider.addActionListener(e -> login(view.mail.getText(), view.mdp.getText()));
+
 		this.vueLogin = view;
 		
 	}

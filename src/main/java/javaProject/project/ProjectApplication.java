@@ -4,14 +4,22 @@ import java.awt.EventQueue;
 
 import javaProject.project.controller.CalendrierController;
 import javaProject.project.controller.LoginController;
+
+import javaProject.project.controller.ModifierController;
+
 import javaProject.project.controller.PlanListeController;
 import javaProject.project.controller.RecapControleur;
+
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import javaProject.project.view.VueLogin;
 import javaProject.project.view.VuePlanningListe;
 import javaProject.project.view.VueCalendrier;
+
+import javaProject.project.view.VueModifier;
+
 import javaProject.project.view.VueRecap;
+
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -39,7 +47,9 @@ public class ProjectApplication {
                        
                 //initController
                 loginController.initController(vueLogin);
+
                 vueLogin.setVisible(true);
+
             });
                          
 	}

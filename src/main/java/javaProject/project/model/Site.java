@@ -7,7 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Site {
+public class Site implements EnumerableElement{
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -34,6 +34,7 @@ public class Site {
 		this.id = id;
 	}
 
+        @Override
 	public String getNom() {
 		return nom;
 	}
