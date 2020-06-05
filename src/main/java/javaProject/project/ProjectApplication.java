@@ -26,7 +26,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-
 @EnableJpaRepositories
 @SpringBootApplication
 @EnableAutoConfiguration

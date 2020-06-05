@@ -31,6 +31,7 @@ import javaProject.project.dao.UtilisateurDao;
 import javaProject.project.model.Enseignant;
 import javaProject.project.model.EnumerableElement;
 import javaProject.project.model.Etudiant;
+import javaProject.project.model.Groupe;
 import javaProject.project.model.Salle;
 import javaProject.project.model.Seance;
 
@@ -68,7 +69,6 @@ public class CalendrierController {
 	@Autowired
 	CoursDao coursDao;
 
-
 	@Autowired
 	PromotionDao promotionDao;
 
@@ -80,12 +80,20 @@ public class CalendrierController {
 
 	@Autowired
 	SalleDao salleDao;
+
+	@Autowired
+	VueRecap vueRecap;
+	@Autowired
+	RecapControleur recapControleur;
+	
+	@Autowired
+	VuePlanningListe vuePlanningListe;
+	@Autowired
+	PlanListeController planListeController;
+
 	private Object[][] data;
 
-
 	private CurentUserSingleton Singleton = CurentUserSingleton.getInstance(); 
-
-	private VueCalendrier vueCalendrier;
 
 	private List<Seance> listSeances;
 
@@ -99,7 +107,6 @@ public class CalendrierController {
 
 	private String emailRechString;
 
-
 	public String getEmailRechString() {
 		return emailRechString;
 	}
@@ -111,8 +118,6 @@ public class CalendrierController {
 	public Object[][] formatData(List<Seance> seances) {
 
 		data = cst.getCalendarBlankData();
-
-
 
 		for (Seance seance : seances) {
 
@@ -181,43 +186,116 @@ public class CalendrierController {
 		return data;
 	}
 
+	public void findSeanceEtudiant(Etudiant etudiant, int semaine)
+	{
+		setListSeances(seanceDao.findBySemaineAndGroupeContaining(semaine,etudiant.getGroupe()));
+	}
+	public void findSeanceEnseignant(Enseignant enseignant, int semaine)
+	{
+		setListSeances(seanceDao.findBySemaineAndEnseignantContaining(semaine,enseignant));
+	}
+	public void findSeanceGroupe(Groupe groupe, int semaine)
+	{
+		setListSeances(seanceDao.findBySemaineAndGroupeContaining(semaine, groupe));
+	}
+	
 	public void allSeances(String email,  VueCalendrier view , int semaine) {
-
+		
 		if(Singleton.getInfo().getDroit() == 4) {
-			System.out.println("Seance etudiant");
-			Etudiant i = (Etudiant) utilisateurDao.findByEmail(email);
-			List<Seance> a = seanceDao.findBySemaineAndGroupeContaining(semaine,i.getGroupe());
-			setListSeances(a);
-			Object[][] data = this.formatData(a);
-			view.setData(data);
-		}else if (Singleton.getInfo().getDroit() == 3) {
-			System.out.println("Seance enseignant");
-			Enseignant i = (Enseignant) utilisateurDao.findByEmail(email);
-			List<Seance> a = seanceDao.findBySemaineAndEnseignantContaining(semaine,i);
-			setListSeances(a);
-			System.out.println(a);
-			Object[][] data = this.formatData(a);
-			view.setData(data);
+			Etudiant etudiant = (Etudiant) utilisateurDao.findByEmail(email);
+			findSeanceEtudiant(etudiant, semaine);
 		}
+		if (Singleton.getInfo().getDroit() == 3) {
+			Enseignant enseignant = (Enseignant) utilisateurDao.findByEmail(email);
+			findSeanceEnseignant(enseignant, semaine);
+		}
+		if(Singleton.getInfo().getDroit() == 1) {
+			Utilisateur utilisateur = utilisateurDao.findByEmail(getEmailRechString());
+			if(utilisateur == null) {
+				setListSeances(Collections.<Seance>emptyList());
+				view.Recherche.setText("Aucun utilisateur");
+			}else {
+				if(utilisateur.getDroit() == 4)
+				{
+					Etudiant etudiant = (Etudiant) utilisateur;
+					findSeanceEtudiant(etudiant, semaine);
+
+				}
+				if(utilisateur.getDroit() == 3)
+				{
+					Enseignant enseignant = (Enseignant) utilisateur;
+					findSeanceEnseignant(enseignant, semaine);
+
+				}
+			}
+
+		}
+		view.setData(this.formatData(getListSeances()));
+		
 		for ( int i =0 ; i< 52 ; i++){
-			view.buttonList.get(i).setBackground(new JButton().getBackground());
-		}
+			view.buttonList.get(i).setBackground(new JButton().getBackground());		
+			}
 		view.buttonList.get(semaine-1).setBackground(Color.cyan);
+	
 	}
 
 
 	public void edtFindByName(String name, VueCalendrier view, int semaine) {
+		
+		String typeTofecthString = view.ComboChoixSelect.getModel().getSelectedItem().toString();
 
-		Utilisateur utilisateur = utilisateurDao.findByNom(name);
-		List<Seance> a;
-		if(utilisateur == null) {
-			a = Collections.<Seance>emptyList();;
-			Object[][] data = this.formatData(a);
-			view.setData(data);
-		}else {
-			setEmailRechString(utilisateur.getEmail());
+		if(typeTofecthString.equals("Etudiant")) 
+		{
+			Utilisateur utilisateur = utilisateurDao.findByNom(name);
+
+			if(utilisateur == null) {
+				setListSeances(Collections.<Seance>emptyList());
+				view.Recherche.setText("Aucun utilisateur");
+			}else
+			{
+				if(utilisateur.getDroit() == 4) {
+					setEmailRechString(utilisateur.getEmail());
+					allSeances("", view, semaine);
+					recapControleur.allSeances(getEmailRechString(), vueRecap);
+					planListeController.allSeances(getEmailRechString(), vuePlanningListe, semaine);
+				}
+				
+				else {
+					view.Recherche.setText("Aucun utilisateur");
+				}
+				
+			}
 		}
-		allSeances(getEmailRechString(), view, semaine);
+
+		if(typeTofecthString.equals("Enseignant")) 
+		{
+			Utilisateur utilisateur = utilisateurDao.findByNom(name);
+
+			if(utilisateur == null) {
+				setListSeances(Collections.<Seance>emptyList());
+				view.Recherche.setText("Aucun utilisateur");
+			}else
+			{
+				if(utilisateur.getDroit() == 3) {
+					setEmailRechString(utilisateur.getEmail());
+					allSeances("", view, semaine);
+					recapControleur.allSeances(getEmailRechString(), vueRecap);
+					planListeController.allSeances(getEmailRechString(), vuePlanningListe, semaine);
+
+				}
+				else {
+					view.Recherche.setText("Aucun utilisateur");
+				}
+			}
+		}
+		if(typeTofecthString.equals("Groupe")) {
+			Groupe groupe = groupeDao.findByNom(name);
+			if(groupe == null) {
+				setListSeances(Collections.<Seance>emptyList());
+				view.Recherche.setText("Aucun Groupe");
+			}
+			
+		}
 
 	}
 
@@ -226,7 +304,7 @@ public class CalendrierController {
 		vueCalendrier.Recherche.setText(null);
 		allSeances(vueLogin.mail.getText(),vueCalendrier ,semaine);
 	}
-	
+
 	public String[] getList() {
 		List<Utilisateur> userList = utilisateurDao.findByDroit(4);
 		String[] listuser = new String[userList.size()];
@@ -245,7 +323,6 @@ public class CalendrierController {
 			vueCalendrier.listeRecherhe.setVisible(true);
 			vueCalendrier.navbarInfInter.add(vueCalendrier.listeRecherhe,BorderLayout.CENTER);
 		}else {
-			System.out.println(vueCalendrier.ComboChoixSelect.getModel().getSelectedItem().toString());
 			vueCalendrier.Recherche.setVisible(true);
 			vueCalendrier.listeRecherhe.setVisible(false);
 			vueCalendrier.navbarInfInter.add(vueCalendrier.Recherche,BorderLayout.CENTER);
@@ -272,17 +349,22 @@ public class CalendrierController {
 		view3.matiereList.clear();
 	}
 
-
 	public void initController(VueCalendrier vueCalendrier , VueLogin vueLogin, VueModifier view3) {
 		System.out.println("Init Controller Calendrier");
 		allSeances(vueLogin.mail.getText(), vueCalendrier, 1);
-		this.vueCalendrier = vueCalendrier;
 		setEmailRechString(vueLogin.mail.getText());
 		for ( int i =0 ; i< 52 ; i++){
 			final int semaine = Integer.parseInt(vueCalendrier.buttonList.get(i).getText());
 			vueCalendrier.buttonList.get(i).addActionListener(e -> allSeances(getEmailRechString(),vueCalendrier , semaine ));
 			vueCalendrier.Recherche.addActionListener(e -> edtFindByName(vueCalendrier.Recherche.getText(),vueCalendrier , semaine ));		
 			vueCalendrier.Accueil.addActionListener(e -> reset(vueCalendrier, vueLogin, semaine));
+			vuePlanningListe.buttonList.get(i).addActionListener(e -> planListeController.allSeances(getEmailRechString(),vuePlanningListe , semaine ));
+
+		}
+		if(Singleton.getInfo().getDroit() != 1) {
+			vueCalendrier.ComboChoixSelect.setVisible(false);
+			vueCalendrier.ComboRecherche.setVisible(false);
+			vueCalendrier.Recherche.setVisible(false);
 		}
 		vueCalendrier.ComboRecherche.addActionListener(emailRechString -> rechercheType((String)vueCalendrier.ComboRecherche.getModel().getSelectedItem(),vueCalendrier));
 
@@ -308,7 +390,6 @@ public class CalendrierController {
 							view3.setListSite(DaoGetListData(siteDao));
 							view3.setCoordinates(row, column, header);
 						}
-
 					} else {
 						view3.setVisible(true);
 					}
