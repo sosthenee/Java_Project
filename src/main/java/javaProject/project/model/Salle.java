@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 
 
 @Entity
-public class Salle {
+public class Salle implements EnumerableElement {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -54,6 +54,7 @@ public class Salle {
 		this.id = id;
 	}
 
+        @Override
 	public String getNom() {
 		return nom;
 	}

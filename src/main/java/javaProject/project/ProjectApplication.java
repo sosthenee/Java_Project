@@ -4,9 +4,11 @@ import java.awt.EventQueue;
 
 import javaProject.project.controller.CalendrierController;
 import javaProject.project.controller.LoginController;
+import javaProject.project.controller.ModifierController;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import javaProject.project.view.VueLogin;
 import javaProject.project.view.VueCalendrier;
+import javaProject.project.view.VueModifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -33,9 +35,14 @@ public class ProjectApplication {
                 //Calendar Controller
                 CalendrierController calendrierController = context.getBean(CalendrierController.class);
                 VueCalendrier calendrier = context.getBean(VueCalendrier.class);
-                calendrierController.initController(calendrier, loginView);
+                VueModifier modifier = context.getBean(VueModifier.class);
+                calendrierController.initController(calendrier, loginView , modifier);
                 userController.setCalendrierView(calendrier);
-            
+                
+                //Modifier Controller
+                ModifierController ModifierController = context.getBean(ModifierController.class);
+                ModifierController.initController(modifier);
+                
                 loginView.setVisible(true);
             });
                          

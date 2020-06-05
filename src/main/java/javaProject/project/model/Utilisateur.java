@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="utilisateur") 
-public class Utilisateur {
+public class Utilisateur implements EnumerableElement {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -72,6 +72,7 @@ public class Utilisateur {
 		this.password = password;
 	}
 
+        @Override
 	public String getNom() {
 		return nom;
 	}

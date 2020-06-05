@@ -38,7 +38,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class VueCalendrier extends JFrame {
 
-    String title[] = {"Heure", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"};
+    String title[] = {"Heure", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
     public JTable tableau;
     public JButton button1;
@@ -61,7 +61,8 @@ public class VueCalendrier extends JFrame {
     private JComboBox ComboAff = new JComboBox();
     private JComboBox ComboRecherche = new JComboBox();
     private JTextField Recherche = new JTextField("Rechercher");
-
+    
+  
     public VueCalendrier() {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -71,6 +72,8 @@ public class VueCalendrier extends JFrame {
         Accueil.setBackground(Color.DARK_GRAY);
         String[] choixAff = {"Planning en grille", "Planning en liste"};
         String[] choixRecherche = {"Rechercher par nom", "Rechercher par liste"};
+        
+        
         ComboAff = new JComboBox(choixAff);
         ComboRecherche = new JComboBox(choixRecherche);
         semaines.setLayout(new GridLayout(1, 52));
@@ -160,18 +163,6 @@ public class VueCalendrier extends JFrame {
         principal.add(new JScrollPane(semaines), BorderLayout.NORTH);
         principal.add((calendar), BorderLayout.CENTER);
 
-        tableau.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(final MouseEvent e) {
-                if (e.getClickCount() == 1) {
-                    final JTable jTable = (JTable) e.getSource();
-                    final int row = jTable.getSelectedRow();
-                    final int column = jTable.getSelectedColumn();
-                    final String valueInCell = (String) jTable.getValueAt(row, column);
-                    System.out.println(valueInCell);
-                }
-            }
-        });
 
         this.getContentPane().add((navbar), BorderLayout.NORTH);
 

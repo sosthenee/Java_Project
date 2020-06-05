@@ -7,7 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Promotion {
+public class Promotion implements EnumerableElement {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -31,6 +31,7 @@ public class Promotion {
 		this.id = id;
 	}
 	
+        @Override
 	public String getNom() {
 		return nom;
 	}

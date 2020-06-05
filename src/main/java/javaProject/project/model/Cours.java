@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
 
 @Entity
-public class Cours {
+public class Cours implements EnumerableElement{
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -35,6 +35,7 @@ public class Cours {
 		this.id = id;
 	}
 
+        @Override
 	public String getNom() {
 		return nom;
 	}

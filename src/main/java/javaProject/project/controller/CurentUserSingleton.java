@@ -34,10 +34,6 @@ public final class CurentUserSingleton {
 		return INSTANCE;
 	}
 
-	public static void setINSTANCE(CurentUserSingleton INSTANCE) {
-		CurentUserSingleton.INSTANCE = INSTANCE;
-	}
-
 	public Utilisateur getInfo() {
 		return info;
 	}

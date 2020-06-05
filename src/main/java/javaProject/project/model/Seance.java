@@ -57,7 +57,8 @@ public class Seance {
 	private Type_cours type_cours;
   
   
-    @ManyToMany(cascade=CascadeType.ALL)
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "seance_groupes",
             joinColumns = {
                     @JoinColumn(name = "seance_id", referencedColumnName = "id",
@@ -65,7 +66,7 @@ public class Seance {
             inverseJoinColumns = {
                     @JoinColumn(name = "groupe_id", referencedColumnName = "id",
                             nullable = false, updatable = false)})
-    private Set<Groupe> groupe = new HashSet<>();
+    private List<Groupe> groupe = new  ArrayList<Groupe>();
     
     @ManyToMany
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -77,7 +78,7 @@ public class Seance {
                     @JoinColumn(name = "salle_id", referencedColumnName = "id",
                             nullable = false, updatable = false)})
     private List<Salle> salle = new ArrayList<Salle>();
-    
+   
     @ManyToMany
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "seance_enseignants",
@@ -93,17 +94,34 @@ public class Seance {
 		super();
 	}
 
-	public Seance(long id, int semaine, Date date, int heure_fin, int minute_fin , int etat) {
-		super();
-		this.id = id;
-		this.semaine = semaine;
+	       
+        public Seance( Date date, int etat, int heure_fin, int minute_fin , int semaine , Cours matiere , Type_cours type ) {
+		super();		
 		this.date = date;
 		this.heure_fin = heure_fin;
                 this.minute_fin = minute_fin;
+                this.semaine=semaine;
 		this.etat = etat;
+                this.cours = matiere;
+                this.type_cours = type;
 	}
-
-	public long getId() {
+        
+           public Seance( Date date, int etat, int heure_fin, int minute_fin , int semaine , Cours matiere , Type_cours type, ArrayList<Groupe> groupe , ArrayList<Salle> salle , ArrayList<Enseignant> enseignant) {
+		super();		
+		this.date = date;
+		this.heure_fin = heure_fin;
+                this.minute_fin = minute_fin;
+                this.semaine=semaine;
+		this.etat = etat;
+                this.cours = matiere;
+                this.type_cours = type;
+                this.groupe = groupe;
+                this.salle = salle;
+                this.enseignant = enseignant;
+	}
+        
+           
+       public long getId() {
 		return id;
 	}
 
