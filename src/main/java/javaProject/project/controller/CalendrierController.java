@@ -1,6 +1,5 @@
 package javaProject.project.controller;
 
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -49,9 +48,6 @@ import util.cst;
 @Component
 public class CalendrierController {
 
-
-	
-
     @Autowired
     UtilisateurDao utilisateurDao;
 
@@ -78,143 +74,135 @@ public class CalendrierController {
 
     @Autowired
     SalleDao salleDao;
-	private Object[][] data;   
+    private Object[][] data;
 
-	private CurentUserSingleton Singleton = CurentUserSingleton.getInstance(); 
-	
-	private VueCalendrier vueCalendrier;
+    private CurentUserSingleton Singleton = CurentUserSingleton.getInstance();
 
-	private List<Seance> listSeances;
+    private VueCalendrier vueCalendrier;
 
-	public List<Seance> getListSeances() {
-		return listSeances;
-	}
+    private List<Seance> listSeances;
 
-	public void setListSeances(List<Seance> oui) {
-		this.listSeances = oui;
-	}
+    public List<Seance> getListSeances() {
+        return listSeances;
+    }
 
-	public Object[][] formatData(List<Seance> seances) {
+    public void setListSeances(List<Seance> oui) {
+        this.listSeances = oui;
+    }
 
-		data = cst.getCalendarBlankData();  
+    public Object[][] formatData(List<Seance> seances) {
 
+        data = cst.getCalendarBlankData();
 
-		for (Seance seance : seances) {
+        for (Seance seance : seances) {
 
-			Calendar calendar = Calendar.getInstance();
+            Calendar calendar = Calendar.getInstance();
 
+            calendar.setTime(seance.getDate());
 
-			calendar.setTime(seance.getDate());
+            int heure_fin = seance.getHeure_fin();
+            int minute_fin = seance.getMinute_fin();
+            int hours = calendar.get(Calendar.HOUR_OF_DAY);
+            int minutes = calendar.get(Calendar.MINUTE);
+            int day_of_week = calendar.get(Calendar.DAY_OF_WEEK);
 
-			int heure_fin = seance.getHeure_fin();
-			int minute_fin = seance.getMinute_fin();
-			int hours = calendar.get(Calendar.HOUR_OF_DAY);
-			int minutes = calendar.get(Calendar.MINUTE);
-			int day_of_week = calendar.get(Calendar.DAY_OF_WEEK);
+            int index_debut = hours - 8;
 
-			int index_debut = hours - 8;
+            String salleSeance = "";
+            String enseiSenace = "";
 
-			String salleSeance = "";
-			String enseiSenace = "";
+            if (seance.getSalle().size() > 1) {
+                for (Salle it : seance.getSalle()) {
+                    salleSeance += it.getNom() + " / ";
+                }
+            } else if (seance.getSalle().size() == 1) {
+                salleSeance = seance.getSalle().get(0).getNom();
+            } else {
+                salleSeance = "Null";
+            }
 
+            if (seance.getEnseignant().size() > 1) {
+                for (Enseignant it : seance.getEnseignant()) {
+                    enseiSenace += it.getNom() + " / ";
+                }
+            } else if (seance.getEnseignant().size() == 1) {
+                enseiSenace = seance.getEnseignant().get(0).getNom();
+            } else {
+                enseiSenace = "Null";
+            }
 
-			if(seance.getSalle().size() > 1) {
-				for(Salle it : seance.getSalle())
-				{
-					salleSeance += it.getNom() + " / ";
-				}
-			}else if(seance.getSalle().size() == 1) {
-				salleSeance = seance.getSalle().get(0).getNom();
-			}else {
-				salleSeance = "Null";
-			}
+            index_debut = index_debut * 2;
+            if (minutes == 30) {
+                index_debut += 1;
+            }
 
-			if(seance.getEnseignant().size() > 1) {
-				for(Enseignant it : seance.getEnseignant())
-				{
-					enseiSenace += it.getNom() + " / ";
-				}
-			}else if(seance.getEnseignant().size() == 1) {
-				enseiSenace = seance.getEnseignant().get(0).getNom();
-			}
-			else {
-				enseiSenace = "Null";
-			}
+            int index_fin = heure_fin - 8;
+            index_fin = index_fin * 2;
+            if (minute_fin == 30) {
+                index_fin += 1;
+            }
 
-			index_debut=index_debut*2;
-			if(minutes == 30){
-				index_debut+=1;
-			} 
+            for (int i = index_debut; i < index_fin; i++) {
 
-			int index_fin = heure_fin - 8;
-			index_fin=index_fin*2;
-			if (minute_fin == 30 ) {
-				index_fin += 1;
-			}
+                data[i][day_of_week - 1] = "<html> type de cours : " + seance.getType_cours().getNom() + "<br>" + "  cours :  " + seance.getCours().getNom()
+                    + "  Professeur :  " + enseiSenace + "  salle :  " + salleSeance + "</html>";
+            }
+            if (index_fin - index_debut < 2) {
+                data[index_debut][day_of_week - 1] = "<html> type de cours : " + seance.getType_cours().getNom() + "<br>" + "  cours :  " + seance.getCours().getNom()
+                    + "  Professeur :  " + enseiSenace + "  salle :  " + salleSeance + "</html>";
+            }
+        }
+        return data;
+    }
 
+    public void allSeances(String email, VueCalendrier view, int semaine) {
 
-			for (int i = index_debut ; i < index_fin ; i++){
+        if (Singleton.getInfo().getDroit() == 4) {
+            System.out.println("Seance etudiant");
+            Etudiant i = (Etudiant) utilisateurDao.findByEmail(email);
+            List<Seance> a = seanceDao.findBySemaineAndGroupeContaining(semaine, i.getGroupe());
+            setListSeances(a);
+            Object[][] data = this.formatData(a);
+            view.setData(data);
+        } else if (Singleton.getInfo().getDroit() == 3) {
+            System.out.println("Seance enseignant");
+            Enseignant i = (Enseignant) utilisateurDao.findByEmail(email);
+            List<Seance> a = seanceDao.findBySemaineAndEnseignantContaining(semaine, i);
+            setListSeances(a);
+            System.out.println(a);
+            Object[][] data = this.formatData(a);
+            view.setData(data);
+        }
+    }
 
-				data[i][day_of_week-1]= "<html> type de cours : " + seance.getType_cours().getNom() + "<br>"+"  cours :  " + seance.getCours().getNom() +
-						"  Professeur :  " + enseiSenace +  "  salle :  " + salleSeance  +"</html>";
-			}
-			if (index_fin - index_debut < 2 ) {
-				data[index_debut][day_of_week-1]= "<html> type de cours : " + seance.getType_cours().getNom() + "<br>"+"  cours :  " + seance.getCours().getNom() +
-						"  Professeur :  " +  enseiSenace +  "  salle :  " + salleSeance   +"</html>";
-			}
-		}
-		return data;
-	}
+    public void edtFindByName(String name, VueCalendrier view, int semaine) {
 
-	public void allSeances(String email,  VueCalendrier view , int semaine) {
+        Utilisateur utilisateur = utilisateurDao.findByNom(name);
+        List<Seance> a;
 
-		if(Singleton.getInfo().getDroit() == 4) {
-			System.out.println("Seance etudiant");
-			Etudiant i = (Etudiant) utilisateurDao.findByEmail(email);
-			List<Seance> a = seanceDao.findBySemaineAndGroupeContaining(semaine,i.getGroupe());
-			setListSeances(a);
-			Object[][] data = this.formatData(a);
-			view.setData(data);
-		}else if (Singleton.getInfo().getDroit() == 3) {
-			System.out.println("Seance enseignant");
-			Enseignant i = (Enseignant) utilisateurDao.findByEmail(email);
-			List<Seance> a = seanceDao.findBySemaineAndEnseignantContaining(semaine,i);
-			setListSeances(a);
-			System.out.println(a);
-			Object[][] data = this.formatData(a);
-			view.setData(data);
-		}
-	}
+        if ((Singleton.getInfo().getDroit() == 4) && (utilisateur.getDroit() == 4)) {
+            System.out.println("Seance etudiant");
+            Etudiant i = (Etudiant) utilisateur;
+            a = seanceDao.findBySemaineAndGroupeContaining(semaine, i.getGroupe());
+            Object[][] data = this.formatData(a);
+            System.out.println(a);
+            view.setData(data);
+        } else if ((Singleton.getInfo().getDroit() == 3) && (utilisateur.getDroit() == 3)) {
+            System.out.println("Seance enseignant");
+            Enseignant i = (Enseignant) utilisateur;
+            a = seanceDao.findBySemaineAndEnseignantContaining(semaine, i);
+            System.out.println(a);
+            Object[][] data = this.formatData(a);
+            view.setData(data);
+        } else {
+            a = Collections.<Seance>emptyList();;
+            Object[][] data = this.formatData(a);
+            view.setData(data);
+        }
 
+    }
 
-	public void edtFindByName(String name, VueCalendrier view, int semaine) {
-
-		Utilisateur utilisateur = utilisateurDao.findByNom(name);
-		List<Seance> a;
-
-		if((Singleton.getInfo().getDroit() == 4)&&(utilisateur.getDroit()==4)) {
-			System.out.println("Seance etudiant");
-			Etudiant i = (Etudiant) utilisateur;
-			a = seanceDao.findBySemaineAndGroupeContaining(semaine,i.getGroupe());
-			Object[][] data = this.formatData(a);
-			System.out.println(a);
-			view.setData(data);
-		}else if ((Singleton.getInfo().getDroit() == 3)&&(utilisateur.getDroit()==3)) {
-			System.out.println("Seance enseignant");
-			Enseignant i = (Enseignant) utilisateur;
-			a = seanceDao.findBySemaineAndEnseignantContaining(semaine,i);
-			System.out.println(a);
-			Object[][] data = this.formatData(a);
-			view.setData(data);
-		}else {
-			a = Collections.<Seance>emptyList();;
-			Object[][] data = this.formatData(a);
-			view.setData(data);
-		}
-
-	}
-
-	public ArrayList<EnumerableElement> DaoGetListData(JpaRepository dao) {
+    public ArrayList<EnumerableElement> DaoGetListData(JpaRepository dao) {
         ArrayList<EnumerableElement> temp_values = new ArrayList<>();
         var objects = dao.findAll();
         for (int i = 0; i < objects.size(); i++) {
@@ -234,16 +222,16 @@ public class CalendrierController {
         view3.matiereList.clear();
     }
 
-	public void initController(VueCalendrier vueCalendrier , VueLogin vueLogin , VueModifier view3) {
-		System.out.println("Init Controller Calendrier");
-		allSeances(vueLogin.mail.getText(), vueCalendrier, 1);
-		this.vueCalendrier = vueCalendrier;
-		for ( int i =0 ; i< 52 ; i++){
-			final int semaine = Integer.parseInt(vueCalendrier.buttonList.get(i).getText());
-			vueCalendrier.buttonList.get(i).addActionListener(e -> allSeances(vueLogin.mail.getText(),vueCalendrier , semaine ));
-		}
+    public void initController(VueCalendrier vueCalendrier, VueLogin vueLogin, VueModifier view3) {
+        System.out.println("Init Controller Calendrier");
+        allSeances(vueLogin.mail.getText(), vueCalendrier, 1);
+        this.vueCalendrier = vueCalendrier;
+        for (int i = 0; i < 52; i++) {
+            final int semaine = Integer.parseInt(vueCalendrier.buttonList.get(i).getText());
+            vueCalendrier.buttonList.get(i).addActionListener(e -> allSeances(vueLogin.mail.getText(), vueCalendrier, semaine));
+        }
 //		view.Recherche.addActionListener(e -> edtFindByName(view.Recherche.getText(),view , semaine ));		
-view.tableau.addMouseListener(new MouseAdapter() {
+        vueCalendrier.tableau.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(final MouseEvent e) {
                 if (e.getClickCount() == 1) {
@@ -273,7 +261,6 @@ view.tableau.addMouseListener(new MouseAdapter() {
             }
         }
         );
-	}
-
+    }
 
 }

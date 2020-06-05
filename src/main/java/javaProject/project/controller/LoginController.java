@@ -16,6 +16,7 @@ import javaProject.project.model.Utilisateur;
 import javaProject.project.view.VueLogin;
 import javaProject.project.view.VuePlanningListe;
 import javaProject.project.view.VueCalendrier;
+import javaProject.project.view.VueModifier;
 import javaProject.project.view.VueRecap;
 
 import javax.swing.JOptionPane;
@@ -45,7 +46,7 @@ public class LoginController {
 		utilisateurDao.save(u);
 	}
 
-	public void login(String email, String password, CalendrierController calendrierController,VueCalendrier vueCalendrier,RecapControleur recapControleur,VueRecap vueRecap,PlanListeController planListeController, VuePlanningListe vuePlanningListe) {
+	public void login(String email, String password, CalendrierController calendrierController,VueCalendrier vueCalendrier,RecapControleur recapControleur,VueRecap vueRecap,PlanListeController planListeController, VuePlanningListe vuePlanningListe , ModifierController modifierController, VueModifier vuemodifier) {
 		Utilisateur u = new Utilisateur();
 		u = utilisateurDao.findFirstByEmailAndPassword(email , password);
 		if( u ==  null){
@@ -66,17 +67,18 @@ public class LoginController {
 			}if (u.getDroit() == 1) {
 				Singleton.setInfo(u);
 			}
-            calendrierController.initController(vueCalendrier,vueLogin);
+            calendrierController.initController(vueCalendrier,vueLogin,vuemodifier);
             recapControleur.initController(vueRecap,vueCalendrier);
             planListeController.initController(vuePlanningListe);
-
+            modifierController.initController(vuemodifier);
+                
 		}
 		System.out.println(u);
 	}
 
-	public void initController(VueLogin view, CalendrierController calendrierController,VueCalendrier calendar,RecapControleur recapControleur,VueRecap vueRecap,PlanListeController planListeController, VuePlanningListe vuePlanningListe) {
+	public void initController(VueLogin view, CalendrierController calendrierController,VueCalendrier calendar,RecapControleur recapControleur,VueRecap vueRecap,PlanListeController planListeController, VuePlanningListe vuePlanningListe , ModifierController ModifierController ,VueModifier vuemodifier) {
 		view.getRootPane().setDefaultButton(view.valider);
-		view.valider.addActionListener(e -> login(view.mail.getText(), view.mdp.getText(),calendrierController,calendar,recapControleur,vueRecap,planListeController,vuePlanningListe));
+		view.valider.addActionListener(e -> login(view.mail.getText(), view.mdp.getText(),calendrierController,calendar,recapControleur,vueRecap,planListeController,vuePlanningListe, ModifierController,vuemodifier));
 		this.vueLogin = view;
 		
 	}

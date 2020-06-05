@@ -46,7 +46,6 @@ public class ProjectApplication {
                 
                 //Modifier Controller
                 ModifierController ModifierController = context.getBean(ModifierController.class);
-                ModifierController.initController(modifier);
                 
                
                 //Recap Controller
@@ -61,7 +60,7 @@ public class ProjectApplication {
                 VueModifier vuemodifier = context.getBean(VueModifier.class);
                 
                 //initController
-                loginController.initController(vueLogin,calendrierController,vueCalendrier,recapControleur,vueRecap,planListeController,vuePlanningListe, vuemodifier);
+                loginController.initController(vueLogin,calendrierController,vueCalendrier,recapControleur,vueRecap,planListeController,vuePlanningListe, ModifierController ,vuemodifier);
                 vueLogin.setVisible(true);
 
             });
