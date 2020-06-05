@@ -26,17 +26,19 @@ import util.cst;
 public class CalendrierController {
 
 
-    @Autowired
-    UtilisateurDao utilisateurDao;
-    @Autowired
-    SeanceDao seanceDao;
+	@Autowired
+	UtilisateurDao utilisateurDao;
+	@Autowired
+	SeanceDao seanceDao;
 
-    private Object[][] data;   
-    
-    private CurentUserSingleton Singleton = CurentUserSingleton.getInstance(); 
+	private Object[][] data;   
 
-    private List<Seance> listSeances;
-    
+	private CurentUserSingleton Singleton = CurentUserSingleton.getInstance(); 
+	
+	private VueCalendrier vueCalendrier;
+
+	private List<Seance> listSeances;
+
 	public List<Seance> getListSeances() {
 		return listSeances;
 	}
@@ -47,13 +49,13 @@ public class CalendrierController {
 
 	public Object[][] formatData(List<Seance> seances) {
 
-		 data = cst.getCalendarBlankData();  
+		data = cst.getCalendarBlankData();  
 
 
 		for (Seance seance : seances) {
 
 			Calendar calendar = Calendar.getInstance();
-		
+
 
 			calendar.setTime(seance.getDate());
 
@@ -116,9 +118,9 @@ public class CalendrierController {
 		}
 		return data;
 	}
-	
+
 	public void allSeances(String email,  VueCalendrier view , int semaine) {
-		
+
 		if(Singleton.getInfo().getDroit() == 4) {
 			System.out.println("Seance etudiant");
 			Etudiant i = (Etudiant) utilisateurDao.findByEmail(email);
@@ -136,9 +138,10 @@ public class CalendrierController {
 			view.setData(data);
 		}
 	}
-	
+
+
 	public void edtFindByName(String name, VueCalendrier view, int semaine) {
-		
+
 		Utilisateur utilisateur = utilisateurDao.findByNom(name);
 		List<Seance> a;
 
@@ -161,41 +164,19 @@ public class CalendrierController {
 			Object[][] data = this.formatData(a);
 			view.setData(data);
 		}
-		
-	}
-	
-	public void ControlFrames(VueCalendrier view,VueRecap vueRecap,RecapControleur recapControleur,String email) {
-		System.out.println("ezejazejoeojzejiozajozahioe");
-		recapControleur.allSeances(email, vueRecap);
-	}
-	
-	public void ControlFrameStyleAff(String stylePlann, VuePlanningListe vuePlanningListe, VueCalendrier vueCalendrier, PlanListeController planListeController,VuePlanningListe planningListe) {
-		if(stylePlann.equals("Planning en grille") == true) {
-			System.out.println("GRILLE");
-		}else if(stylePlann.equals("Planning en liste") == true) {
-			vuePlanningListe.setVisible(true);
-			vueCalendrier.setVisible(false);
-			try {
-				vuePlanningListe.setData(planListeController.formatData(getListSeances(),planningListe));
 
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			System.out.println("Liste");
-
-		}
-		
 	}
+
 	
-	public void initController(VueCalendrier view , VueLogin view2,VueRecap vueRecap,RecapControleur recapControleur,VuePlanningListe vuePlanningListe,PlanListeController planListeController) {
+	public void initController(VueCalendrier vueCalendrier , VueLogin vueLogin) {
 		System.out.println("Init Controller Calendrier");
+		allSeances(vueLogin.mail.getText(), vueCalendrier, 1);
+		this.vueCalendrier = vueCalendrier;
 		for ( int i =0 ; i< 52 ; i++){
-			final int semaine = Integer.parseInt(view.buttonList.get(i).getText());
-			view.buttonList.get(i).addActionListener(e -> allSeances(view2.mail.getText(),view , semaine ));
-			view.Recherche.addActionListener(e -> edtFindByName(view.Recherche.getText(),view , semaine ));		
+			final int semaine = Integer.parseInt(vueCalendrier.buttonList.get(i).getText());
+			vueCalendrier.buttonList.get(i).addActionListener(e -> allSeances(vueLogin.mail.getText(),vueCalendrier , semaine ));
 		}
-		//view.Onglets.addActionListener(e -> ControlFrames(view,vueRecap,recapControleur,view2.mail.getText()));
-		view.ComboAff.addActionListener(f -> ControlFrameStyleAff(view.ComboAff.getSelectedItem().toString(),vuePlanningListe,view,planListeController,vuePlanningListe));
+//		view.Recherche.addActionListener(e -> edtFindByName(view.Recherche.getText(),view , semaine ));		
 
 	}
 

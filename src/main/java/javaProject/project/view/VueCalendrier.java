@@ -71,7 +71,7 @@ public class VueCalendrier extends JFrame {
 
 
 
-    public VueCalendrier(VueRecap FenRecap) {
+    public VueCalendrier(VueRecap FenRecap,VuePlanningListe FenListe) {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("HyperPlanning");
@@ -85,8 +85,8 @@ public class VueCalendrier extends JFrame {
         Onglets.add("Planning",Onglet1);  
         Onglets.add("Récapitulatif des cours",Onglet2);
         
-        //Accueil.setForeground(Color.WHITE);
-        //Accueil.setBackground(Color.DARK_GRAY);
+        Accueil.setForeground(Color.WHITE);
+        Accueil.setBackground(Color.DARK_GRAY);
         String[] choixAff = {"Planning en grille", "Planning en liste"};
         String[] choixRecherche = {"Rechercher par nom", "Rechercher par liste"};
         ComboAff = new JComboBox(choixAff);
@@ -101,9 +101,9 @@ public class VueCalendrier extends JFrame {
         this.MenuSalles.add(ItemSalles2);
         this.MenuCours.add(ItemCours1);
         this.MenuCours.add(ItemCours2);
-        //this.navigation.add(Accueil);
-        //this.navigation.add(MenuCours);
-        //this.navigation.add(MenuSalles);
+        this.navigation.add(Accueil);
+        this.navigation.add(MenuCours);
+        this.navigation.add(MenuSalles);
 
         navbar.add(navigation);
         navbarInf.add(ComboAff);
@@ -196,7 +196,6 @@ public class VueCalendrier extends JFrame {
         PanRecap.setLayout(new BorderLayout());
         PanRecap.add(FenRecap.getContentPane(),BorderLayout.CENTER);
         
-         VuePlanningListe FenListe = new VuePlanningListe();
         JPanel PanListe = new JPanel();
         PanListe.setLayout(new BorderLayout());
         PanListe.add(navbar,BorderLayout.NORTH);

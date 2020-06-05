@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import javaProject.project.model.Seance;
 
+
 public class TriplanList {
 
 
