@@ -53,7 +53,7 @@ public class VueCalendrier extends JFrame {
     private JMenuItem ItemCours1 = new JMenuItem("Emploi du temps");
     public JMenuItem ItemCours2 = new JMenuItem("Recapitulatif des cours");
     private JPanel navbar = new JPanel();
-    private JPanel navbarInf = new JPanel();
+    public JPanel navbarInf = new JPanel();
     private JPanel principal = new JPanel();
     private JPanel semaines = new JPanel();
     private JPanel calendar = new JPanel();
@@ -67,6 +67,7 @@ public class VueCalendrier extends JFrame {
     public JComboBox ComboRecherche = new JComboBox();
     public JTabbedPane Onglets =new JTabbedPane();
     public JTextField Recherche = new JTextField("Rechercher");
+    public JComboBox listeRecherhe = new JComboBox();
     public JPanel Onglet1 =new JPanel();
     public JPanel Onglet2 =new JPanel(); 
 
@@ -111,8 +112,8 @@ public class VueCalendrier extends JFrame {
 
         navbar.add(navigation);
         navbarInf.add(ComboAff);
-        navbarInf.add(Recherche);
         navbarInf.add(ComboRecherche);
+        navbarInf.add(Recherche);
 
         semaines.setPreferredSize(new Dimension(2600, 50));
 
