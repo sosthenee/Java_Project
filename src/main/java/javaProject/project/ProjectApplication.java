@@ -4,14 +4,22 @@ import java.awt.EventQueue;
 
 import javaProject.project.controller.CalendrierController;
 import javaProject.project.controller.LoginController;
+
+import javaProject.project.controller.ModifierController;
+
 import javaProject.project.controller.PlanListeController;
 import javaProject.project.controller.RecapControleur;
+
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import javaProject.project.view.VueLogin;
 import javaProject.project.view.VuePlanningListe;
 import javaProject.project.view.VueCalendrier;
+
+import javaProject.project.view.VueModifier;
+
 import javaProject.project.view.VueRecap;
+
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -34,6 +42,14 @@ public class ProjectApplication {
                 //Controllers
                 LoginController loginController = context.getBean(LoginController.class);
                 CalendrierController calendrierController = context.getBean(CalendrierController.class);
+
+                
+                //Modifier Controller
+                ModifierController ModifierController = context.getBean(ModifierController.class);
+                ModifierController.initController(modifier);
+                
+               
+                //Recap Controller
                 RecapControleur recapControleur = context.getBean(RecapControleur.class);
                 PlanListeController planListeController = context.getBean(PlanListeController.class);
                 
@@ -42,10 +58,12 @@ public class ProjectApplication {
                 VueRecap vueRecap = context.getBean(VueRecap.class);
                 VueCalendrier vueCalendrier = context.getBean(VueCalendrier.class);
                 VuePlanningListe vuePlanningListe = context.getBean(VuePlanningListe.class);
+                VueModifier vuemodifier = context.getBean(VueModifier.class);
                 
                 //initController
-                loginController.initController(vueLogin,calendrierController,vueCalendrier,recapControleur,vueRecap,planListeController,vuePlanningListe);
+                loginController.initController(vueLogin,calendrierController,vueCalendrier,recapControleur,vueRecap,planListeController,vuePlanningListe, vuemodifier);
                 vueLogin.setVisible(true);
+
             });
                          
 	}

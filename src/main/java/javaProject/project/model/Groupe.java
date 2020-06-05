@@ -13,7 +13,7 @@ import java.util.Set;
 
 
 @Entity
-public class Groupe {
+public class Groupe implements EnumerableElement{
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -44,6 +44,7 @@ public class Groupe {
 		this.id = id;
 	}
 	
+        @Override
 	public String getNom() {
 		return nom;
 	}
@@ -52,11 +53,11 @@ public class Groupe {
 		this.nom = nom;
 	}
 	
-	public Promotion getGroupe() {
+	public Promotion getPromotion() {
 		return promotion;
 	}
 
-	public void setGroupe(Promotion promotion) {
+	public void setPromotion(Promotion promotion) {
 		this.promotion = promotion;
 	}
 

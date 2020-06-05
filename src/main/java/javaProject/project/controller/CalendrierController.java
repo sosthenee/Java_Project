@@ -1,36 +1,83 @@
 package javaProject.project.controller;
 
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+
 import java.awt.event.ActionEvent;
+
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.TimeZone;
+import javaProject.project.dao.CoursDao;
+import javaProject.project.dao.EnseignantDao;
+import javaProject.project.dao.GroupeDao;
+import javaProject.project.dao.PromotionDao;
+import javaProject.project.dao.SalleDao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javaProject.project.dao.SeanceDao;
+import javaProject.project.dao.SiteDao;
+import javaProject.project.dao.TypeCoursDao;
 import javaProject.project.dao.UtilisateurDao;
 import javaProject.project.model.Enseignant;
+import javaProject.project.model.EnumerableElement;
 import javaProject.project.model.Etudiant;
 import javaProject.project.model.Salle;
 import javaProject.project.model.Seance;
+
+import javaProject.project.model.Site;
+
 import javaProject.project.model.Utilisateur;
+
 import javaProject.project.view.VueLogin;
 import javaProject.project.view.VuePlanningListe;
 import javaProject.project.view.VueCalendrier;
+
+import javaProject.project.view.VueModifier;
+import javax.swing.JTable;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import javaProject.project.view.VueRecap;
+
 import util.cst;
 
 @Component
 public class CalendrierController {
 
 
-	@Autowired
-	UtilisateurDao utilisateurDao;
-	@Autowired
-	SeanceDao seanceDao;
+	
 
+    @Autowired
+    UtilisateurDao utilisateurDao;
+
+    @Autowired
+    SeanceDao seanceDao;
+
+    @Autowired
+    GroupeDao groupeDao;
+
+    @Autowired
+    EnseignantDao enseignantDao;
+
+    @Autowired
+    CoursDao coursDao;
+
+    @Autowired
+    PromotionDao promotionDao;
+
+    @Autowired
+    TypeCoursDao TypeCoursDao;
+
+    @Autowired
+    SiteDao siteDao;
+
+    @Autowired
+    SalleDao salleDao;
 	private Object[][] data;   
 
 	private CurentUserSingleton Singleton = CurentUserSingleton.getInstance(); 
@@ -167,8 +214,27 @@ public class CalendrierController {
 
 	}
 
-	
-	public void initController(VueCalendrier vueCalendrier , VueLogin vueLogin) {
+	public ArrayList<EnumerableElement> DaoGetListData(JpaRepository dao) {
+        ArrayList<EnumerableElement> temp_values = new ArrayList<>();
+        var objects = dao.findAll();
+        for (int i = 0; i < objects.size(); i++) {
+            EnumerableElement elt = (EnumerableElement) objects.get(i);
+            temp_values.add(elt);
+        }
+        return temp_values;
+    }
+
+    public void resetData(VueModifier view3) {
+        view3.typeList.clear();
+        view3.professeurList.clear();
+        view3.promotionList.clear();
+        view3.sallesList.clear();
+        view3.sitesList.clear();
+        view3.groupesList.clear();
+        view3.matiereList.clear();
+    }
+
+	public void initController(VueCalendrier vueCalendrier , VueLogin vueLogin , VueModifier view3) {
 		System.out.println("Init Controller Calendrier");
 		allSeances(vueLogin.mail.getText(), vueCalendrier, 1);
 		this.vueCalendrier = vueCalendrier;
@@ -177,7 +243,37 @@ public class CalendrierController {
 			vueCalendrier.buttonList.get(i).addActionListener(e -> allSeances(vueLogin.mail.getText(),vueCalendrier , semaine ));
 		}
 //		view.Recherche.addActionListener(e -> edtFindByName(view.Recherche.getText(),view , semaine ));		
+view.tableau.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(final MouseEvent e) {
+                if (e.getClickCount() == 1) {
+                    final JTable jTable = (JTable) e.getSource();
+                    final int row = jTable.getSelectedRow();
+                    final int column = jTable.getSelectedColumn();
+                    final String header = jTable.getColumnName(column);
+                    final String valueInCell = (String) jTable.getValueAt(row, column);
+                    if (valueInCell.length() <= 1) {
+                        if (column != 0) {
+                            resetData(view3);
+                            view3.setVisible(true);
+                            view3.setListEnseignant(DaoGetListData(enseignantDao));
+                            view3.setListCours(DaoGetListData(coursDao));
+                            view3.setListGroupe(DaoGetListData(groupeDao));
+                            view3.setListType_cours(DaoGetListData(TypeCoursDao));
+                            view3.setListPromotion(DaoGetListData(promotionDao));
+                            view3.setListSalle(DaoGetListData(salleDao));
+                            view3.setListSite(DaoGetListData(siteDao));
+                            view3.setCoordinates(row, column, header);
+                        }
 
+                    } else {
+                        view3.setVisible(true);
+                    }
+                }
+            }
+        }
+        );
 	}
+
 
 }

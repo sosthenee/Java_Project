@@ -7,8 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Type_cours {
-	
+public class Type_cours implements EnumerableElement{
+ 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id = 0;
@@ -34,6 +34,7 @@ public class Type_cours {
 		this.id = id;
 	}
 
+        @Override
 	public String getNom() {
 		return nom;
 	}

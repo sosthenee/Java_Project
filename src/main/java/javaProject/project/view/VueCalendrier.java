@@ -41,7 +41,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class VueCalendrier extends JFrame {
 
-    String title[] = {"Heure", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"};
+    String title[] = {"Heure", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
     public JTable tableau;
     private JMenuBar navigation = new JMenuBar();
@@ -62,6 +62,7 @@ public class VueCalendrier extends JFrame {
     public TableCalendrier model;
     public Color couleur;
 
+
     public JComboBox ComboAff = new JComboBox();
     public JComboBox ComboRecherche = new JComboBox();
     public JTabbedPane Onglets =new JTabbedPane();
@@ -72,6 +73,7 @@ public class VueCalendrier extends JFrame {
 
 
     public VueCalendrier(VueRecap FenRecap,VuePlanningListe FenListe) {
+
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("HyperPlanning");
@@ -89,6 +91,8 @@ public class VueCalendrier extends JFrame {
         Accueil.setBackground(Color.DARK_GRAY);
         String[] choixAff = {"Planning en grille", "Planning en liste"};
         String[] choixRecherche = {"Rechercher par nom", "Rechercher par liste"};
+        
+        
         ComboAff = new JComboBox(choixAff);
         ComboRecherche = new JComboBox(choixRecherche);
         semaines.setLayout(new GridLayout(1, 52));
@@ -179,18 +183,8 @@ public class VueCalendrier extends JFrame {
         principal.add((navinter), BorderLayout.NORTH);
         principal.add((calendar), BorderLayout.CENTER);
 
-        tableau.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(final MouseEvent e) {
-                if (e.getClickCount() == 1) {
-                    final JTable jTable = (JTable) e.getSource();
-                    final int row = jTable.getSelectedRow();
-                    final int column = jTable.getSelectedColumn();
-                    final String valueInCell = (String) jTable.getValueAt(row, column);
-                    System.out.println(valueInCell);
-                }
-            }
-        });
+
+        
         
         JPanel PanRecap = new JPanel();
         PanRecap.setLayout(new BorderLayout());
@@ -208,6 +202,7 @@ public class VueCalendrier extends JFrame {
          ActionListener testListener = new ActionListener() {//add actionlistner to listen for change
             @Override
             public void actionPerformed(ActionEvent e) {
+
 
                 String s = (String) ComboAff.getSelectedItem();//get the selected item
 
