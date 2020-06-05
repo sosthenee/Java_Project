@@ -33,18 +33,12 @@ public class ProjectApplication {
                 
                 //Controllers
                 LoginController loginController = context.getBean(LoginController.class);
-                CalendrierController calendrierController = context.getBean(CalendrierController.class);
-                RecapControleur recapControleur = context.getBean(RecapControleur.class);
-                PlanListeController planListeController = context.getBean(PlanListeController.class);
-                
+                  
                 //Views
                 VueLogin vueLogin = context.getBean(VueLogin.class);
-                VueRecap vueRecap = context.getBean(VueRecap.class);
-                VueCalendrier vueCalendrier = context.getBean(VueCalendrier.class);
-                VuePlanningListe vuePlanningListe = context.getBean(VuePlanningListe.class);
-                
+                       
                 //initController
-                loginController.initController(vueLogin,calendrierController,vueCalendrier,recapControleur,vueRecap,planListeController,vuePlanningListe);
+                loginController.initController(vueLogin);
                 vueLogin.setVisible(true);
             });
                          

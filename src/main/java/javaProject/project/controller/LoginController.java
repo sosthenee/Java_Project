@@ -30,8 +30,27 @@ public class LoginController {
 
 	@Autowired
 	private UtilisateurDao utilisateurDao;
-
+	
+	@Autowired
+	RecapControleur recapControleur;
+	
+	@Autowired
+	CalendrierController calendrierController;
+	
+	@Autowired
+	PlanListeController planListeController;
+		
+	@Autowired
+	VueCalendrier vueCalendrier;
+	
+	@Autowired
+	VueRecap vueRecap;
+	
+	@Autowired
+	VuePlanningListe vuePlanningListe;
+	
 	private VueLogin vueLogin;
+
 
 	
 	private CurentUserSingleton Singleton = CurentUserSingleton.getInstance();
@@ -45,7 +64,7 @@ public class LoginController {
 		utilisateurDao.save(u);
 	}
 
-	public void login(String email, String password, CalendrierController calendrierController,VueCalendrier vueCalendrier,RecapControleur recapControleur,VueRecap vueRecap,PlanListeController planListeController, VuePlanningListe vuePlanningListe) {
+	public void login(String email, String password) {
 		Utilisateur u = new Utilisateur();
 		u = utilisateurDao.findFirstByEmailAndPassword(email , password);
 		if( u ==  null){
@@ -74,9 +93,9 @@ public class LoginController {
 		System.out.println(u);
 	}
 
-	public void initController(VueLogin view, CalendrierController calendrierController,VueCalendrier calendar,RecapControleur recapControleur,VueRecap vueRecap,PlanListeController planListeController, VuePlanningListe vuePlanningListe) {
+	public void initController(VueLogin view) {
 		view.getRootPane().setDefaultButton(view.valider);
-		view.valider.addActionListener(e -> login(view.mail.getText(), view.mdp.getText(),calendrierController,calendar,recapControleur,vueRecap,planListeController,vuePlanningListe));
+		view.valider.addActionListener(e -> login(view.mail.getText(), view.mdp.getText()));
 		this.vueLogin = view;
 		
 	}

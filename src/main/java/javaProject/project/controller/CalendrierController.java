@@ -1,10 +1,13 @@
 package javaProject.project.controller;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.TimeZone;
+
+import javax.swing.JButton;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -34,13 +37,24 @@ public class CalendrierController {
 	private Object[][] data;   
 
 	private CurentUserSingleton Singleton = CurentUserSingleton.getInstance(); 
-	
+
 	private VueCalendrier vueCalendrier;
 
 	private List<Seance> listSeances;
 
 	public List<Seance> getListSeances() {
 		return listSeances;
+	}
+	
+	private String emailRechString;
+	
+
+	public String getEmailRechString() {
+		return emailRechString;
+	}
+
+	public void setEmailRechString(String emailRechString) {
+		this.emailRechString = emailRechString;
 	}
 
 	public void setListSeances(List<Seance> oui) {
@@ -137,46 +151,59 @@ public class CalendrierController {
 			Object[][] data = this.formatData(a);
 			view.setData(data);
 		}
+		for ( int i =0 ; i< 52 ; i++){
+			view.buttonList.get(i).setBackground(new JButton().getBackground());
+		}
+		view.buttonList.get(semaine-1).setBackground(Color.cyan);
 	}
 
 
 	public void edtFindByName(String name, VueCalendrier view, int semaine) {
-
+		
 		Utilisateur utilisateur = utilisateurDao.findByNom(name);
 		List<Seance> a;
-
-		if((Singleton.getInfo().getDroit() == 4)&&(utilisateur.getDroit()==4)) {
-			System.out.println("Seance etudiant");
-			Etudiant i = (Etudiant) utilisateur;
-			a = seanceDao.findBySemaineAndGroupeContaining(semaine,i.getGroupe());
-			Object[][] data = this.formatData(a);
-			System.out.println(a);
-			view.setData(data);
-		}else if ((Singleton.getInfo().getDroit() == 3)&&(utilisateur.getDroit()==3)) {
-			System.out.println("Seance enseignant");
-			Enseignant i = (Enseignant) utilisateur;
-			a = seanceDao.findBySemaineAndEnseignantContaining(semaine,i);
-			System.out.println(a);
-			Object[][] data = this.formatData(a);
-			view.setData(data);
-		}else {
+		if(utilisateur == null) {
 			a = Collections.<Seance>emptyList();;
 			Object[][] data = this.formatData(a);
 			view.setData(data);
+		}else {
+			setEmailRechString(utilisateur.getEmail());
 		}
+		allSeances(getEmailRechString(), view, semaine);
 
 	}
-
 	
+	public void reset(VueCalendrier vueCalendrier, VueLogin vueLogin, int semaine) {
+		setEmailRechString(vueLogin.mail.getText());
+		vueCalendrier.Recherche.setText(null);
+		allSeances(vueLogin.mail.getText(),vueCalendrier ,semaine);
+	}
+	
+	public void rechercheType(String type_recherche, VueCalendrier vueCalendrier) {
+		if(type_recherche.equals("Rechercher par liste")) {
+			vueCalendrier.Recherche.setVisible(false);
+			vueCalendrier.navbarInf.add(vueCalendrier.listeRecherhe);
+		}else {
+			vueCalendrier.navbarInf.add(vueCalendrier.Recherche);
+			vueCalendrier.Recherche.setVisible(true);
+			vueCalendrier.listeRecherhe.setVisible(false);
+		}
+	}
+
+
 	public void initController(VueCalendrier vueCalendrier , VueLogin vueLogin) {
 		System.out.println("Init Controller Calendrier");
 		allSeances(vueLogin.mail.getText(), vueCalendrier, 1);
 		this.vueCalendrier = vueCalendrier;
+		setEmailRechString(vueLogin.mail.getText());
 		for ( int i =0 ; i< 52 ; i++){
 			final int semaine = Integer.parseInt(vueCalendrier.buttonList.get(i).getText());
-			vueCalendrier.buttonList.get(i).addActionListener(e -> allSeances(vueLogin.mail.getText(),vueCalendrier , semaine ));
+			vueCalendrier.buttonList.get(i).addActionListener(e -> allSeances(getEmailRechString(),vueCalendrier , semaine ));
+			vueCalendrier.Recherche.addActionListener(e -> edtFindByName(vueCalendrier.Recherche.getText(),vueCalendrier , semaine ));		
+			vueCalendrier.Accueil.addActionListener(e -> reset(vueCalendrier, vueLogin, semaine));
 		}
-//		view.Recherche.addActionListener(e -> edtFindByName(view.Recherche.getText(),view , semaine ));		
+		vueCalendrier.ComboRecherche.addActionListener(emailRechString -> rechercheType((String)vueCalendrier.ComboRecherche.getModel().getSelectedItem(),vueCalendrier));
+		
 
 	}
 
