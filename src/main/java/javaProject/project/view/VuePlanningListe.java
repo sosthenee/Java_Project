@@ -51,6 +51,7 @@ public class VuePlanningListe extends JFrame{
     public JPanel navbar = new JPanel();
     public JPanel principal = new JPanel();
     public JPanel semaines = new JPanel();
+    public List<JButton> buttonList = new ArrayList<JButton>();
     public JPanel calendar = new JPanel();
     public JPanel JourListe = new JPanel();
     public JTextField Recherche = new JTextField();
@@ -58,7 +59,7 @@ public class VuePlanningListe extends JFrame{
     public JComboBox ComboRecherche = new JComboBox();
     public Object[][] data;
     public List<JTable> mesJours = new ArrayList<JTable>();
-    
+   
     public int nbJour = 0;
     
     
@@ -115,8 +116,11 @@ public class VuePlanningListe extends JFrame{
         
         semaines.setPreferredSize(new Dimension(2500, 50));
         for (int i = 1; i < 53; ++i) {
-            String j = Integer.toString(i);
-            semaines.add(new JButton(j));
+        	String j = Integer.toString(i);
+            JButton nb = new JButton(j);
+            buttonList.add(nb);
+            semaines.add(nb);
+
         }
         System.out.println("jaiaia : " + getNbJour());
         for(int d = 1; d<7;++d)

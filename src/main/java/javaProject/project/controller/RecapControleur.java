@@ -128,13 +128,9 @@ public class RecapControleur {
 		return data;
 	}
 
-	public void ControlFrames(VueCalendrier view,VueRecap vueRecap) {
-		view.setVisible(true);
-		vueRecap.setVisible(false);
-	}
 
-	public void initController(VueRecap view, VueCalendrier viewCalendrier) {
+	public void initController(VueRecap vueRecap, VueCalendrier viewCalendrier) {
 		System.out.println("Init ControllerRecap");
-		view.ItemCours1.addActionListener(e -> ControlFrames(viewCalendrier, view));
+		allSeances(Singleton.getInfo().getEmail(), vueRecap);
 	}
 }
