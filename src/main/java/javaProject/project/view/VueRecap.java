@@ -19,11 +19,16 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 /**
  *
  * @author Oscar
  */
+@SpringBootApplication
 public class VueRecap extends JFrame{
+
+    String title[] = {"Matière", "Première Séance", "Dernière Séance", "Durée", "Nb"};
 
     private JTable tableau;
     private JMenuBar navigation = new JMenuBar();
@@ -31,7 +36,7 @@ public class VueRecap extends JFrame{
     private JMenuItem ItemSalles1 = new JMenuItem("Emploi du Temps");
     private JMenuItem ItemSalles2 = new JMenuItem("Salles Libres");
     private JMenu MenuCours = new JMenu("Cours");
-    private JMenuItem ItemCours1 = new JMenuItem("Emploi du temps");
+    public JMenuItem ItemCours1 = new JMenuItem("Emploi du temps");
     private JMenuItem ItemCours2 = new JMenuItem("Recapitulatif des cours");
     private JPanel navbar = new JPanel();
     private JPanel principal = new JPanel();
@@ -39,7 +44,7 @@ public class VueRecap extends JFrame{
     private JTextField Recherche = new JTextField("Rechercher");
     private JComboBox ComboAff = new JComboBox();
     private JComboBox ComboRecherche = new JComboBox();
-    private JButton Accueil = new JButton ("Accueil");
+    public JButton Accueil = new JButton ("Accueil");
 
     public VueRecap() {
    
@@ -63,26 +68,18 @@ public class VueRecap extends JFrame{
         this.navigation.add(Accueil);
         this.navigation.add(MenuCours);
         this.navigation.add(MenuSalles);
-        //this.setJMenuBar(navigation);
-        navbar.add(navigation);
-        navbar.add(ComboAff);
-        navbar.add(Recherche);
-        navbar.add(ComboRecherche);
-
-        /*test.setMaximumSize( new Dimension(Integer.MAX_VALUE,200));
-    test.setMinimumSize( new Dimension(Integer.MAX_VALUE,200));*/
+        //
 
         Object[][] data = {
-            {"", " ", " ", " ", " "},
-            {"", " ", " ", " ", " "},
-            {"", " ", " ", " ", " "},
-            {"", " ", " ", " ", " "},
-            {"", " ", " ", " ", " "},
-            {"", " ", " ", " ", " "},
-            {"", " ", " ", " ", " "}
+            {" ", " ", " ", " ", " "},
+            {" ", " ", " ", " ", " "},
+            {" ", " ", " ", " ", " "},
+            {" ", " ", " ", " ", " "},
+            {" ", " ", " ", " ", " "},
+            {" ", " ", " ", " ", " "},
+            {" ", " ", " ", " ", " "}
         };
 
-        String title[] = {"Matière", "Première Séance", "Dernière Séance", "Durée", "Nb"};
 
         TableCalendrier model = new TableCalendrier(data, title);
         System.out.println("Nombre de colonne : " + model.getColumnCount());
@@ -104,6 +101,11 @@ public class VueRecap extends JFrame{
         // this.setContentPane(test);
         //this.getContentPane().add(new JScrollPane(tableau), BorderLayout.CENTER);
         //this.getContentPane().add(test);
-        
+        this.setVisible(false);
+
+    }
+    
+    public void setData(Object[][] data) {
+        tableau.setModel(new TableCalendrier(data, title));
     }
 }

@@ -4,11 +4,23 @@ import java.awt.EventQueue;
 
 import javaProject.project.controller.CalendrierController;
 import javaProject.project.controller.LoginController;
+
 import javaProject.project.controller.ModifierController;
+
+import javaProject.project.controller.PlanListeController;
+import javaProject.project.controller.RecapControleur;
+
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import javaProject.project.view.VueLogin;
+import javaProject.project.view.VuePlanningListe;
 import javaProject.project.view.VueCalendrier;
+
 import javaProject.project.view.VueModifier;
+
+import javaProject.project.view.VueRecap;
+
+
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -27,23 +39,31 @@ public class ProjectApplication {
             EventQueue.invokeLater(() -> {
                 ConfigurableApplicationContext context = new SpringApplicationBuilder(ProjectApplication.class).headless(false).run(args);
                 
-                // Login
-                LoginController userController = context.getBean(LoginController.class);
-                VueLogin loginView = context.getBean(VueLogin.class);
-                userController.initController(loginView);
-                
-                //Calendar Controller
+                //Controllers
+                LoginController loginController = context.getBean(LoginController.class);
                 CalendrierController calendrierController = context.getBean(CalendrierController.class);
-                VueCalendrier calendrier = context.getBean(VueCalendrier.class);
-                VueModifier modifier = context.getBean(VueModifier.class);
-                calendrierController.initController(calendrier, loginView , modifier);
-                userController.setCalendrierView(calendrier);
+
                 
                 //Modifier Controller
                 ModifierController ModifierController = context.getBean(ModifierController.class);
                 ModifierController.initController(modifier);
                 
-                loginView.setVisible(true);
+               
+                //Recap Controller
+                RecapControleur recapControleur = context.getBean(RecapControleur.class);
+                PlanListeController planListeController = context.getBean(PlanListeController.class);
+                
+                //Views
+                VueLogin vueLogin = context.getBean(VueLogin.class);
+                VueRecap vueRecap = context.getBean(VueRecap.class);
+                VueCalendrier vueCalendrier = context.getBean(VueCalendrier.class);
+                VuePlanningListe vuePlanningListe = context.getBean(VuePlanningListe.class);
+                VueModifier vuemodifier = context.getBean(VueModifier.class);
+                
+                //initController
+                loginController.initController(vueLogin,calendrierController,vueCalendrier,recapControleur,vueRecap,planListeController,vuePlanningListe, vuemodifier);
+                vueLogin.setVisible(true);
+
             });
                          
 	}

@@ -14,7 +14,10 @@ import javaProject.project.model.Etudiant;
 import javaProject.project.model.Seance;
 import javaProject.project.model.Utilisateur;
 import javaProject.project.view.VueLogin;
+import javaProject.project.view.VuePlanningListe;
 import javaProject.project.view.VueCalendrier;
+import javaProject.project.view.VueRecap;
+
 import javax.swing.JOptionPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -28,10 +31,9 @@ public class LoginController {
 	@Autowired
 	private UtilisateurDao utilisateurDao;
 
-	private VueLogin view;
+	private VueLogin vueLogin;
 
-	private VueCalendrier calendar;
-
+	
 	private CurentUserSingleton Singleton = CurentUserSingleton.getInstance();
 
 	public LoginController() {
@@ -43,17 +45,18 @@ public class LoginController {
 		utilisateurDao.save(u);
 	}
 
-	public void login(String email, String password) {
+	public void login(String email, String password, CalendrierController calendrierController,VueCalendrier vueCalendrier,RecapControleur recapControleur,VueRecap vueRecap,PlanListeController planListeController, VuePlanningListe vuePlanningListe) {
 		Utilisateur u = new Utilisateur();
 		u = utilisateurDao.findFirstByEmailAndPassword(email , password);
 		if( u ==  null){
 			JOptionPane.showMessageDialog(null, "veuillez rentrer une bonne combinaison");
 		} else {
-			this.calendar.setVisible(true);
-			this.view.setVisible(false);
+			vueCalendrier.setVisible(true);
+			this.vueLogin.setVisible(false);
 
 			if (u.getDroit() == 4) {
 				Singleton.setInfo(u);
+
 			}
 			if (u.getDroit() == 3) {
 				Singleton.setInfo(u);
@@ -63,17 +66,20 @@ public class LoginController {
 			}if (u.getDroit() == 1) {
 				Singleton.setInfo(u);
 			}
+            calendrierController.initController(vueCalendrier,vueLogin);
+            recapControleur.initController(vueRecap,vueCalendrier);
+            planListeController.initController(vuePlanningListe);
+
 		}
 		System.out.println(u);
 	}
 
-	public void initController(VueLogin view) {
+	public void initController(VueLogin view, CalendrierController calendrierController,VueCalendrier calendar,RecapControleur recapControleur,VueRecap vueRecap,PlanListeController planListeController, VuePlanningListe vuePlanningListe) {
 		view.getRootPane().setDefaultButton(view.valider);
-		view.valider.addActionListener(e -> login(view.mail.getText(), view.mdp.getText()));
-		this.view = view;
+		view.valider.addActionListener(e -> login(view.mail.getText(), view.mdp.getText(),calendrierController,calendar,recapControleur,vueRecap,planListeController,vuePlanningListe));
+		this.vueLogin = view;
+		
 	}
 
-	public void setCalendrierView(VueCalendrier calendarView) {
-		this.calendar = calendarView;
-	}
+	
 }
