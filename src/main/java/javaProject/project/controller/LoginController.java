@@ -31,36 +31,36 @@ public class LoginController {
 
 	@Autowired
 	private UtilisateurDao utilisateurDao;
-	
+
 	@Autowired
 	RecapControleur recapControleur;
-	
+
 	@Autowired
 	CalendrierController calendrierController;
-	
+
 	@Autowired
 	PlanListeController planListeController;
-		
+
 	@Autowired
 	VueCalendrier vueCalendrier;
-	
+
 	@Autowired
 	VueRecap vueRecap;
-	
+
 	@Autowired
 	VuePlanningListe vuePlanningListe;
-  
-  @Autowired
-  ModifierController modifierController
-    
-  @Autowired
-  VueModifier vuemodifier
-  
-	
+
+	@Autowired
+	ModifierController modifierController;
+
+	@Autowired
+	VueModifier vuemodifier;
+
+
 	private VueLogin vueLogin;
 
 
-	
+
 	private CurentUserSingleton Singleton = CurentUserSingleton.getInstance();
 
 	public LoginController() {
@@ -94,11 +94,11 @@ public class LoginController {
 			}if (u.getDroit() == 1) {
 				Singleton.setInfo(u);
 			}
-            calendrierController.initController(vueCalendrier,vueLogin,vuemodifier);
-            recapControleur.initController(vueRecap,vueCalendrier);
-            planListeController.initController(vuePlanningListe);
-            modifierController.initController(vuemodifier);
-                
+			calendrierController.initController(vueCalendrier,vueLogin,vuemodifier);
+			recapControleur.initController(vueRecap,vueCalendrier);
+			planListeController.initController(vuePlanningListe);
+			modifierController.initController(vuemodifier);
+
 		}
 		System.out.println(u);
 	}
@@ -108,8 +108,8 @@ public class LoginController {
 		view.valider.addActionListener(e -> login(view.mail.getText(), view.mdp.getText()));
 
 		this.vueLogin = view;
-		
+
 	}
 
-	
+
 }

@@ -125,6 +125,7 @@ public class RecapControleur {
 			data = this.formatData(a);
 			view.setData(data);
 		}
+		
 		return data;
 	}
 

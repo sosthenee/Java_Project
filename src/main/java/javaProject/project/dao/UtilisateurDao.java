@@ -15,6 +15,8 @@ public interface UtilisateurDao extends JpaRepository<Utilisateur, Long>{
 	Utilisateur findByEmail(String email);
 	
 	Utilisateur findByNom(String nom);
+	
+	List<Utilisateur> findByDroit(int i);
         	
 	@SuppressWarnings("unchecked")
 	Utilisateur save(Utilisateur utilisateur);

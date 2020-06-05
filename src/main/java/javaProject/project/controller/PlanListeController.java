@@ -1,10 +1,13 @@
 package javaProject.project.controller;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import javax.swing.JButton;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -169,6 +172,10 @@ public class PlanListeController {
 			//Object[][] data = this.formatData(a);
 			view.setData(formatData(getListSeances(),view));
 		}
+		for ( int i =0 ; i< 52 ; i++){
+			view.buttonList.get(i).setBackground(new JButton().getBackground());
+		}
+		view.buttonList.get(semaine-1).setBackground(Color.cyan);
 	}
 	
 
