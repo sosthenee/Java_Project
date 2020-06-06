@@ -32,7 +32,7 @@ import org.springframework.stereotype.Component;
  *
  * @author sosthene
  */
-@Component
+
 public class VueModifier extends JFrame {
 
     public JComboBox day;

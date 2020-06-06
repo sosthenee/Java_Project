@@ -24,7 +24,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
 public class VueLogin extends JFrame {
   public JFormattedTextField mail = new JFormattedTextField();
   public JPasswordField mdp = new JPasswordField();

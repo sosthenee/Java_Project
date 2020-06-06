@@ -41,7 +41,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  * @author Oscar
  */
-@SpringBootApplication
 public class VueCalendrier extends JFrame {
 
     String title[] = {"Heure", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};

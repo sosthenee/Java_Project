@@ -25,7 +25,7 @@ import javaProject.project.view.VueCalendrier;
 import javaProject.project.view.VueRecap;
 
 @Component
-public class RecapControleur {
+public class RecapController {
 
 	@Autowired
 	UtilisateurDao utilisateurDaoR;

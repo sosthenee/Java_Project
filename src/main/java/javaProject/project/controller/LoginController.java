@@ -30,34 +30,56 @@ import org.springframework.stereotype.Component;
 public class LoginController {
 
 	@Autowired
-	private UtilisateurDao utilisateurDao;
+    private UtilisateurDao utilisateurDao;
 
-	@Autowired
-	RecapControleur recapControleur;
+    private VueCalendrier vueCalendrier;
 
-	@Autowired
-	CalendrierController calendrierController;
+    private VueLogin vueLogin;
 
-	@Autowired
-	PlanListeController planListeController;
+    private VuePlanningListe vuePlanningListe;
 
-	@Autowired
-	VueCalendrier vueCalendrier;
+    private VueModifier vuemodifier;
 
-	@Autowired
-	VueRecap vueRecap;
+    private VueRecap vueRecap;
+    
+     private CalendrierController calendrierController;
 
-	@Autowired
-	VuePlanningListe vuePlanningListe;
+    private RecapController recapController;
 
-	@Autowired
-	ModifierController modifierController;
+    private PlanListeController planListeController;
+    
+    public void setCalendrierController(CalendrierController calendrierController) {
+        this.calendrierController = calendrierController;
+    }
 
-	@Autowired
-	VueModifier vuemodifier;
+    public void setRecapController(RecapController recapController) {
+        this.recapController = recapController;
+    }
+
+    public void setPlanListeController(PlanListeController planListeController) {
+        this.planListeController = planListeController;
+    }
 
 
-	private VueLogin vueLogin;
+    public void setVueCalendrier(VueCalendrier vueCalendrier) {
+        this.vueCalendrier = vueCalendrier;
+    }
+
+    public void setVueLogin(VueLogin vueLogin) {
+        this.vueLogin = vueLogin;
+    }
+
+    public void setVuePlanningListe(VuePlanningListe vuePlanningListe) {
+        this.vuePlanningListe = vuePlanningListe;
+    }
+
+    public void setVuemodifier(VueModifier vuemodifier) {
+        this.vuemodifier = vuemodifier;
+    }
+
+    public void setVueRecap(VueRecap vueRecap) {
+        this.vueRecap = vueRecap;
+    }
 
 
 
@@ -82,22 +104,11 @@ public class LoginController {
 			vueCalendrier.setVisible(true);
 			this.vueLogin.setVisible(false);
 
-			if (u.getDroit() == 4) {
-				Singleton.setInfo(u);
+			Singleton.setInfo(u);
 
-			}
-			if (u.getDroit() == 3) {
-				Singleton.setInfo(u);
-			}
-			if (u.getDroit() == 2) {
-				Singleton.setInfo(u);
-			}if (u.getDroit() == 1) {
-				Singleton.setInfo(u);
-			}
-			calendrierController.initController(vueCalendrier,vueLogin,vuemodifier);
-			recapControleur.initController(vueRecap,vueCalendrier);
+			calendrierController.initController(vueCalendrier, vueLogin, vuemodifier ,vuePlanningListe , vueRecap ,  recapController , planListeController);
+			recapController.initController(vueRecap,vueCalendrier);
 			planListeController.initController(vuePlanningListe);
-			modifierController.initController(vuemodifier);
 
 		}
 		System.out.println(u);

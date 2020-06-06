@@ -40,7 +40,7 @@ import util.cst;
  *
  * @author Oscar
  */
-@SpringBootApplication
+
 public class VuePlanningListe extends JFrame{
 	String[] titre ={"", "","","",""};
 

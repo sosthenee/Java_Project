@@ -8,7 +8,7 @@ import javaProject.project.controller.LoginController;
 import javaProject.project.controller.ModifierController;
 
 import javaProject.project.controller.PlanListeController;
-import javaProject.project.controller.RecapControleur;
+import javaProject.project.controller.RecapController;
 
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -40,12 +40,32 @@ public class ProjectApplication {
                 
                 //Controllers
                 LoginController loginController = context.getBean(LoginController.class);
-                  
+                CalendrierController calendrierController = context.getBean(CalendrierController.class);
+                ModifierController modifierController = context.getBean(ModifierController.class);
+                PlanListeController planListeController = context.getBean(PlanListeController.class);
+                RecapController  recapController= context.getBean(RecapController.class);
+              
+                loginController.setCalendrierController(calendrierController);
+                loginController.setPlanListeController(planListeController);
+                loginController.setRecapController(recapController);
+                
                 //Views
-                VueLogin vueLogin = context.getBean(VueLogin.class);
-                       
+                VueLogin vueLogin = new VueLogin();
+                VueRecap vueRecap = new VueRecap();
+                VuePlanningListe vuePlanningListe = new VuePlanningListe();
+                VueModifier vuemodifier = new VueModifier();
+                VueCalendrier vueCalendrier = new VueCalendrier(vueRecap, vuePlanningListe);
+                
+                loginController.setVueCalendrier(vueCalendrier);
+                loginController.setVueLogin(vueLogin);
+                loginController.setVuePlanningListe(vuePlanningListe);
+                loginController.setVueRecap(vueRecap);
+                loginController.setVuemodifier(vuemodifier);
+                
+               
                 //initController
                 loginController.initController(vueLogin);
+                modifierController.initController(vuemodifier);
 
                 vueLogin.setVisible(true);
 

@@ -117,9 +117,6 @@ public class PlanListeController {
 		List<Seance> seanceVendredi = new ArrayList<Seance>();
 		List<Seance> seanceSamedi = new ArrayList<Seance>();
 		List<Object[][]> data = new ArrayList<Object[][]>();
-//		for(int var = 0;var<6;var++) {
-//			view.mesJours.get(var).hide();
-//		}
 
 		if(this.listSeances == null)
 		{
