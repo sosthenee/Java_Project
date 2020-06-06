@@ -39,6 +39,7 @@ public interface SeanceDao extends JpaRepository<Seance, Long> {
 
 	//GET BY SALLE
 	List<Seance> findBySalleContaining(Salle salle);
+	List<Seance> findBySemaineAndSalleContaining(int semaine , Salle salle );
 
 	@SuppressWarnings("unchecked")
 	Seance save(Seance seance);	

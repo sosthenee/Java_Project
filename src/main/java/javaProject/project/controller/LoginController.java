@@ -27,6 +27,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoginController {
 
+
     @Autowired
     private UtilisateurDao utilisateurDao;
 
@@ -53,6 +54,7 @@ public class LoginController {
     public void setRecapController(RecapController recapController) {
         this.recapController = recapController;
     }
+
 
     public void setPlanListeController(PlanListeController planListeController) {
         this.planListeController = planListeController;
@@ -90,6 +92,7 @@ public class LoginController {
         Utilisateur u = new Utilisateur(email, password);
         utilisateurDao.save(u);
     }
+
 
     public void login(String email, String password) {
 
