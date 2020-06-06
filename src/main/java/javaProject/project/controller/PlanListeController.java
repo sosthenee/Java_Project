@@ -1,10 +1,13 @@
 package javaProject.project.controller;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import javax.swing.JButton;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,6 +17,7 @@ import javaProject.project.dao.UtilisateurDao;
 import javaProject.project.model.Enseignant;
 import javaProject.project.model.Etudiant;
 import javaProject.project.model.Seance;
+import javaProject.project.model.Utilisateur;
 import javaProject.project.view.VueCalendrier;
 import javaProject.project.view.VueLogin;
 import javaProject.project.view.VuePlanningListe;
@@ -27,7 +31,7 @@ public class PlanListeController {
 	UtilisateurDao utilisateurDao;
 	@Autowired
 	SeanceDao seanceDao;
-	
+
 	private List<Seance> listSeances;
 
 	public List<Seance> getListSeances() {
@@ -37,9 +41,6 @@ public class PlanListeController {
 	public void setListSeances(List<Seance> oui) {
 		this.listSeances = oui;
 	}
-
-
-
 
 	private CurentUserSingleton Singleton = CurentUserSingleton.getInstance();
 
@@ -72,14 +73,14 @@ public class PlanListeController {
 
 
 			day[n][1] = itDay.getCours().getNom();
-                        if(itDay.getEnseignant().size()>0){
-			day[n][2] = "Mr/Mme " + itDay.getEnseignant().get(0).getNom();
-                        }
-                        if(itDay.getSalle().size()>0){
-                        day[n][3] = itDay.getSalle().get(0).getNom() + " - " + itDay.getSalle().get(0).getSite().getNom();
-                        }
-                        
-                        day[n][4] = itDay.getType_cours().getNom();
+			if(itDay.getEnseignant().size()>0){
+				day[n][2] = "Mr/Mme " + itDay.getEnseignant().get(0).getNom();
+			}
+			if(itDay.getSalle().size()>0){
+				day[n][3] = itDay.getSalle().get(0).getNom() + " - " + itDay.getSalle().get(0).getSite().getNom();
+			}
+
+			day[n][4] = itDay.getType_cours().getNom();
 
 			n++;
 		}
@@ -101,14 +102,11 @@ public class PlanListeController {
 
 		}
 
-		System.out.println("mais " + seances);
-		int l = 0;
-
 		for (Seance seance : seances) {
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(seance.getDate());
 			int day_of_week = calendar.get(Calendar.DAY_OF_WEEK);
-			
+
 
 			switch (day_of_week) {
 			case 1:
@@ -150,37 +148,61 @@ public class PlanListeController {
 
 		return data;
 	}
-	
+
 	public void allSeances(String email,  VuePlanningListe view , int semaine) {
 
 		if(Singleton.getInfo().getDroit() == 4) {
-			System.out.println("Seance etudiant");
 			Etudiant i = (Etudiant) utilisateurDao.findByEmail(email);
 			List<Seance> a = seanceDao.findBySemaineAndGroupeContaining(semaine,i.getGroupe());
 			setListSeances(a);
-			//Object[][] data = this.formatData(getListSeances(),view);
 			view.setData(formatData(getListSeances(),view));
 		}else if (Singleton.getInfo().getDroit() == 3) {
-			System.out.println("Seance enseignant");
 			Enseignant i = (Enseignant) utilisateurDao.findByEmail(email);
 			List<Seance> a = seanceDao.findBySemaineAndEnseignantContaining(semaine,i);
 			setListSeances(a);
-			System.out.println(a);
-			//Object[][] data = this.formatData(a);
 			view.setData(formatData(getListSeances(),view));
 		}
+		if(Singleton.getInfo().getDroit() == 1) {
+			Utilisateur utilisateur = utilisateurDao.findByEmail(email);
+			if(utilisateur == null) {
+				setListSeances(Collections.<Seance>emptyList());
+				view.Recherche.setText("Aucun utilisateur");
+			}else {
+				if(utilisateur.getDroit() == 4)
+				{
+					Etudiant i = (Etudiant) utilisateurDao.findByEmail(email);
+					List<Seance> a = seanceDao.findBySemaineAndGroupeContaining(semaine,i.getGroupe());
+					setListSeances(a);
+					view.setData(formatData(getListSeances(),view));
+
+				}
+				if(utilisateur.getDroit() == 3)
+				{
+					Enseignant i = (Enseignant) utilisateurDao.findByEmail(email);
+					List<Seance> a = seanceDao.findBySemaineAndEnseignantContaining(semaine,i);
+					setListSeances(a);
+					view.setData(formatData(getListSeances(),view));
+
+				}
+			}
+
+		}
+		for ( int i =0 ; i< 52 ; i++){
+			view.buttonList.get(i).setBackground(new JButton().getBackground());
+		}
+		view.buttonList.get(semaine-1).setBackground(Color.cyan);
 	}
-	
+
 
 	public void initController(VuePlanningListe vuePlanningListe) {
 		System.out.println("Init Controller Liste");
+		allSeances(Singleton.getInfo().getEmail(),vuePlanningListe , 1 );
 		for(int i = 0; i<vuePlanningListe.mesJours.size();i++)
 			vuePlanningListe.mesJours.get(i).hide();
 		for ( int i =0 ; i< 52 ; i++){
 			final int semaine = Integer.parseInt(vuePlanningListe.buttonList.get(i).getText());
 			vuePlanningListe.buttonList.get(i).addActionListener(e -> allSeances(Singleton.getInfo().getEmail(),vuePlanningListe , semaine ));
 		}
-		allSeances(Singleton.getInfo().getEmail(),vuePlanningListe , 1 );
 
 	}
 

@@ -26,7 +26,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-
 @EnableJpaRepositories
 @SpringBootApplication
 @EnableAutoConfiguration
@@ -41,18 +40,9 @@ public class ProjectApplication {
                 
                 //Controllers
                 LoginController loginController = context.getBean(LoginController.class);
-                CalendrierController calendrierController = context.getBean(CalendrierController.class);
-
-                
-                //Modifier Controller
-                ModifierController ModifierController = context.getBean(ModifierController.class);
-                
-               
-                //Recap Controller
-                RecapControleur recapControleur = context.getBean(RecapControleur.class);
-                PlanListeController planListeController = context.getBean(PlanListeController.class);
-                
+                  
                 //Views
+
                 VueLogin vueLogin = new VueLogin();
                 VueRecap vueRecap = new VueRecap();
                 VuePlanningListe vuePlanningListe = new VuePlanningListe();
@@ -61,7 +51,8 @@ public class ProjectApplication {
                 VueModifier vuemodifier = new VueModifier();
                 
                 //initController
-                loginController.initController(vueLogin,calendrierController,vueCalendrier,recapControleur,vueRecap,planListeController,vuePlanningListe, ModifierController ,vuemodifier);
+                loginController.initController(vueLogin);
+
                 vueLogin.setVisible(true);
 
             });

@@ -53,7 +53,8 @@ public class VueCalendrier extends JFrame {
     private JMenuItem ItemCours1 = new JMenuItem("Emploi du temps");
     public JMenuItem ItemCours2 = new JMenuItem("Recapitulatif des cours");
     private JPanel navbar = new JPanel();
-    private JPanel navbarInf = new JPanel();
+    public JPanel navbarInf = new JPanel();
+    public JPanel navbarInfInter = new JPanel();
     private JPanel principal = new JPanel();
     private JPanel semaines = new JPanel();
     private JPanel calendar = new JPanel();
@@ -62,13 +63,15 @@ public class VueCalendrier extends JFrame {
     public TableCalendrier model;
     public Color couleur;
 
-
+    public JComboBox ComboChoixSelect = new JComboBox();
     public JComboBox ComboAff = new JComboBox();
     public JComboBox ComboRecherche = new JComboBox();
     public JTabbedPane Onglets =new JTabbedPane();
     public JTextField Recherche = new JTextField("Rechercher");
+    public JComboBox listeRecherhe = new JComboBox();
     public JPanel Onglet1 =new JPanel();
     public JPanel Onglet2 =new JPanel(); 
+    public String[] objectList = new String[10];
 
 
 
@@ -79,7 +82,7 @@ public class VueCalendrier extends JFrame {
         this.setTitle("HyperPlanning");
         this.setSize(1000, 1000);
         
-         JPanel Onglet1 =new JPanel();
+        JPanel Onglet1 =new JPanel();
         Onglet1.setLayout(new BorderLayout());
         JPanel Onglet2 =new JPanel(); 
         Onglet2.setLayout(new BorderLayout());
@@ -91,15 +94,18 @@ public class VueCalendrier extends JFrame {
         Accueil.setBackground(Color.DARK_GRAY);
         String[] choixAff = {"Planning en grille", "Planning en liste"};
         String[] choixRecherche = {"Rechercher par nom", "Rechercher par liste"};
-        
-        
+        String[] choixSelcet = {"Etudiant", "Enseignant","Groupe","Salle","Promotion"};
+
+        ComboChoixSelect = new JComboBox(choixSelcet);
+        listeRecherhe = new JComboBox(objectList);
         ComboAff = new JComboBox(choixAff);
         ComboRecherche = new JComboBox(choixRecherche);
         semaines.setLayout(new GridLayout(1, 52));
         calendar.setLayout(new BorderLayout());
         principal.setLayout(new BorderLayout());
         navbar.setLayout(new BorderLayout());
-        navbarInf.setLayout(new GridLayout (1,4, 7, 0));
+        navbarInf.setLayout(new GridLayout (1,5, 7, 0));
+        navbarInfInter.setLayout(new BorderLayout());
 
         this.MenuSalles.add(ItemSalles1);
         this.MenuSalles.add(ItemSalles2);
@@ -111,8 +117,10 @@ public class VueCalendrier extends JFrame {
 
         navbar.add(navigation);
         navbarInf.add(ComboAff);
-        navbarInf.add(Recherche);
+        navbarInf.add(ComboChoixSelect);
         navbarInf.add(ComboRecherche);
+        navbarInfInter.add(Recherche, BorderLayout.CENTER);
+        navbarInf.add(navbarInfInter);
 
         semaines.setPreferredSize(new Dimension(2600, 50));
 
@@ -214,6 +222,11 @@ public class VueCalendrier extends JFrame {
     public void setData(Object[][] data) {
         tableau.setModel(new TableCalendrier(data, title));
     }
+    
+    public void setList(String[]objectList) {
+    	this.listeRecherhe = new JComboBox(objectList);
+	}
+    
 
     public Color setColor(String color) {
 
