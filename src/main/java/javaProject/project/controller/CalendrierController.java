@@ -90,7 +90,8 @@ public class CalendrierController {
     Map<String, Seance> mapCoordToSeance = new HashMap<String, Seance>();
 
     private CurentUserSingleton Singleton = CurentUserSingleton.getInstance();
-
+    
+    private List<Seance> listSeances;	
 
 	public List<Seance> getListSeances() {
 		return listSeances;
