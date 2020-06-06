@@ -8,7 +8,9 @@ import java.awt.event.ActionEvent;
 
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 import javaProject.project.dao.CoursDao;
 import javaProject.project.dao.EnseignantDao;
@@ -74,7 +76,11 @@ public class CalendrierController {
 
     @Autowired
     SalleDao salleDao;
+    
+    
     private Object[][] data;
+    
+    Map<String, Seance> mapCoordToSeance = new HashMap<String, Seance>();
 
     private CurentUserSingleton Singleton = CurentUserSingleton.getInstance();
 
@@ -146,10 +152,14 @@ public class CalendrierController {
 
                 data[i][day_of_week - 1] = "<html> type de cours : " + seance.getType_cours().getNom() + "<br>" + "  cours :  " + seance.getCours().getNom()
                     + "  Professeur :  " + enseiSenace + "  salle :  " + salleSeance + "</html>";
+                
+                mapCoordToSeance.put(String.valueOf(i) + "-" + String.valueOf(day_of_week - 1), seance);
             }
             if (index_fin - index_debut < 2) {
                 data[index_debut][day_of_week - 1] = "<html> type de cours : " + seance.getType_cours().getNom() + "<br>" + "  cours :  " + seance.getCours().getNom()
                     + "  Professeur :  " + enseiSenace + "  salle :  " + salleSeance + "</html>";
+                
+                mapCoordToSeance.put(String.valueOf(index_debut) + "-" + String.valueOf(day_of_week - 1), seance);
             }
         }
         return data;
@@ -168,6 +178,14 @@ public class CalendrierController {
             System.out.println("Seance enseignant");
             Enseignant i = (Enseignant) utilisateurDao.findByEmail(email);
             List<Seance> a = seanceDao.findBySemaineAndEnseignantContaining(semaine, i);
+            setListSeances(a);
+            System.out.println(a);
+            Object[][] data = this.formatData(a);
+            view.setData(data);
+        } else if (Singleton.getInfo().getDroit() == 1) {
+            System.out.println("Seance enseignant");
+            Utilisateur i = (Utilisateur) utilisateurDao.findByEmail(email);
+            List<Seance> a = seanceDao.findBySemaine(semaine);
             setListSeances(a);
             System.out.println(a);
             Object[][] data = this.formatData(a);
@@ -221,6 +239,17 @@ public class CalendrierController {
         view3.groupesList.clear();
         view3.matiereList.clear();
     }
+    
+    public void populateData(VueModifier view3, String hour, String minute, String hourEnd, String minuteEnd, String header) {
+        view3.setListEnseignant(DaoGetListData(enseignantDao));
+        view3.setListCours(DaoGetListData(coursDao));
+        view3.setListGroupe(DaoGetListData(groupeDao));
+        view3.setListType_cours(DaoGetListData(TypeCoursDao));
+        view3.setListPromotion(DaoGetListData(promotionDao));
+        view3.setListSalle(DaoGetListData(salleDao));
+        view3.setListSite(DaoGetListData(siteDao));
+        view3.setCoordinates(hour, minute, hourEnd, minuteEnd, header);
+    }
 
     public void initController(VueCalendrier vueCalendrier, VueLogin vueLogin, VueModifier view3) {
         System.out.println("Init Controller Calendrier");
@@ -232,6 +261,7 @@ public class CalendrierController {
         }
 //		view.Recherche.addActionListener(e -> edtFindByName(view.Recherche.getText(),view , semaine ));		
         vueCalendrier.tableau.addMouseListener(new MouseAdapter() {
+
             @Override
             public void mouseClicked(final MouseEvent e) {
                 if (e.getClickCount() == 1) {
@@ -240,27 +270,38 @@ public class CalendrierController {
                     final int column = jTable.getSelectedColumn();
                     final String header = jTable.getColumnName(column);
                     final String valueInCell = (String) jTable.getValueAt(row, column);
-                    if (valueInCell.length() <= 1) {
-                        if (column != 0) {
-                            resetData(view3);
-                            view3.setVisible(true);
-                            view3.setListEnseignant(DaoGetListData(enseignantDao));
-                            view3.setListCours(DaoGetListData(coursDao));
-                            view3.setListGroupe(DaoGetListData(groupeDao));
-                            view3.setListType_cours(DaoGetListData(TypeCoursDao));
-                            view3.setListPromotion(DaoGetListData(promotionDao));
-                            view3.setListSalle(DaoGetListData(salleDao));
-                            view3.setListSite(DaoGetListData(siteDao));
-                            view3.setCoordinates(row, column, header);
-                        }
+                    final String valueOfTime = (String) jTable.getValueAt(row, 0);
+                   
 
-                    } else {
-                        view3.setVisible(true);
+                    String hour = valueOfTime.substring(0, 2);
+                    String minute = valueOfTime.substring(3, 5);
+                    
+                    String hourEnd = valueOfTime.substring(8, 10);
+                    String minuteEnd = valueOfTime.substring(11, 13);
+                    
+                    System.out.print(minute);
+                    if (Singleton.getInfo().getDroit() == 1) {
+                        if (valueInCell.length() <= 1) {
+                            if (column != 0) {
+                                resetData(view3);
+                                view3.setCurrentSession(null);
+                                populateData(view3, hour, minute, hourEnd, minuteEnd, header);
+                                view3.setVisible(true);
+                                view3.setButtonContent("Create session");
+                            }
+                        } else {
+                            if (column != 0) {
+                                resetData(view3);
+                                populateData(view3, hour, minute, hourEnd, minuteEnd, header);
+                                view3.setCurrentSession(mapCoordToSeance.get(row+"-"+column));
+                                view3.setButtonContent("Update session");
+                                view3.setVisible(true);
+                            }
+                        }
                     }
                 }
             }
         }
         );
     }
-
 }

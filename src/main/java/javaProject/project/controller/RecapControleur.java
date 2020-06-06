@@ -93,7 +93,7 @@ public class RecapControleur {
 			}
 			//ADD cours if new cours
 			if(ocur == 0) {
-				data[colData][0] = seance.getCours().getNom();
+                                data[colData][0] = seance.getCours().getNom();
 				data[colData][1] =  seance.getDate();
 				data[colData][2] = seance.getDate();
 				data[colData][3] =  h + "h" + mi  ;
