@@ -24,6 +24,7 @@ import javax.swing.JButton;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+
 import javaProject.project.dao.SeanceDao;
 import javaProject.project.dao.SiteDao;
 import javaProject.project.dao.TypeCoursDao;
@@ -85,7 +86,7 @@ public class CalendrierController {
 	VueRecap vueRecap;
 	@Autowired
 	RecapControleur recapControleur;
-	
+
 	@Autowired
 	VuePlanningListe vuePlanningListe;
 	@Autowired
@@ -198,9 +199,13 @@ public class CalendrierController {
 	{
 		setListSeances(seanceDao.findBySemaineAndGroupeContaining(semaine, groupe));
 	}
-	
+	public void findSeanceSalle(Salle salle, int semaine)
+	{
+		setListSeances(seanceDao.findBySemaineAndSalleContaining(semaine, salle));
+	}
+
 	public void allSeances(String email,  VueCalendrier view , int semaine) {
-		
+
 		if(Singleton.getInfo().getDroit() == 4) {
 			Etudiant etudiant = (Etudiant) utilisateurDao.findByEmail(email);
 			findSeanceEtudiant(etudiant, semaine);
@@ -210,38 +215,45 @@ public class CalendrierController {
 			findSeanceEnseignant(enseignant, semaine);
 		}
 		if(Singleton.getInfo().getDroit() == 1) {
-			Utilisateur utilisateur = utilisateurDao.findByEmail(getEmailRechString());
-			if(utilisateur == null) {
-				setListSeances(Collections.<Seance>emptyList());
-				view.Recherche.setText("Aucun utilisateur");
-			}else {
-				if(utilisateur.getDroit() == 4)
-				{
-					Etudiant etudiant = (Etudiant) utilisateur;
-					findSeanceEtudiant(etudiant, semaine);
-
-				}
-				if(utilisateur.getDroit() == 3)
-				{
-					Enseignant enseignant = (Enseignant) utilisateur;
-					findSeanceEnseignant(enseignant, semaine);
-
+			if((getEmailRechString()!= null)&&(getEmailRechString().split("/")[0].equals("groupeSearch")))
+			{
+				Groupe groupe = groupeDao.findByNom(getEmailRechString().split("/")[1]);
+				findSeanceGroupe(groupe, semaine);
+			}
+			else if((getEmailRechString()!= null)&&(getEmailRechString().split("/")[0].equals("salleSearch")))
+			{
+				Salle salle = salleDao.findByNom(getEmailRechString().split("/")[1]);
+				findSeanceSalle(salle, semaine);
+			}
+			else {
+				Utilisateur utilisateur = utilisateurDao.findByEmail(getEmailRechString());
+				if(utilisateur == null) {
+					setListSeances(Collections.<Seance>emptyList());
+					view.Recherche.setText("Aucun utilisateur");
+				}else {
+					if(utilisateur.getDroit() == 4)
+					{
+						Etudiant etudiant = (Etudiant) utilisateur;
+						findSeanceEtudiant(etudiant, semaine);
+					}
+					if(utilisateur.getDroit() == 3)
+					{
+						Enseignant enseignant = (Enseignant) utilisateur;
+						findSeanceEnseignant(enseignant, semaine);
+					}
 				}
 			}
-
 		}
 		view.setData(this.formatData(getListSeances()));
-		
 		for ( int i =0 ; i< 52 ; i++){
 			view.buttonList.get(i).setBackground(new JButton().getBackground());		
-			}
+		}
 		view.buttonList.get(semaine-1).setBackground(Color.cyan);
-	
 	}
 
-
+	//ADMIN
 	public void edtFindByName(String name, VueCalendrier view, int semaine) {
-		
+
 		String typeTofecthString = view.ComboChoixSelect.getModel().getSelectedItem().toString();
 
 		if(typeTofecthString.equals("Etudiant")) 
@@ -249,8 +261,8 @@ public class CalendrierController {
 			Utilisateur utilisateur = utilisateurDao.findByNom(name);
 
 			if(utilisateur == null) {
+				view.Recherche.setText("Aucun Etudiant");
 				setListSeances(Collections.<Seance>emptyList());
-				view.Recherche.setText("Aucun utilisateur");
 			}else
 			{
 				if(utilisateur.getDroit() == 4) {
@@ -259,12 +271,15 @@ public class CalendrierController {
 					recapControleur.allSeances(getEmailRechString(), vueRecap);
 					planListeController.allSeances(getEmailRechString(), vuePlanningListe, semaine);
 				}
-				
 				else {
-					view.Recherche.setText("Aucun utilisateur");
+					view.Recherche.setText("Aucun Etudiant");
+					setListSeances(Collections.<Seance>emptyList());
+					view.setData(this.formatData(getListSeances()));
+					vueRecap.setData(recapControleur.formatData(getListSeances()));
+					vuePlanningListe.setData(planListeController.formatData(getListSeances(), vuePlanningListe));
 				}
-				
 			}
+
 		}
 
 		if(typeTofecthString.equals("Enseignant")) 
@@ -273,7 +288,10 @@ public class CalendrierController {
 
 			if(utilisateur == null) {
 				setListSeances(Collections.<Seance>emptyList());
-				view.Recherche.setText("Aucun utilisateur");
+				view.Recherche.setText("Aucun Enseignant");
+				view.setData(this.formatData(getListSeances()));
+				vueRecap.setData(recapControleur.formatData(getListSeances()));
+				vuePlanningListe.setData(planListeController.formatData(getListSeances(), vuePlanningListe));
 			}else
 			{
 				if(utilisateur.getDroit() == 3) {
@@ -284,48 +302,114 @@ public class CalendrierController {
 
 				}
 				else {
-					view.Recherche.setText("Aucun utilisateur");
+					view.Recherche.setText("Aucun Enseignant");
+					setListSeances(Collections.<Seance>emptyList());
+					view.setData(this.formatData(getListSeances()));
+					vueRecap.setData(recapControleur.formatData(getListSeances()));
+					vuePlanningListe.setData(planListeController.formatData(getListSeances(), vuePlanningListe));
 				}
 			}
 		}
 		if(typeTofecthString.equals("Groupe")) {
+
 			Groupe groupe = groupeDao.findByNom(name);
 			if(groupe == null) {
 				setListSeances(Collections.<Seance>emptyList());
 				view.Recherche.setText("Aucun Groupe");
+				view.setData(this.formatData(getListSeances()));
+				vueRecap.setData(recapControleur.formatData(getListSeances()));
+				vuePlanningListe.setData(planListeController.formatData(getListSeances(), vuePlanningListe));
 			}
-			
+			else {
+				setEmailRechString("groupeSearch/" + groupe.getNom());
+				allSeances("", view, semaine);
+				recapControleur.allSeances(getEmailRechString(), vueRecap);
+				planListeController.allSeances(getEmailRechString(), vuePlanningListe, semaine);
+			}
+		}
+
+		if(typeTofecthString.equals("Salle")) {
+			Salle salle = salleDao.findByNom(name);
+
+			if(salle == null) {
+				setListSeances(Collections.<Seance>emptyList());
+				view.Recherche.setText("Aucune Salle");
+				view.setData(this.formatData(getListSeances()));
+				vueRecap.setData(recapControleur.formatData(getListSeances()));
+				vuePlanningListe.setData(planListeController.formatData(getListSeances(), vuePlanningListe));
+			}
+			else {
+				setEmailRechString("salleSearch/" + salle.getNom());
+				allSeances("", view, semaine);
+				recapControleur.allSeances(getEmailRechString(), vueRecap);
+				planListeController.allSeances(getEmailRechString(), vuePlanningListe, semaine);
+			}
 		}
 
 	}
 
-	public void reset(VueCalendrier vueCalendrier, VueLogin vueLogin, int semaine) {
-		setEmailRechString(vueLogin.mail.getText());
-		vueCalendrier.Recherche.setText(null);
-		allSeances(vueLogin.mail.getText(),vueCalendrier ,semaine);
-	}
 
-	public String[] getList() {
-		List<Utilisateur> userList = utilisateurDao.findByDroit(4);
-		String[] listuser = new String[userList.size()];
-		int i =0;
-		for(Utilisateur it : userList) {
-			listuser[i] = it.getNom();
-			i++;
+	public String[] getList(String type) {
+
+		//ETUDIANT
+		if(type.equals("Etudiant")) {
+			List<Utilisateur> userList = utilisateurDao.findByDroit(4);
+			String[] listtElement = new String[userList.size()];
+			int i =0;
+			for(Utilisateur it : userList) {
+				listtElement[i] = it.getNom();
+				i++;
+			}
+			return listtElement;
+		}else if(type.equals("Enseignant")) {
+			List<Utilisateur> userList = utilisateurDao.findByDroit(3);
+			String[] listtElement = new String[userList.size()];
+			int i =0;
+			for(Utilisateur it : userList) {
+				listtElement[i] = it.getNom();
+				i++;
+			}
+			return listtElement;
 		}
-		return listuser;
+		else if(type.equals("Groupe")) {
+			List<Groupe> groupeList = groupeDao.findAll();
+			String[] listtElement = new String[groupeList.size()];
+			int i =0;
+			for(Groupe it : groupeList) {
+				listtElement[i] = it.getNom();
+				i++;
+			}	
+			return listtElement;
+		}
+		else if(type.equals("Salle")) {
+			List<Salle> SalleList = salleDao.findAll();
+			String[] listtElement = new String[SalleList.size()];
+			int i =0;
+			for(Salle it : SalleList) {
+				listtElement[i] = it.getNom();
+				i++;
+			}
+			return listtElement;
+		}
+		return null;
 	}
 
 	public void rechercheType(String type_recherche, VueCalendrier vueCalendrier) {
+		String typeTofecthString = vueCalendrier.ComboChoixSelect.getModel().getSelectedItem().toString();
 		if(type_recherche.equals("Rechercher par liste")) {
-			vueCalendrier.setList(getList());
+			vueCalendrier.setList(getList(typeTofecthString));
 			vueCalendrier.Recherche.setVisible(false);
 			vueCalendrier.listeRecherhe.setVisible(true);
-			vueCalendrier.navbarInfInter.add(vueCalendrier.listeRecherhe,BorderLayout.CENTER);
 		}else {
 			vueCalendrier.Recherche.setVisible(true);
 			vueCalendrier.listeRecherhe.setVisible(false);
-			vueCalendrier.navbarInfInter.add(vueCalendrier.Recherche,BorderLayout.CENTER);
+		}
+	}
+
+	public void test(VueCalendrier vueCalendrier) {
+		for ( int i =0 ; i< 52 ; i++){
+			final int semaine = Integer.parseInt(vueCalendrier.buttonList.get(i).getText());
+			vueCalendrier.listeRecherhe.addActionListener(l->edtFindByName(getEmailRechString(),vueCalendrier , semaine ));
 		}
 	}
 
@@ -353,21 +437,21 @@ public class CalendrierController {
 		System.out.println("Init Controller Calendrier");
 		allSeances(vueLogin.mail.getText(), vueCalendrier, 1);
 		setEmailRechString(vueLogin.mail.getText());
+		vueCalendrier.listeRecherhe.hide();
 		for ( int i =0 ; i< 52 ; i++){
 			final int semaine = Integer.parseInt(vueCalendrier.buttonList.get(i).getText());
 			vueCalendrier.buttonList.get(i).addActionListener(e -> allSeances(getEmailRechString(),vueCalendrier , semaine ));
 			vueCalendrier.Recherche.addActionListener(e -> edtFindByName(vueCalendrier.Recherche.getText(),vueCalendrier , semaine ));		
-			vueCalendrier.Accueil.addActionListener(e -> reset(vueCalendrier, vueLogin, semaine));
 			vuePlanningListe.buttonList.get(i).addActionListener(e -> planListeController.allSeances(getEmailRechString(),vuePlanningListe , semaine ));
-
+			vueCalendrier.listeRecherhe.addActionListener(e ->edtFindByName(vueCalendrier.listeRecherhe.getModel().getSelectedItem().toString(),vueCalendrier , semaine ));
 		}
 		if(Singleton.getInfo().getDroit() != 1) {
 			vueCalendrier.ComboChoixSelect.setVisible(false);
 			vueCalendrier.ComboRecherche.setVisible(false);
 			vueCalendrier.Recherche.setVisible(false);
 		}
+		vueCalendrier.ComboChoixSelect.addActionListener(l-> rechercheType((String)vueCalendrier.ComboRecherche.getModel().getSelectedItem(),vueCalendrier));
 		vueCalendrier.ComboRecherche.addActionListener(emailRechString -> rechercheType((String)vueCalendrier.ComboRecherche.getModel().getSelectedItem(),vueCalendrier));
-
 		vueCalendrier.tableau.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(final MouseEvent e) {

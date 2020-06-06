@@ -20,6 +20,9 @@ import java.util.Calendar;
 import static java.util.Calendar.DAY_OF_WEEK;
 import java.util.List;
 import javaProject.project.model.Seance;
+
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -71,7 +74,6 @@ public class VueCalendrier extends JFrame {
     public JComboBox listeRecherhe = new JComboBox();
     public JPanel Onglet1 =new JPanel();
     public JPanel Onglet2 =new JPanel(); 
-    public String[] objectList = new String[10];
 
 
 
@@ -94,10 +96,10 @@ public class VueCalendrier extends JFrame {
         Accueil.setBackground(Color.DARK_GRAY);
         String[] choixAff = {"Planning en grille", "Planning en liste"};
         String[] choixRecherche = {"Rechercher par nom", "Rechercher par liste"};
-        String[] choixSelcet = {"Etudiant", "Enseignant","Groupe","Salle","Promotion"};
+        String[] choixSelcet = {"Etudiant", "Enseignant","Groupe","Salle"};
 
         ComboChoixSelect = new JComboBox(choixSelcet);
-        listeRecherhe = new JComboBox(objectList);
+        listeRecherhe = new JComboBox();
         ComboAff = new JComboBox(choixAff);
         ComboRecherche = new JComboBox(choixRecherche);
         semaines.setLayout(new GridLayout(1, 52));
@@ -119,8 +121,11 @@ public class VueCalendrier extends JFrame {
         navbarInf.add(ComboAff);
         navbarInf.add(ComboChoixSelect);
         navbarInf.add(ComboRecherche);
-        navbarInfInter.add(Recherche, BorderLayout.CENTER);
-        navbarInf.add(navbarInfInter);
+        navbarInf.add(Recherche);
+        navbarInf.add(listeRecherhe);
+
+ 
+
 
         semaines.setPreferredSize(new Dimension(2600, 50));
 
@@ -250,8 +255,9 @@ public class VueCalendrier extends JFrame {
         tableau.setModel(new TableCalendrier(data, title));
     }
     
-    public void setList(String[]objectList) {
-    	this.listeRecherhe = new JComboBox(objectList);
+    @SuppressWarnings("unchecked")
+	public void setList(String[]objectList) {
+    	this.listeRecherhe.setModel( new DefaultComboBoxModel(objectList) );
 	}
     
 
