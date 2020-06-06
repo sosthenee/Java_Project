@@ -83,13 +83,7 @@ public class CalendrierController {
     @Autowired
     SalleDao salleDao;
 
-    private VueRecap vueRecap;
-
-    private VuePlanningListe vuePlanningListe;
-
-    private RecapController recapController;
-
-    private PlanListeController planListeController;
+  
 
     private Object[][] data;
 
@@ -239,7 +233,7 @@ public class CalendrierController {
 
     }
 
-    public void edtFindByName(String name, VueCalendrier view, int semaine ,  VuePlanningListe vuePlanningListe) {
+    public void edtFindByName(String name, VueCalendrier view, int semaine ,  VuePlanningListe vuePlanningListe, VueRecap vueRecap ,RecapController recapController, PlanListeController planListeController) {
 
         String typeTofecthString = view.ComboChoixSelect.getModel().getSelectedItem().toString();
 
@@ -352,16 +346,16 @@ public class CalendrierController {
         view3.setCoordinates(hour, minute, hourEnd, minuteEnd, header);
     }
 
-    public void initController(VueCalendrier vueCalendrier, VueLogin vueLogin, VueModifier view3 , VuePlanningListe vuePlanningListe) {
+    public void initController(VueCalendrier vueCalendrier, VueLogin vueLogin, VueModifier view3 , VuePlanningListe vuePlanningListe , VueRecap vueRecap ,RecapController recapController ,PlanListeController planListeController) {
         System.out.println("Init Controller Calendrier");
         allSeances(vueLogin.mail.getText(), vueCalendrier, 1);
         setEmailRechString(vueLogin.mail.getText());
         for (int i = 0; i < 52; i++) {
             final int semaine = Integer.parseInt(vueCalendrier.buttonList.get(i).getText());
             vueCalendrier.buttonList.get(i).addActionListener(e -> allSeances(getEmailRechString(), vueCalendrier, semaine));
-            vueCalendrier.Recherche.addActionListener(e -> edtFindByName(vueCalendrier.Recherche.getText(), vueCalendrier, semaine , vuePlanningListe ));
+            vueCalendrier.Recherche.addActionListener(e -> edtFindByName(vueCalendrier.Recherche.getText(), vueCalendrier, semaine , vuePlanningListe , vueRecap , recapController , planListeController));
             vueCalendrier.Accueil.addActionListener(e -> reset(vueCalendrier, vueLogin, semaine));
-            vuePlanningListe.buttonList.get(i).addActionListener(e -> planListeController.allSeances(getEmailRechString(), vuePlanningListe, semaine));
+            vuePlanningListe.buttonList.get(i).addActionListener(e -> planListeController.allSeances(getEmailRechString(), vuePlanningListe, semaine ));
 
         }
         if (Singleton.getInfo().getDroit() != 1) {
