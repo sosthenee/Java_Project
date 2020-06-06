@@ -48,10 +48,7 @@ public class VueCalendrier extends JFrame {
 
     public JTable tableau;
     private JMenuBar navigation = new JMenuBar();
-    private JMenu MenuSalles = new JMenu("Salles");
-    public JButton Accueil = new JButton ("Accueil");
-    private JMenuItem ItemSalles1 = new JMenuItem("Emploi du Temps");
-    private JMenuItem ItemSalles2 = new JMenuItem("Salles Libres");
+    private JMenu MenuReport = new JMenu("Reporting");
     private JMenu MenuCours = new JMenu("Cours");
     private JMenuItem ItemCours1 = new JMenuItem("Emploi du temps");
     public JMenuItem ItemCours2 = new JMenuItem("Recapitulatif des cours");
@@ -92,8 +89,6 @@ public class VueCalendrier extends JFrame {
         Onglets.add("Planning",Onglet1);  
         Onglets.add("Récapitulatif des cours",Onglet2);
         
-        Accueil.setForeground(Color.WHITE);
-        Accueil.setBackground(Color.DARK_GRAY);
         String[] choixAff = {"Planning en grille", "Planning en liste"};
         String[] choixRecherche = {"Rechercher par nom", "Rechercher par liste"};
         String[] choixSelcet = {"Etudiant", "Enseignant","Groupe","Salle"};
@@ -109,13 +104,11 @@ public class VueCalendrier extends JFrame {
         navbarInf.setLayout(new GridLayout (1,5, 7, 0));
         navbarInfInter.setLayout(new BorderLayout());
 
-        this.MenuSalles.add(ItemSalles1);
-        this.MenuSalles.add(ItemSalles2);
+      
         this.MenuCours.add(ItemCours1);
         this.MenuCours.add(ItemCours2);
-        this.navigation.add(Accueil);
         this.navigation.add(MenuCours);
-        this.navigation.add(MenuSalles);
+        this.navigation.add(MenuReport);
 
         navbar.add(navigation);
         navbarInf.add(ComboAff);
