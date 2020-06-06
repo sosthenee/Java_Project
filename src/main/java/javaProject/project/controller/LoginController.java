@@ -102,7 +102,7 @@ public class LoginController {
             this.vueLogin.setVisible(false);
             Singleton.setInfo(u);
 
-            calendrierController.initController(vueCalendrier, vueLogin, vuemodifier ,vuePlanningListe);
+            calendrierController.initController(vueCalendrier, vueLogin, vuemodifier ,vuePlanningListe , vueRecap ,  recapController , planListeController);
             recapController.initController(vueRecap, vueCalendrier);
             planListeController.initController(vuePlanningListe);
 
