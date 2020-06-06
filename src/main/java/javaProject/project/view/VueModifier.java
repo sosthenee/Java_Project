@@ -15,6 +15,7 @@ import javaProject.project.model.EnumerableElement;
 import javaProject.project.model.Groupe;
 import javaProject.project.model.Promotion;
 import javaProject.project.model.Salle;
+import javaProject.project.model.Seance;
 import javaProject.project.model.Site;
 import javaProject.project.model.Type_cours;
 import javax.swing.DefaultListModel;
@@ -36,7 +37,6 @@ import org.springframework.stereotype.Component;
 public class VueModifier extends JFrame {
 
     public JComboBox day;
-    public JComboBox month;
     public JComboBox year;
     public JComboBox hour_debut;
     public JComboBox minute_debut;
@@ -51,6 +51,8 @@ public class VueModifier extends JFrame {
     public JComboBox salle;
     public JComboBox site;
     public JComboBox type;
+    
+    public String buttonTitle;
 
     private JLabel messageLabe1;
 
@@ -70,10 +72,10 @@ public class VueModifier extends JFrame {
     DefaultListModel<String> model2 = new DefaultListModel<>();
 
     private final int WINDOW_WIDTH = 400;
-    private final int WINDOW_HEIGHT = 500;
-    private int col;
-    private int row;
-    private String header;
+    private final int WINDOW_HEIGHT = 700;
+    
+    public Seance currentSession;
+  
 
     public VueModifier() {
 
@@ -85,20 +87,16 @@ public class VueModifier extends JFrame {
 
     private void createPanel() {
 
-        String[] months = {"January", "February", "Mars", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
         //String[] days = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
         String[] years = {"2020", "2021"};
         String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-        
         String[] hours = {"08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21"};
         String[] minutes = {"00", "30"};
         String[] semaines = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25",
             "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52"};
 
-        month = new JComboBox(months);
+      
         day = new JComboBox(days);
-        
-        
         year = new JComboBox(years);
         semaine = new JComboBox(semaines);
 
@@ -117,13 +115,10 @@ public class VueModifier extends JFrame {
         site = new JComboBox();
         type = new JComboBox();
 
-        button = new JButton("Changer le cours ");
+        button = new JButton("-");
 
         this.panel.add(messageLabe1 = new JLabel("Choisir un jour"));
         this.panel.add(day);
-
-        this.panel.add(messageLabe1 = new JLabel("Choisir un mois"));
-        this.panel.add(month);
 
         this.panel.add(messageLabe1 = new JLabel("Choisir une semaine"));
         this.panel.add(semaine);
@@ -232,14 +227,36 @@ public class VueModifier extends JFrame {
         }
     }
 
-    public void setCoordinates(int row, int col , String header) {
-        this.row = row;
-        this.col = col;
-        this.header = header;
+    public void setCoordinates(String hour, String minute , String hourEnd, String minuteEnd,  String header) {
+      
         day.setEditable(true);
         day.setSelectedItem(header);
         day.setEditable(false);
         
+        hour_debut.setEditable(true);
+        hour_debut.setSelectedItem(hour);
+        hour_debut.setEditable(false);
+
+        hour_fin.setEditable(true);
+        hour_fin.setSelectedItem(hourEnd);
+        hour_fin.setEditable(false);
+        
+        minute_debut.setEditable(true);
+        minute_debut.setSelectedItem(minute);
+        minute_debut.setEditable(false);
+        
+        minute_fin.setEditable(true);
+        minute_fin.setSelectedItem(minuteEnd);
+        minute_fin.setEditable(false);
+
+    }
+    
+    
+      public void setButtonContent(String title) {
+        this.button.setText(title);
     }
 
+    public void setCurrentSession(Seance session) {
+        this.currentSession = session;
+    }
 }

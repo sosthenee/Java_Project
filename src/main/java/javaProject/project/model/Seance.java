@@ -196,6 +196,11 @@ public class Seance {
 	public void setSalle(List<Salle> salle) {
 		this.salle = salle;
 	}
+        
+        
+        public void setGroupes(List<Groupe> groupes) {
+		this.groupe = groupes;
+	}
 
 	@Override
 	public String toString() {

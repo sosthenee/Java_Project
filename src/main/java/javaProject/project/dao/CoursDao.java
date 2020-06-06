@@ -10,4 +10,6 @@ public interface CoursDao extends JpaRepository<Cours, Long> {
 	
 	Cours findById(long id_cours);
 
+    public Cours findById(Cours selected_matiere);
+
 }

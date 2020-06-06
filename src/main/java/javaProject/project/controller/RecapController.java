@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Iterator;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +14,14 @@ import org.springframework.stereotype.Component;
 
 import javaProject.project.dao.GroupeDao;
 import javaProject.project.dao.SalleDao;
+
 import javaProject.project.dao.SeanceDao;
 import javaProject.project.dao.UtilisateurDao;
 import javaProject.project.model.Enseignant;
 import javaProject.project.model.Etudiant;
 import javaProject.project.model.Groupe;
 import javaProject.project.model.Salle;
+
 import javaProject.project.model.Seance;
 import javaProject.project.model.Utilisateur;
 import javaProject.project.view.VueCalendrier;
@@ -37,6 +40,7 @@ public class RecapController {
 	
 	@Autowired
 	SalleDao salleDao;
+
 
 	private List<Seance> listSeances;
 
@@ -77,6 +81,7 @@ public class RecapController {
 			//Insert Data
 			int colData=0;
 			List<String> crStrings = new ArrayList<>();
+
 			for (Seance seance : seances) {
 
 				Calendar calendar = Calendar.getInstance();
@@ -91,6 +96,7 @@ public class RecapController {
 				int dur = fin - start;
 				int h = dur / 60;
 				int mi = dur % 60;
+
 
 				//Parcours si cours already here and update data
 				if(Collections.frequency(crStrings, seance.getCours().getNom()) == 0) {
@@ -129,6 +135,7 @@ public class RecapController {
 					
 				}
 
+
 			}
 		
 		return data;	
@@ -152,6 +159,7 @@ public class RecapController {
 		setListSeances(seanceDao.findBySalleContaining(salle));
 	}
 
+
 	//Fetch all seance 
 	public void allSeances(String email,  VueRecap view) {
 
@@ -163,6 +171,7 @@ public class RecapController {
 			findAllSeanceEnseignant(enseignant);
 		}
 		if(Singleton.getInfo().getDroit() == 1) {
+
 			if((email!= null)&&(email.split("/")[0].equals("groupeSearch")))
 			{
 				Groupe groupe = groupeDao.findByNom(email.split("/")[1]);
@@ -196,6 +205,7 @@ public class RecapController {
 				}
 			}
 			
+
 
 		}
 		view.setData(this.formatData(getListSeances()));

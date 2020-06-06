@@ -11,7 +11,9 @@ import java.awt.event.ActionEvent;
 
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 import javaProject.project.dao.CoursDao;
 import javaProject.project.dao.EnseignantDao;
@@ -55,40 +57,40 @@ import util.cst;
 @Component
 public class CalendrierController {
 
-	@Autowired
-	UtilisateurDao utilisateurDao;
+    @Autowired
+    UtilisateurDao utilisateurDao;
 
-	@Autowired
-	SeanceDao seanceDao;
+    @Autowired
+    SeanceDao seanceDao;
 
-	@Autowired
-	GroupeDao groupeDao;
+    @Autowired
+    GroupeDao groupeDao;
 
-	@Autowired
-	EnseignantDao enseignantDao;
+    @Autowired
+    EnseignantDao enseignantDao;
 
-	@Autowired
-	CoursDao coursDao;
+    @Autowired
+    CoursDao coursDao;
 
-	@Autowired
-	PromotionDao promotionDao;
+    @Autowired
+    PromotionDao promotionDao;
 
-	@Autowired
-	TypeCoursDao TypeCoursDao;
+    @Autowired
+    TypeCoursDao TypeCoursDao;
 
-	@Autowired
-	SiteDao siteDao;
+    @Autowired
+    SiteDao siteDao;
 
-	@Autowired
-	SalleDao salleDao;
+    @Autowired
+    SalleDao salleDao;
 
 
+    private Object[][] data;
 
-	private Object[][] data;
+    Map<String, Seance> mapCoordToSeance = new HashMap<String, Seance>();
 
-	private CurentUserSingleton Singleton = CurentUserSingleton.getInstance(); 
+    private CurentUserSingleton Singleton = CurentUserSingleton.getInstance();
 
-	private List<Seance> listSeances;
 
 	public List<Seance> getListSeances() {
 		return listSeances;
@@ -401,24 +403,35 @@ public class CalendrierController {
 
 
 	public ArrayList<EnumerableElement> DaoGetListData(JpaRepository dao) {
-		ArrayList<EnumerableElement> temp_values = new ArrayList<>();
-		var objects = dao.findAll();
-		for (int i = 0; i < objects.size(); i++) {
-			EnumerableElement elt = (EnumerableElement) objects.get(i);
-			temp_values.add(elt);
-		}
-		return temp_values;
-	}
+        ArrayList<EnumerableElement> temp_values = new ArrayList<>();
+        var objects = dao.findAll();
+        for (int i = 0; i < objects.size(); i++) {
+            EnumerableElement elt = (EnumerableElement) objects.get(i);
+            temp_values.add(elt);
+        }
+        return temp_values;
+    }
 
-	public void resetData(VueModifier view3) {
-		view3.typeList.clear();
-		view3.professeurList.clear();
-		view3.promotionList.clear();
-		view3.sallesList.clear();
-		view3.sitesList.clear();
-		view3.groupesList.clear();
-		view3.matiereList.clear();
-	}
+    public void resetData(VueModifier view3) {
+        view3.typeList.clear();
+        view3.professeurList.clear();
+        view3.promotionList.clear();
+        view3.sallesList.clear();
+        view3.sitesList.clear();
+        view3.groupesList.clear();
+        view3.matiereList.clear();
+    }
+
+    public void populateData(VueModifier view3, String hour, String minute, String hourEnd, String minuteEnd, String header) {
+        view3.setListEnseignant(DaoGetListData(enseignantDao));
+        view3.setListCours(DaoGetListData(coursDao));
+        view3.setListGroupe(DaoGetListData(groupeDao));
+        view3.setListType_cours(DaoGetListData(TypeCoursDao));
+        view3.setListPromotion(DaoGetListData(promotionDao));
+        view3.setListSalle(DaoGetListData(salleDao));
+        view3.setListSite(DaoGetListData(siteDao));
+        view3.setCoordinates(hour, minute, hourEnd, minuteEnd, header);
+    }
 
 	public void initController(VueCalendrier vueCalendrier , VueLogin vueLogin, VueModifier view3, VuePlanningListe vuePlanningListe , VueRecap vueRecap ,RecapController recapController ,PlanListeController planListeController) {
 		System.out.println("Init Controller Calendrier");
@@ -441,34 +454,47 @@ public class CalendrierController {
 		vueCalendrier.ComboRecherche.addActionListener(emailRechString -> rechercheType((String)vueCalendrier.ComboRecherche.getModel().getSelectedItem(),vueCalendrier));
 		vueCalendrier.tableau.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(final MouseEvent e) {
-				if (e.getClickCount() == 1) {
-					final JTable jTable = (JTable) e.getSource();
-					final int row = jTable.getSelectedRow();
-					final int column = jTable.getSelectedColumn();
-					final String header = jTable.getColumnName(column);
-					final String valueInCell = (String) jTable.getValueAt(row, column);
-					if (valueInCell.length() <= 1) {
-						if (column != 0) {
-							resetData(view3);
-							view3.setVisible(true);
-							view3.setListEnseignant(DaoGetListData(enseignantDao));
-							view3.setListCours(DaoGetListData(coursDao));
-							view3.setListGroupe(DaoGetListData(groupeDao));
-							view3.setListType_cours(DaoGetListData(TypeCoursDao));
-							view3.setListPromotion(DaoGetListData(promotionDao));
-							view3.setListSalle(DaoGetListData(salleDao));
-							view3.setListSite(DaoGetListData(siteDao));
-							view3.setCoordinates(row, column, header);
-						}
-					} else {
-						view3.setVisible(true);
-					}
-				}
-			}
-		}
-				);
+            public void mouseClicked(final MouseEvent e) {
+                if (e.getClickCount() == 1) {
+                    final JTable jTable = (JTable) e.getSource();
+                    final int row = jTable.getSelectedRow();
+                    final int column = jTable.getSelectedColumn();
+                    final String header = jTable.getColumnName(column);
+                    final String valueInCell = (String) jTable.getValueAt(row, column);
+                    final String valueOfTime = (String) jTable.getValueAt(row, 0);
+
+                    String hour = valueOfTime.substring(0, 2);
+                    String minute = valueOfTime.substring(3, 5);
+
+                    String hourEnd = valueOfTime.substring(8, 10);
+                    String minuteEnd = valueOfTime.substring(11, 13);
+
+                    System.out.print(minute);
+                    if (Singleton.getInfo().getDroit() == 1) {
+                        if (valueInCell.length() <= 1) {
+                            if (column != 0) {
+                                resetData(view3);
+                                view3.setCurrentSession(null);
+                                populateData(view3, hour, minute, hourEnd, minuteEnd, header);
+                                view3.setVisible(true);
+                                view3.setButtonContent("Create session");
+                            }
+                        } else {
+                            if (column != 0) {
+                                resetData(view3);
+                                populateData(view3, hour, minute, hourEnd, minuteEnd, header);
+                                view3.setCurrentSession(mapCoordToSeance.get(row + "-" + column));
+                                view3.setButtonContent("Update session");
+                                view3.setVisible(true);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        );
 
 	}
+
 
 }

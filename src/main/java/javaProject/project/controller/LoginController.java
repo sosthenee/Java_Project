@@ -24,12 +24,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-
-
 @Component
 public class LoginController {
 
-	@Autowired
+
+    @Autowired
     private UtilisateurDao utilisateurDao;
 
     private VueCalendrier vueCalendrier;
@@ -47,7 +46,7 @@ public class LoginController {
     private RecapController recapController;
 
     private PlanListeController planListeController;
-    
+
     public void setCalendrierController(CalendrierController calendrierController) {
         this.calendrierController = calendrierController;
     }
@@ -55,6 +54,7 @@ public class LoginController {
     public void setRecapController(RecapController recapController) {
         this.recapController = recapController;
     }
+
 
     public void setPlanListeController(PlanListeController planListeController) {
         this.planListeController = planListeController;
@@ -81,46 +81,44 @@ public class LoginController {
         this.vueRecap = vueRecap;
     }
 
+   
+    private CurentUserSingleton Singleton = CurentUserSingleton.getInstance();
+
+    public LoginController() {
+   
+    }
+
+    public void addUser(String email, String password) {
+        Utilisateur u = new Utilisateur(email, password);
+        utilisateurDao.save(u);
+    }
 
 
-	private CurentUserSingleton Singleton = CurentUserSingleton.getInstance();
+    public void login(String email, String password) {
 
-	public LoginController() {
-	}
+        Utilisateur u = new Utilisateur();
+        u = utilisateurDao.findFirstByEmailAndPassword(email, password);
+        if (u == null) {
+            JOptionPane.showMessageDialog(null, "veuillez rentrer une bonne combinaison");
+        } else {
+            vueCalendrier.setVisible(true);
+            this.vueLogin.setVisible(false);
+            Singleton.setInfo(u);
 
+            calendrierController.initController(vueCalendrier, vueLogin, vuemodifier ,vuePlanningListe , vueRecap ,  recapController , planListeController);
+            recapController.initController(vueRecap, vueCalendrier);
+            planListeController.initController(vuePlanningListe);
 
-	public void addUser(String email, String password) {
-		Utilisateur u = new Utilisateur(email, password);
-		utilisateurDao.save(u);
-	}
+        }
+        System.out.println(u);
+    }
 
-	public void login(String email, String password) {
+    public void initController(VueLogin view) {
+        view.getRootPane().setDefaultButton(view.valider);
+        view.valider.addActionListener(e -> login(view.mail.getText(), view.mdp.getText()));
 
-		Utilisateur u = new Utilisateur();
-		u = utilisateurDao.findFirstByEmailAndPassword(email , password);
-		if( u ==  null){
-			JOptionPane.showMessageDialog(null, "veuillez rentrer une bonne combinaison");
-		} else {
-			vueCalendrier.setVisible(true);
-			this.vueLogin.setVisible(false);
+        this.vueLogin = view;
 
-			Singleton.setInfo(u);
-
-			calendrierController.initController(vueCalendrier, vueLogin, vuemodifier ,vuePlanningListe , vueRecap ,  recapController , planListeController);
-			recapController.initController(vueRecap,vueCalendrier);
-			planListeController.initController(vuePlanningListe);
-
-		}
-		System.out.println(u);
-	}
-
-	public void initController(VueLogin view) {
-		view.getRootPane().setDefaultButton(view.valider);
-		view.valider.addActionListener(e -> login(view.mail.getText(), view.mdp.getText()));
-
-		this.vueLogin = view;
-
-	}
-
+    }
 
 }
