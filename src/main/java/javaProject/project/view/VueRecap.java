@@ -88,6 +88,7 @@ public class VueRecap extends JFrame{
         Object test2 = tableau.getValueAt(2,3);
         System.out.println("La case est :" + test2);
         tableau.setRowHeight(40);
+        
         //calendar.add(new JScrollPane(tableau), BorderLayout.CENTER);
         recap.add(new JScrollPane(tableau), BorderLayout.CENTER);
         //this.getContentPane().add(calendar);
