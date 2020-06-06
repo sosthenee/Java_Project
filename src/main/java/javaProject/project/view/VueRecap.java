@@ -25,7 +25,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  * @author Oscar
  */
-
+@SpringBootApplication
 public class VueRecap extends JFrame{
 
     String title[] = {"Matière", "Première Séance", "Dernière Séance", "Durée", "Nb"};

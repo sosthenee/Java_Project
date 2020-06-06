@@ -64,6 +64,7 @@ public class VueLogin extends JFrame {
     b4.add(b2);
     b4.add(b3);
 
+   
     this.getContentPane().add(b4);
     this.setVisible(true);
   }
