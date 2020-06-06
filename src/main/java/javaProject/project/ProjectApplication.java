@@ -42,8 +42,14 @@ public class ProjectApplication {
                 LoginController loginController = context.getBean(LoginController.class);
                   
                 //Views
-                VueLogin vueLogin = context.getBean(VueLogin.class);
-                       
+
+                VueLogin vueLogin = new VueLogin();
+                VueRecap vueRecap = new VueRecap();
+                VuePlanningListe vuePlanningListe = new VuePlanningListe();
+                VueCalendrier vueCalendrier = new VueCalendrier(vueRecap, vuePlanningListe);
+
+                VueModifier vuemodifier = new VueModifier();
+                
                 //initController
                 loginController.initController(vueLogin);
 

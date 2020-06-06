@@ -31,9 +31,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 import java.math.*;
+import java.text.DateFormatSymbols;
+import java.util.Calendar;
 import java.util.Locale;
+import java.util.TimeZone;
 import javaProject.project.model.Enseignant;
 import javaProject.project.model.Groupe;
+import javaProject.project.model.Promotion;
 import javaProject.project.model.Salle;
 import javaProject.project.model.Site;
 import javax.transaction.Transactional;
@@ -47,32 +51,72 @@ public class ModifierController {
     @Autowired
     SeanceDao seanceDao;
     
-  
-    public void writeData(VueModifier view3) throws ParseException {
+    
+    @Autowired
+    CoursDao courDao;
+    
+    public int fromDayStringToInt(String day) {
+         switch (day.toLowerCase()) {
 
+            case "monday":
+              return Calendar.MONDAY;
+            case "tuesday":
+              return Calendar.TUESDAY;
+              
+            case "wednesday":
+              return Calendar.WEDNESDAY;
+             
+            case "thursday":
+              return Calendar.THURSDAY;
+             
+            case "friday":
+               return Calendar.FRIDAY;
+              
+            case "saturday":
+              return Calendar.SATURDAY;
+             
+           
+          }
+        return 1;
+    }
+  
+    String getMonthForInt(int num) {
+        String month = "wrong";
+        DateFormatSymbols dfs = new DateFormatSymbols();
+        String[] months = dfs.getMonths();
+        if (num >= 0 && num <= 11 ) {
+            month = months[num];
+        }
+        return month;
+    }
+    
+    
+    
+    
+    
+    
+    
+    public void writeData(VueModifier view3) throws ParseException {
+        
         Object selected_hour_debut = view3.hour_debut.getItemAt(view3.hour_debut.getSelectedIndex());
         Object selected_minute_debut = view3.minute_debut.getItemAt(view3.minute_debut.getSelectedIndex());
 
         int selected_hour_fin = Integer.parseInt((String) view3.hour_fin.getItemAt(view3.hour_fin.getSelectedIndex()));
         int selected_minute_fin = Integer.parseInt((String) view3.minute_fin.getItemAt(view3.minute_fin.getSelectedIndex()));
+        int selected_semaine = Integer.parseInt((String) view3.semaine.getItemAt(view3.semaine.getSelectedIndex()));
 
         Object selected_day = view3.day.getItemAt(view3.day.getSelectedIndex());
-        Object selected_month = view3.month.getItemAt(view3.month.getSelectedIndex());
         Object selected_year = view3.year.getItemAt(view3.year.getSelectedIndex());
 
         Cours selected_matiere = view3.matiereList.get(view3.matiere.getSelectedIndex());
         Type_cours selected_type = view3.typeList.get(view3.type.getSelectedIndex());
+        Site selected_site = view3.sitesList.get(view3.site.getSelectedIndex());
         
-
-        String day = String.valueOf(selected_day);
-        day = day.substring(0,3);
-         
-        String month = String.valueOf(selected_month);
-        month = month.substring(0,3);
-         
-       int selected_semaine = Integer.parseInt((String) view3.semaine.getItemAt(view3.semaine.getSelectedIndex()));
-      // int selected_promotion = Integer.parseInt((String) view3.promotion.(view3.promotion.getSelectedIndex()));
-      
+        //view3.matiereList.get(view3.matiere.getModel().)
+        //Promotion selected_promotion = view3.promotionList.(view3.promotion.getSelectedIndex());
+        //Cours selected_matiere = (Cours) view3.matiere.getModel().getSelectedItem();
+        //Type_cours selected_type = (Type_cours) view3.type.getModel().getSelectedItem();
+       
         ArrayList<Groupe> groupes = new ArrayList<>();
         int[] selected_groupe = view3.groupe.getSelectedIndices();
         for (int i = 0; i < selected_groupe.length; i++) {
@@ -88,22 +132,41 @@ public class ModifierController {
         ArrayList<Salle> salles = new ArrayList<>();
         salles.add(view3.sallesList.get(view3.salle.getSelectedIndex()));
         
+        String day = String.valueOf(selected_day);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM dd yyyy");
+        TimeZone timeZone = TimeZone.getTimeZone("UTC");
+        sdf.setTimeZone(timeZone);
         
-        Site selected_site = view3.sitesList.get(view3.site.getSelectedIndex());
-
-        String selected_date = (String)   day+ " " +month + " 18";
-        String selected_time_start = selected_hour_debut + ":" + selected_minute_debut + ":00";
+        Calendar cal = Calendar.getInstance(timeZone);
+        cal.set(Calendar.WEEK_OF_YEAR, selected_semaine);        
+        cal.set(Calendar.DAY_OF_WEEK, fromDayStringToInt(day) );
+        cal.set(Calendar.MINUTE, Integer.parseInt((String) selected_minute_debut));
+        cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt((String) selected_hour_debut) - 1);
+        System.out.println(sdf.format(cal.getTime()));   
+        Calendar computedCal = Calendar.getInstance();
+        computedCal.setTime(cal.getTime());
+      
+        System.out.println(sdf.format(cal.getTime()));
         
-        String dateTime = selected_date + " " + selected_time_start + " UTC "+selected_year;
-        SimpleDateFormat parser = new SimpleDateFormat("EEE MMM d HH:mm:ss zzz yyyy", Locale.ENGLISH);
-        Date date = parser.parse(dateTime);
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String formattedDate = formatter.format(date);
-
-        System.out.println(date);
-
-        Seance s  = new Seance( date , 1 , selected_hour_fin , selected_minute_fin ,selected_semaine,  selected_matiere ,  selected_type, groupes , salles ,enseignants);
-        seanceDao.save(s);
+        
+        Cours tmpC = courDao.findById(selected_matiere.getId());
+       
+        if (view3.currentSession == null) {
+            Seance s  = new Seance( cal.getTime() , 1 , selected_hour_fin , selected_minute_fin ,selected_semaine,  tmpC ,  selected_type, groupes , salles ,enseignants);
+            seanceDao.save(s);
+        } else {
+            view3.currentSession.setDate(cal.getTime());
+            view3.currentSession.setHeure_fin(selected_hour_fin);
+            view3.currentSession.setMinute_fin(selected_minute_fin);
+            view3.currentSession.setSemaine(selected_semaine);
+            view3.currentSession.setEtat(1);
+            view3.currentSession.setCours(tmpC);
+            view3.currentSession.setType_cours(selected_type);
+            view3.currentSession.setGroupes(groupes);
+            view3.currentSession.setSalle(salles);
+            view3.currentSession.setEnseignant(enseignants);
+            seanceDao.save(view3.currentSession);
+        }
     }
    
 
@@ -114,6 +177,7 @@ public class ModifierController {
         view3.button.addActionListener(e -> {
             try {
                 //injectData(elts, view3);
+                
                 writeData(view3);
                 view3.setVisible(false);
                                 

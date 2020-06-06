@@ -37,7 +37,6 @@ import util.cst;
  *
  * @author Oscar
  */
-@SpringBootApplication
 public class VuePlanningListe extends JFrame{
     String[] title ={"Heure", "Matière","Enseignant","Salle","Type cours"};
 

@@ -14,8 +14,8 @@ public class Cours implements EnumerableElement{
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long id = 0;
-	
+	private long id;
+            
 	@Column(name = "nom")
 	private String nom ="";
 	
