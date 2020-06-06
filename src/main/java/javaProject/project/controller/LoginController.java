@@ -24,92 +24,101 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-
-
 @Component
 public class LoginController {
 
-	@Autowired
-	private UtilisateurDao utilisateurDao;
 
-	@Autowired
-	RecapControleur recapControleur;
+    @Autowired
+    private UtilisateurDao utilisateurDao;
 
-	@Autowired
-	CalendrierController calendrierController;
+    private VueCalendrier vueCalendrier;
 
-	@Autowired
-	PlanListeController planListeController;
+    private VueLogin vueLogin;
 
-	@Autowired
-	VueCalendrier vueCalendrier;
+    private VuePlanningListe vuePlanningListe;
 
-	@Autowired
-	VueRecap vueRecap;
+    private VueModifier vuemodifier;
 
-	@Autowired
-	VuePlanningListe vuePlanningListe;
+    private VueRecap vueRecap;
+    
+     private CalendrierController calendrierController;
 
-	@Autowired
-	ModifierController modifierController;
+    private RecapController recapController;
 
-	@Autowired
-	VueModifier vuemodifier;
+    private PlanListeController planListeController;
 
+    public void setCalendrierController(CalendrierController calendrierController) {
+        this.calendrierController = calendrierController;
+    }
 
-	private VueLogin vueLogin;
+    public void setRecapController(RecapController recapController) {
+        this.recapController = recapController;
+    }
 
 
-
-	private CurentUserSingleton Singleton = CurentUserSingleton.getInstance();
-
-	public LoginController() {
-	}
+    public void setPlanListeController(PlanListeController planListeController) {
+        this.planListeController = planListeController;
+    }
 
 
-	public void addUser(String email, String password) {
-		Utilisateur u = new Utilisateur(email, password);
-		utilisateurDao.save(u);
-	}
+    public void setVueCalendrier(VueCalendrier vueCalendrier) {
+        this.vueCalendrier = vueCalendrier;
+    }
 
-	public void login(String email, String password) {
+    public void setVueLogin(VueLogin vueLogin) {
+        this.vueLogin = vueLogin;
+    }
 
-		Utilisateur u = new Utilisateur();
-		u = utilisateurDao.findFirstByEmailAndPassword(email , password);
-		if( u ==  null){
-			JOptionPane.showMessageDialog(null, "veuillez rentrer une bonne combinaison");
-		} else {
-			vueCalendrier.setVisible(true);
-			this.vueLogin.setVisible(false);
+    public void setVuePlanningListe(VuePlanningListe vuePlanningListe) {
+        this.vuePlanningListe = vuePlanningListe;
+    }
 
-			if (u.getDroit() == 4) {
-				Singleton.setInfo(u);
+    public void setVuemodifier(VueModifier vuemodifier) {
+        this.vuemodifier = vuemodifier;
+    }
 
-			}
-			if (u.getDroit() == 3) {
-				Singleton.setInfo(u);
-			}
-			if (u.getDroit() == 2) {
-				Singleton.setInfo(u);
-			}if (u.getDroit() == 1) {
-				Singleton.setInfo(u);
-			}
-			calendrierController.initController(vueCalendrier,vueLogin,vuemodifier);
-			recapControleur.initController(vueRecap,vueCalendrier);
-			planListeController.initController(vuePlanningListe);
-			modifierController.initController(vuemodifier);
+    public void setVueRecap(VueRecap vueRecap) {
+        this.vueRecap = vueRecap;
+    }
 
-		}
-		System.out.println(u);
-	}
+   
+    private CurentUserSingleton Singleton = CurentUserSingleton.getInstance();
 
-	public void initController(VueLogin view) {
-		view.getRootPane().setDefaultButton(view.valider);
-		view.valider.addActionListener(e -> login(view.mail.getText(), view.mdp.getText()));
+    public LoginController() {
+   
+    }
 
-		this.vueLogin = view;
+    public void addUser(String email, String password) {
+        Utilisateur u = new Utilisateur(email, password);
+        utilisateurDao.save(u);
+    }
 
-	}
 
+    public void login(String email, String password) {
+
+        Utilisateur u = new Utilisateur();
+        u = utilisateurDao.findFirstByEmailAndPassword(email, password);
+        if (u == null) {
+            JOptionPane.showMessageDialog(null, "veuillez rentrer une bonne combinaison");
+        } else {
+            vueCalendrier.setVisible(true);
+            this.vueLogin.setVisible(false);
+            Singleton.setInfo(u);
+
+            calendrierController.initController(vueCalendrier, vueLogin, vuemodifier ,vuePlanningListe , vueRecap ,  recapController , planListeController);
+            recapController.initController(vueRecap, vueCalendrier);
+            planListeController.initController(vuePlanningListe);
+
+        }
+        System.out.println(u);
+    }
+
+    public void initController(VueLogin view) {
+        view.getRootPane().setDefaultButton(view.valider);
+        view.valider.addActionListener(e -> login(view.mail.getText(), view.mdp.getText()));
+
+        this.vueLogin = view;
+
+    }
 
 }

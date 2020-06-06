@@ -20,6 +20,9 @@ import java.util.Calendar;
 import static java.util.Calendar.DAY_OF_WEEK;
 import java.util.List;
 import javaProject.project.model.Seance;
+
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -33,12 +36,12 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableCellRenderer;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import static util.cst.getCalendarBlankData;
 
 /**
  *
  * @author Oscar
  */
-@SpringBootApplication
 public class VueCalendrier extends JFrame {
 
     String title[] = {"Heure", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
@@ -71,7 +74,6 @@ public class VueCalendrier extends JFrame {
     public JComboBox listeRecherhe = new JComboBox();
     public JPanel Onglet1 =new JPanel();
     public JPanel Onglet2 =new JPanel(); 
-    public String[] objectList = new String[10];
 
 
 
@@ -94,10 +96,10 @@ public class VueCalendrier extends JFrame {
         Accueil.setBackground(Color.DARK_GRAY);
         String[] choixAff = {"Planning en grille", "Planning en liste"};
         String[] choixRecherche = {"Rechercher par nom", "Rechercher par liste"};
-        String[] choixSelcet = {"Etudiant", "Enseignant","Groupe","Salle","Promotion"};
+        String[] choixSelcet = {"Etudiant", "Enseignant","Groupe","Salle"};
 
         ComboChoixSelect = new JComboBox(choixSelcet);
-        listeRecherhe = new JComboBox(objectList);
+        listeRecherhe = new JComboBox();
         ComboAff = new JComboBox(choixAff);
         ComboRecherche = new JComboBox(choixRecherche);
         semaines.setLayout(new GridLayout(1, 52));
@@ -119,8 +121,11 @@ public class VueCalendrier extends JFrame {
         navbarInf.add(ComboAff);
         navbarInf.add(ComboChoixSelect);
         navbarInf.add(ComboRecherche);
-        navbarInfInter.add(Recherche, BorderLayout.CENTER);
-        navbarInf.add(navbarInfInter);
+        navbarInf.add(Recherche);
+        navbarInf.add(listeRecherhe);
+
+ 
+
 
         semaines.setPreferredSize(new Dimension(2600, 50));
 
@@ -131,34 +136,7 @@ public class VueCalendrier extends JFrame {
             semaines.add(nb);
         }
 
-        Object[][] data = {
-            {"8h00 - 8h30 ", " ", " ", " ", " ", " ", " "},
-            {" 8h30 - 9h00 ", " ", " ", " ", " ", " ", " "},
-            {" 9h00 - 9h30 ", " ", " ", " ", " ", " ", " "},
-            {" 9h30 - 10h00", " ", " ", " ", " ", " ", " "},
-            {" 10h00 - 10h30", " ", " ", " ", " ", " ", " "},
-            {" 10h30 - 11h00", " ", " ", " ", " ", " ", " "},
-            {" 11h00 - 11h30", " ", " ", " ", " ", " ", " "},
-            {"11h30 - 12h00 ", " ", " ", " ", " ", " ", " "},
-            {"12h00 - 12h30 ", " ", " ", " ", " ", " ", " "},
-            {" 12h30 - 13h00 ", " ", " ", " ", " ", " ", " "},
-            {" 13h00 - 13h30 ", " ", " ", " ", " ", " ", " "},
-            {" 13h30 - 14h00", " ", " ", " ", " ", " ", " "},
-            {" 14h00 - 14h30", " ", " ", " ", " ", " ", " "},
-            {" 14h30 - 15h00", " ", " ", " ", " ", " ", " "},
-            {" 15h00 - 15h30", " ", " ", " ", " ", " ", " "},
-            {"15h30 - 16h00 ", " ", " ", " ", " ", " ", " "},
-            {" 16h00 - 16h30 ", " ", " ", " ", " ", " ", " "},
-            {" 16h30 - 17h00 ", " ", " ", " ", " ", " ", " "},
-            {" 17h00 - 17h30", " ", " ", " ", " ", " ", " "},
-            {" 17h30 - 18h00", " ", " ", " ", " ", " ", " "},
-            {" 18h00 - 18h30", " ", " ", " ", " ", " ", " "},
-            {" 18h30 - 19h00", " ", " ", " ", " ", " ", " "},
-            {" 19h00 - 19h30 ", " ", " ", " ", " ", " ", " "},
-            {" 19h30 - 20h00 ", " ", " ", " ", " ", " ", " "},
-            {" 20h00 - 20h30", " ", " ", " ", " ", " ", " "},
-            {" 20h30 - 21h00", " ", " ", " ", " ", " ", " "},
-            {" 21h00 - 21h30", " ", " ", " ", " ", " ", " "},};
+        Object[][] data = getCalendarBlankData();
 
         model = new TableCalendrier(data, title);
         System.out.println("Nombre de colonne : " + model.getColumnCount());
@@ -250,8 +228,9 @@ public class VueCalendrier extends JFrame {
         tableau.setModel(new TableCalendrier(data, title));
     }
     
-    public void setList(String[]objectList) {
-    	this.listeRecherhe = new JComboBox(objectList);
+    @SuppressWarnings("unchecked")
+	public void setList(String[]objectList) {
+    	this.listeRecherhe.setModel( new DefaultComboBoxModel(objectList) );
 	}
     
 
@@ -275,4 +254,6 @@ public class VueCalendrier extends JFrame {
 
         return couleur;
     }
+
+    
 }
