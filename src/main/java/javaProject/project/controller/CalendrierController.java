@@ -90,6 +90,7 @@ public class CalendrierController {
     Map<String, Seance> mapCoordToSeance = new HashMap<String, Seance>();
 
     private CurentUserSingleton Singleton = CurentUserSingleton.getInstance();
+
     
     private List<Seance> listSeances;	
 
@@ -173,10 +174,14 @@ public class CalendrierController {
 
 				data[i][day_of_week-1]= "<html> type de cours : " + seance.getType_cours().getNom() + "<br>"+"  cours :  " + seance.getCours().getNom() +
 						"  Professeur :  " + enseiSenace +  "  salle :  " + salleSeance  +"</html>";
+                        mapCoordToSeance.put(String.valueOf(i)+'-'+String.valueOf(day_of_week - 1), seance);
+
 			}
 			if (index_fin - index_debut < 2 ) {
 				data[index_debut][day_of_week-1]= "<html> type de cours : " + seance.getType_cours().getNom() + "<br>"+"  cours :  " + seance.getCours().getNom() +
 						"  Professeur :  " +  enseiSenace +  "  salle :  " + salleSeance   +"</html>";
+                        mapCoordToSeance.put(String.valueOf(index_debut)+'-'+String.valueOf(day_of_week - 1), seance);
+
 			}
 		}
 		return data;
@@ -404,6 +409,7 @@ public class CalendrierController {
 
 
 	public ArrayList<EnumerableElement> DaoGetListData(JpaRepository dao) {
+
         ArrayList<EnumerableElement> temp_values = new ArrayList<>();
         var objects = dao.findAll();
         for (int i = 0; i < objects.size(); i++) {
