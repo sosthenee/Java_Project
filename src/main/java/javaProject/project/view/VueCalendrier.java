@@ -238,19 +238,19 @@ public class VueCalendrier extends JFrame {
 
     public Color setColor(String color) {
 
-        if (color.contains("maths")) {
+        if (color.contains("Maths")) {
             couleur = Color.red;
         }
-        if (color.contains("physique")) {
+        if (color.contains("Physique")) {
             couleur = Color.green;
         }
-        if (color.contains("elec")) {
-            couleur = Color.blue;
+        if (color.contains("Electronique")) {
+            couleur = Color.orange;
         }
-        if (color.contains("reseau")) {
+        if (color.contains("Reseau")) {
             couleur = Color.pink;
         }
-        if (color.contains("informatique")) {
+        if (color.contains("Informatique")) {
             couleur = Color.cyan;
         }
 

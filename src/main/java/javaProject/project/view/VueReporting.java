@@ -23,10 +23,10 @@ public class VueReporting extends JFrame {
 	public ChartFrame frame ;
 	public String title[] = {"Matière", "Première Séance", "Dernière Séance", "Durée", "Nb"};
 	public DefaultPieDataset dataset = new DefaultPieDataset();
-
+	public JFreeChart chart;
 	public VueReporting(String Title){
 
-		JFreeChart chart = ChartFactory.createPieChart(
+		 chart = ChartFactory.createPieChart(
 				"Diagramme récapitulatif du cours",
 				dataset,
 				true, 
