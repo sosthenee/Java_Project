@@ -187,14 +187,14 @@ public class VueCalendrier extends JFrame {
         Onglet1.add(principal, BorderLayout.CENTER);
        
         
-         ActionListener testListener = new ActionListener() {//add actionlistner to listen for change
+         ActionListener testListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
 
-                String s = (String) ComboAff.getSelectedItem();//get the selected item
+                String s = (String) ComboAff.getSelectedItem();
 
-                switch (s) {//check for a match
+                switch (s) {
                     case "Planning en grille":
                         
                           principal.setVisible(true);
@@ -219,8 +219,8 @@ public class VueCalendrier extends JFrame {
        PanListe.setVisible(false);
         
         Onglet2.add(PanRecap, BorderLayout.CENTER);
-        this.getContentPane().add(navbar, BorderLayout.NORTH); //CODE BON
-        this.getContentPane().add((Onglets), BorderLayout.CENTER); //CODE BON
+        this.getContentPane().add(navbar, BorderLayout.NORTH);
+        this.getContentPane().add((Onglets), BorderLayout.CENTER); 
 
         this.setVisible(false);
 

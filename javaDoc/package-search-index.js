@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"javaProject.project"},{"l":"javaProject.project.controller"},{"l":"javaProject.project.dao"},{"l":"javaProject.project.model"},{"l":"javaProject.project.view"},{"l":"util"}]
