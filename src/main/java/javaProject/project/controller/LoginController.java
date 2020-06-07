@@ -18,6 +18,7 @@ import javaProject.project.view.VuePlanningListe;
 import javaProject.project.view.VueCalendrier;
 import javaProject.project.view.VueModifier;
 import javaProject.project.view.VueRecap;
+import javaProject.project.view.VueReporting;
 
 import javax.swing.JOptionPane;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,8 @@ public class LoginController {
     private VueModifier vuemodifier;
 
     private VueRecap vueRecap;
+    
+    private VueReporting vueReporting;
     
     private CalendrierController calendrierController;
 
@@ -82,6 +85,10 @@ public class LoginController {
     public void setVueRecap(VueRecap vueRecap) {
         this.vueRecap = vueRecap;
     }
+    
+    public void setVueReporting(VueReporting vueReporting) {
+    	this.vueReporting = vueReporting;
+    }
 
    
     private CurentUserSingleton Singleton = CurentUserSingleton.getInstance();
@@ -107,8 +114,8 @@ public class LoginController {
             this.vueLogin.setVisible(false);
             Singleton.setInfo(u);
 
-            calendrierController.initController(vueCalendrier, vueLogin, vuemodifier ,vuePlanningListe , vueRecap ,  recapController , planListeController);
-            recapController.initController(vueRecap, vueCalendrier);
+            calendrierController.initController(vueCalendrier, vueLogin, vuemodifier ,vuePlanningListe , vueRecap ,  recapController , planListeController, vueReporting);
+            recapController.initController(vueRecap, vueCalendrier,vueReporting);
             planListeController.initController(vuePlanningListe);
 
         }

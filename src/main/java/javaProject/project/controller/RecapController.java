@@ -26,6 +26,7 @@ import javaProject.project.model.Seance;
 import javaProject.project.model.Utilisateur;
 import javaProject.project.view.VueCalendrier;
 import javaProject.project.view.VueRecap;
+import javaProject.project.view.VueReporting;
 
 @Component
 public class RecapController {
@@ -143,7 +144,6 @@ public class RecapController {
 
 
 			}
-			reportingController.refreshDataPiChart(data);
 			return data;	
 		}
 	}
@@ -167,7 +167,7 @@ public class RecapController {
 
 
 	//Fetch all seance 
-	public void allSeances(String email,  VueRecap view) {
+	public void allSeances(String email,  VueRecap view, VueReporting vueReporting) {
 
 		if(Singleton.getInfo().getDroit() == 4) {
 			Etudiant etudiant = (Etudiant) utilisateurDaoR.findByEmail(email);
@@ -176,7 +176,7 @@ public class RecapController {
 			Enseignant enseignant = (Enseignant) utilisateurDaoR.findByEmail(email);
 			findAllSeanceEnseignant(enseignant);
 		}
-		if(Singleton.getInfo().getDroit() == 1) {
+		if((Singleton.getInfo().getDroit() == 1)||(Singleton.getInfo().getDroit() == 2)) {
 
 			if((email!= null)&&(email.split("/")[0].equals("groupeSearch")))
 			{
@@ -214,14 +214,15 @@ public class RecapController {
 
 
 		}
+		reportingController.refreshDataPiChart(this.formatData(getListSeances()),vueReporting);
 		view.setData(this.formatData(getListSeances()));
 	}
 
 
 
 
-	public void initController(VueRecap vueRecap, VueCalendrier viewCalendrier) {
+	public void initController(VueRecap vueRecap, VueCalendrier viewCalendrier, VueReporting vueReporting) {
 		System.out.println("Init ControllerRecap");
-		allSeances(Singleton.getInfo().getEmail(), vueRecap);
+		allSeances(Singleton.getInfo().getEmail(), vueRecap,vueReporting);
 	}
 }
