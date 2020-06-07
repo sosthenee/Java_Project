@@ -148,24 +148,38 @@ public class VuePlanningListe extends JFrame{
 			titre[0] = day;
 			if(data != null) {
 				if(data.get(d).length != 0) {
-					JTable dayJTable = new JTable(new TableCalendrier(data.get(d), titre));
-					dayJTable.setRowHeight(1,20);
-					if(data.get(d)[0]!=null) {
-						if(data.get(d)[0][2] != null) {
-							if(data.get(d)[0][2].toString().split("<br>") != null) {
-								dayJTable.setRowHeight(d,20*data.get(d)[0][2].toString().split("<br>").length);
+					
+						JTable dayJTable = new JTable(new TableCalendrier(data.get(d), titre));
+						dayJTable.setRowHeight(1,20);
+						if(data.get(d)[0]!=null) {
+							if(data.get(d)[0][2] != null) {
+								if(data.get(d)[0][2].toString().split("<br>") != null) {
+									dayJTable.setRowHeight(d,20*data.get(d)[0][2].toString().split("<br>").length);
+								}
 							}
-						}
-					}
+						}			
+						dayJTable.disable();
+						mesJours.add(dayJTable);
+						interJPanel.add(new JScrollPane(dayJTable),BorderLayout.CENTER);
+						interJPanel.revalidate();
+						interJPanel.repaint();
 					
 					
-					dayJTable.disable();
-					mesJours.add(dayJTable);
-					interJPanel.add(new JScrollPane(dayJTable),BorderLayout.CENTER);
+				}else {
+					Object[][] data2 = new Object[1][];
+					JTable dayJTable = new JTable(new TableCalendrier(data2, titre));
 				}
+				interJPanel.revalidate();
+				interJPanel.repaint();
+				
+			}else {
+				Object[][] data2 = new Object[1][];
+				JTable dayJTable = new JTable(new TableCalendrier(data2, titre));
+				interJPanel.revalidate();
+				interJPanel.repaint();
 			}
-			interJPanel.revalidate();
-			interJPanel.repaint();
+			
+			
 					
 		}
 	
