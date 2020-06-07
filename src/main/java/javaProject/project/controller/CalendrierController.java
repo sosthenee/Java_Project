@@ -30,6 +30,7 @@ import javaProject.project.dao.SeanceDao;
 import javaProject.project.dao.SiteDao;
 import javaProject.project.dao.TypeCoursDao;
 import javaProject.project.dao.UtilisateurDao;
+import javaProject.project.model.Cours;
 import javaProject.project.model.Enseignant;
 import javaProject.project.model.EnumerableElement;
 import javaProject.project.model.Etudiant;
@@ -130,6 +131,7 @@ public class CalendrierController {
 
 			String salleSeance = "";
 			String enseiSenace = "";
+			String groupeSeance ="";
 
 
 			if(seance.getSalle().size() > 1) {
@@ -140,7 +142,7 @@ public class CalendrierController {
 			}else if(seance.getSalle().size() == 1) {
 				salleSeance = seance.getSalle().get(0).getNom();
 			}else {
-				salleSeance = "Null";
+				salleSeance = "Pas de salle attribuée";
 			}
 
 			if(seance.getEnseignant().size() > 1) {
@@ -152,7 +154,19 @@ public class CalendrierController {
 				enseiSenace = seance.getEnseignant().get(0).getNom();
 			}
 			else {
-				enseiSenace = "Null";
+				enseiSenace = "Pas encore attribué";
+			}
+			
+			if(seance.getGroupe().size() > 1) {
+				for(Groupe it : seance.getGroupe())
+				{
+					groupeSeance += it.getNom() + " / ";
+				}
+			}else if(seance.getGroupe().size() == 1) {
+				groupeSeance = seance.getGroupe().get(0).getNom();
+			}
+			else {
+				groupeSeance = "Pas encore attribué";
 			}
 
 			index_debut=index_debut*2;
@@ -173,18 +187,18 @@ public class CalendrierController {
 			}else {
 				state="En cours de validation-";
 			}
-
-
+			
+			
 			for (int i = index_debut ; i < index_fin ; i++){
 
 				data[i][day_of_week-1]= "<html>"+"<strong>" + state + "</strong>" + seance.getCours().getNom() +" - " +seance.getType_cours().getNom() + "<br>"+
-						"  Mr/Mme " + enseiSenace +  "<br>" + salleSeance  +"</html>";
+						"  Mr/Mme " + enseiSenace +  "<br>" + salleSeance  +"<br>"+groupeSeance+"</html>";
                         mapCoordToSeance.put(String.valueOf(i)+'-'+String.valueOf(day_of_week - 1), seance);
 
 			}
 			if (index_fin - index_debut < 2 ) {
 				data[index_debut][day_of_week-1]= "<html>"+"<strong>" + state + "</strong>" + seance.getCours().getNom() +" - " +seance.getType_cours().getNom() + "<br>"+
-						"  Mr/Mme " + enseiSenace +  "<br>" + salleSeance  +"</html>";
+						"  Mr/Mme " + enseiSenace +  "<br>" + salleSeance +"<br>"+groupeSeance +"</html>";
                         mapCoordToSeance.put(String.valueOf(index_debut)+'-'+String.valueOf(day_of_week - 1), seance);
 
 			}
@@ -254,6 +268,7 @@ public class CalendrierController {
 			view.buttonList.get(i).setBackground(new JButton().getBackground());		
 		}
 		view.buttonList.get(semaine-1).setBackground(Color.cyan);
+		view.setSelectedSemaine(String.valueOf(semaine));
 	}
 
 	//ADMIN

@@ -164,14 +164,11 @@ public class VuePlanningListe extends JFrame{
 					interJPanel.add(new JScrollPane(dayJTable),BorderLayout.CENTER);
 				}
 			}
+			interJPanel.revalidate();
+			interJPanel.repaint();
 					
 		}
-		interJPanel.revalidate();
-		interJPanel.repaint();
-
-
-		
-
+	
 	}
 
 
