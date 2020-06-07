@@ -9,7 +9,7 @@ import javaProject.project.controller.ModifierController;
 
 import javaProject.project.controller.PlanListeController;
 import javaProject.project.controller.RecapController;
-
+import javaProject.project.controller.ReportingController;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import javaProject.project.view.VueLogin;
@@ -44,7 +44,7 @@ public class ProjectApplication {
                 ModifierController modifierController = context.getBean(ModifierController.class);
                 PlanListeController planListeController = context.getBean(PlanListeController.class);
                 RecapController  recapController= context.getBean(RecapController.class);
-              
+                ReportingController reportingController = context.getBean(ReportingController.class);
                 loginController.setCalendrierController(calendrierController);
                 loginController.setPlanListeController(planListeController);
                 loginController.setRecapController(recapController);

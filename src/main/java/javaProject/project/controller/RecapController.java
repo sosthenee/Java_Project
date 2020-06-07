@@ -34,12 +34,18 @@ public class RecapController {
 	UtilisateurDao utilisateurDaoR;
 	@Autowired
 	SeanceDao seanceDao;
-	
+
 	@Autowired
 	GroupeDao groupeDao;
-	
+
 	@Autowired
 	SalleDao salleDao;
+
+	private ReportingController reportingController;
+	
+	public RecapController(ReportingController reportingController) {
+		this.reportingController = reportingController;
+	}
 
 
 	private List<Seance> listSeances;
@@ -60,8 +66,8 @@ public class RecapController {
 
 		if(this.listSeances == null)
 		{
-			 Object[][] data = new Object[1][5];
-			 return data;
+			Object[][] data = new Object[1][5];
+			return data;
 		}else {	
 			List<Long> idsList = new ArrayList<>();
 			for (Seance seance : seances) {
@@ -111,8 +117,8 @@ public class RecapController {
 				}else {
 					int var = 0;
 					for (String cours : crStrings) {
-				        if (cours.equals(seance.getCours().getNom())) {
-				        	data[var][4] = (Integer) data[var][4] + 1;
+						if (cours.equals(seance.getCours().getNom())) {
+							data[var][4] = (Integer) data[var][4] + 1;
 							String[] testString = data[var][3].toString().split("h");
 							int jai = dur + Integer.parseInt(testString[1]) + Integer.parseInt(testString[0])*60;
 							int h2 = jai / 60;
@@ -121,24 +127,24 @@ public class RecapController {
 							else {
 								data[var][3] = h2 + "h" + mi2;
 							}
-		
+
 							Timestamp stamp = (Timestamp) data[var][1];
-	
+
 							if(stamp.after(seance.getDate())) {
 								data[var][1] = seance.getDate();
 							}else {
 								data[var][2] = seance.getDate();			
 							}
-				        }
-				        var++;
-				    }
-					
+						}
+						var++;
+					}
+
 				}
 
 
 			}
-		
-		return data;	
+			reportingController.refreshDataPiChart(data);
+			return data;	
 		}
 	}
 
@@ -187,8 +193,8 @@ public class RecapController {
 				if(utilisateur == null) {
 					setListSeances(Collections.<Seance>emptyList());
 				}
-				
-				
+
+
 				else {
 					if(utilisateur.getDroit() == 4)
 					{
@@ -204,7 +210,7 @@ public class RecapController {
 					}
 				}
 			}
-			
+
 
 
 		}

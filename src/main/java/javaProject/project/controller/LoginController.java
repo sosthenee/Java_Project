@@ -41,13 +41,15 @@ public class LoginController {
 
     private VueRecap vueRecap;
     
-     private CalendrierController calendrierController;
+    private CalendrierController calendrierController;
 
     private RecapController recapController;
 
     private PlanListeController planListeController;
+        
 
-    public void setCalendrierController(CalendrierController calendrierController) {
+
+	public void setCalendrierController(CalendrierController calendrierController) {
         this.calendrierController = calendrierController;
     }
 
