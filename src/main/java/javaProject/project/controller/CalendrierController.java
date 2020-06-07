@@ -26,7 +26,6 @@ import javax.swing.JButton;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-
 import javaProject.project.dao.SeanceDao;
 import javaProject.project.dao.SiteDao;
 import javaProject.project.dao.TypeCoursDao;
@@ -84,15 +83,13 @@ public class CalendrierController {
     @Autowired
     SalleDao salleDao;
 
-
     private Object[][] data;
 
     Map<String, Seance> mapCoordToSeance = new HashMap<String, Seance>();
 
     private CurentUserSingleton Singleton = CurentUserSingleton.getInstance();
 
-    
-    private List<Seance> listSeances;	
+    private List<Seance> listSeances;
 
 	public List<Seance> getListSeances() {
 		return listSeances;
@@ -430,23 +427,21 @@ public class CalendrierController {
     public void resetData(VueModifier view3) {
         view3.typeList.clear();
         view3.professeurList.clear();
-        view3.promotionList.clear();
         view3.sallesList.clear();
-        view3.sitesList.clear();
         view3.groupesList.clear();
         view3.matiereList.clear();
     }
 
-    public void populateData(VueModifier view3, String hour, String minute, String hourEnd, String minuteEnd, String header) {
+    public void populateData(VueModifier view3, String hour, String minute, String hourEnd, String minuteEnd, String header, String semaine) {
         view3.setListEnseignant(DaoGetListData(enseignantDao));
         view3.setListCours(DaoGetListData(coursDao));
         view3.setListGroupe(DaoGetListData(groupeDao));
         view3.setListType_cours(DaoGetListData(TypeCoursDao));
-        view3.setListPromotion(DaoGetListData(promotionDao));
         view3.setListSalle(DaoGetListData(salleDao));
-        view3.setListSite(DaoGetListData(siteDao));
-        view3.setCoordinates(hour, minute, hourEnd, minuteEnd, header);
+        view3.setCoordinates(hour, minute, hourEnd, minuteEnd, header, semaine);
+
     }
+
 
 	public void initController(VueCalendrier vueCalendrier , VueLogin vueLogin, VueModifier view3, VuePlanningListe vuePlanningListe , VueRecap vueRecap ,RecapController recapController ,PlanListeController planListeController, VueReporting vueReporting) {
 		System.out.println("Init Controller Calendrier");
@@ -489,21 +484,21 @@ public class CalendrierController {
 
                     String hourEnd = valueOfTime.substring(8, 10);
                     String minuteEnd = valueOfTime.substring(11, 13);
-
+                    String semaine = vueCalendrier.getSelectedSemaine();
                     System.out.print(minute);
                     if (Singleton.getInfo().getDroit() == 1) {
                         if (valueInCell.length() <= 1) {
                             if (column != 0) {
                                 resetData(view3);
                                 view3.setCurrentSession(null);
-                                populateData(view3, hour, minute, hourEnd, minuteEnd, header);
+                                populateData(view3, hour, minute, hourEnd, minuteEnd, header, semaine);
                                 view3.setVisible(true);
                                 view3.setButtonContent("Create session");
                             }
                         } else {
                             if (column != 0) {
                                 resetData(view3);
-                                populateData(view3, hour, minute, hourEnd, minuteEnd, header);
+                                populateData(view3, hour, minute, hourEnd, minuteEnd, header, semaine);
                                 view3.setCurrentSession(mapCoordToSeance.get(row + "-" + column));
                                 view3.setButtonContent("Update session");
                                 view3.setVisible(true);
@@ -515,7 +510,6 @@ public class CalendrierController {
         }
         );
 
-	}
-
+    }
 
 }
