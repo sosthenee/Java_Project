@@ -25,6 +25,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Component;
@@ -37,7 +38,6 @@ import org.springframework.stereotype.Component;
 public class VueModifier extends JFrame {
 
     public JComboBox day;
-    public JComboBox year;
     public JComboBox hour_debut;
     public JComboBox minute_debut;
     public JComboBox hour_fin;
@@ -46,10 +46,9 @@ public class VueModifier extends JFrame {
     public JButton button;
     public JList proffesseur;
     public JComboBox semaine;
-    public JComboBox promotion;
+    public JComboBox etat;
     public JList groupe;
     public JComboBox salle;
-    public JComboBox site;
     public JComboBox type;
     
     public String buttonTitle;
@@ -61,9 +60,7 @@ public class VueModifier extends JFrame {
 
     public ArrayList<Type_cours> typeList = new ArrayList<>();
     public ArrayList<Enseignant> professeurList = new ArrayList<>();
-    public ArrayList<Promotion> promotionList = new ArrayList<>();
-    public ArrayList<Salle> sallesList = new ArrayList<>();
-    public ArrayList<Site> sitesList = new ArrayList<>();
+     public ArrayList<Salle> sallesList = new ArrayList<>();
     public ArrayList<Groupe> groupesList = new ArrayList<>();
     public ArrayList<Cours> matiereList = new ArrayList<>();
     
@@ -87,8 +84,7 @@ public class VueModifier extends JFrame {
 
     private void createPanel() {
 
-        //String[] days = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
-        String[] years = {"2020", "2021"};
+        String[] etats = {"0", "1", "2"};
         String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
         String[] hours = {"08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21"};
         String[] minutes = {"00", "30"};
@@ -97,7 +93,6 @@ public class VueModifier extends JFrame {
 
       
         day = new JComboBox(days);
-        year = new JComboBox(years);
         semaine = new JComboBox(semaines);
 
         hour_debut = new JComboBox(hours);
@@ -107,63 +102,62 @@ public class VueModifier extends JFrame {
         minute_fin = new JComboBox(minutes);
 
         proffesseur = new JList(model2);
-        promotion = new JComboBox();
         groupe = new JList(model);
         groupe.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         matiere = new JComboBox();
         salle = new JComboBox();
-        site = new JComboBox();
+        etat = new JComboBox(etats);
         type = new JComboBox();
 
         button = new JButton("-");
 
-        this.panel.add(messageLabe1 = new JLabel("Choisir un jour"));
-        this.panel.add(day);
+        panel.add(messageLabe1 = new JLabel("Choisir un jour"));
+        panel.add(day);
 
-        this.panel.add(messageLabe1 = new JLabel("Choisir une semaine"));
-        this.panel.add(semaine);
+        panel.add(messageLabe1 = new JLabel("Choisir une semaine"));
+        panel.add(semaine);
 
-        this.panel.add(messageLabe1 = new JLabel("Choisir une année"));
-        this.panel.add(year);
+        panel.add(messageLabe1 = new JLabel("Choisir une heure de debut"));
+        panel.add(hour_debut);
 
-        this.panel.add(messageLabe1 = new JLabel("Choisir une heure de debut"));
-        this.panel.add(hour_debut);
+        panel.add(messageLabe1 = new JLabel("Choisir une minute de debut"));
+        panel.add(minute_debut);
 
-        this.panel.add(messageLabe1 = new JLabel("Choisir une minute de debut"));
-        this.panel.add(minute_debut);
+        panel.add(messageLabe1 = new JLabel("Choisir une heure de fin"));
+        panel.add(hour_fin);
 
-        this.panel.add(messageLabe1 = new JLabel("Choisir une heure de fin"));
-        this.panel.add(hour_fin);
+        panel.add(messageLabe1 = new JLabel("Choisir une minute de fin"));
+        panel.add(minute_fin);
 
-        this.panel.add(messageLabe1 = new JLabel("Choisir une minute de fin"));
-        this.panel.add(minute_fin);
+        panel.add(messageLabe1 = new JLabel("Choisir une matiere"));
+        panel.add(matiere);
 
-        this.panel.add(messageLabe1 = new JLabel("Choisir une matiere"));
-        this.panel.add(matiere);
+        panel.add(messageLabe1 = new JLabel("Choisir un proffesseur"));
+        panel.add(proffesseur);
+           
+        panel.add(messageLabe1 = new JLabel("Choisir un Etat"));
+        panel.add(etat);
+        
+        panel.add(messageLabe1 = new JLabel("Choisir un groupe"));
+        panel.add(groupe);
 
-        this.panel.add(messageLabe1 = new JLabel("Choisir un proffesseur"));
-        this.panel.add(proffesseur);
+        panel.add(messageLabe1 = new JLabel("Choisir un Type de cours"));
+        panel.add(type);
 
-        this.panel.add(messageLabe1 = new JLabel("Choisir une promotion"));
-        this.panel.add(promotion);
+        panel.add(messageLabe1 = new JLabel("Choisir une salle"));
+        panel.add(salle);
 
-        this.panel.add(messageLabe1 = new JLabel("Choisir un groupe"));
-        this.panel.add(groupe);
+     
 
-        this.panel.add(messageLabe1 = new JLabel("Choisir un Type de cours"));
-        this.panel.add(type);
-
-        this.panel.add(messageLabe1 = new JLabel("Choisir une salle"));
-        this.panel.add(salle);
-
-        this.panel.add(messageLabe1 = new JLabel("Choisir un site"));
-        this.panel.add(site);
-
-        this.panel2.add(button);
-
-        this.getContentPane().add(panel, BorderLayout.NORTH);
-        this.getContentPane().add(panel2, BorderLayout.SOUTH);
-
+        panel2.add(button);
+        
+        JPanel RobertPaninter = new JPanel();
+        RobertPaninter.setLayout(new BorderLayout());
+       
+        RobertPaninter.add(new JScrollPane(panel) , BorderLayout.CENTER);
+        RobertPaninter.add(panel2, BorderLayout.SOUTH);
+        
+        this.getContentPane().add(RobertPaninter, BorderLayout.CENTER);
         this.setVisible(false);
     }
 
@@ -176,13 +170,7 @@ public class VueModifier extends JFrame {
         }
     }
 
-    public void setListPromotion(ArrayList<EnumerableElement> promotionList) {
-        promotion.removeAllItems();
-        for (int i = 0; i < promotionList.size(); i++) {
-            this.promotionList.add((Promotion) promotionList.get(i));
-            promotion.addItem(promotionList.get(i).getNom());
-        }
-    }
+    
 
     public void setListType_cours(ArrayList<EnumerableElement> type_coursList) {
         type.removeAllItems();
@@ -211,13 +199,6 @@ public class VueModifier extends JFrame {
         //groupe.setListData(this.groupesList);
     }
 
-    public void setListSite(ArrayList<EnumerableElement> siteList) {
-        site.removeAllItems();
-        for (int i = 0; i < siteList.size(); i++) {
-            this.sitesList.add((Site) siteList.get(i));
-            site.addItem(siteList.get(i).getNom());
-        }
-    }
 
     public void setListSalle(ArrayList<EnumerableElement> salleList) {
         salle.removeAllItems();
@@ -227,7 +208,7 @@ public class VueModifier extends JFrame {
         }
     }
 
-    public void setCoordinates(String hour, String minute , String hourEnd, String minuteEnd,  String header) {
+    public void setCoordinates(String hour, String minute , String hourEnd, String minuteEnd,  String header , String semaines) {
       
         day.setEditable(true);
         day.setSelectedItem(header);
@@ -248,10 +229,15 @@ public class VueModifier extends JFrame {
         minute_fin.setEditable(true);
         minute_fin.setSelectedItem(minuteEnd);
         minute_fin.setEditable(false);
+        
+        semaine.setEditable(true);
+        semaine.setSelectedItem(semaines);
+        semaine.setEditable(false);
 
     }
     
     
+      
       public void setButtonContent(String title) {
         this.button.setText(title);
     }
