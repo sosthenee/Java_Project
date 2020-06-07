@@ -160,7 +160,11 @@ public class ModifierController {
 		}
 		return true;
 	}
-
+ /*
+    renvoie un type addapté pour le calendar en fonction d'un jour donné
+   * @param day recoit le jour de la semaine en string
+     @return selon le jour on revoie un int qui correspond a un jour de la semaine .
+   */
 	public int fromDayStringToInt(String day) {
 		switch (day.toLowerCase()) {
 
@@ -194,7 +198,11 @@ public class ModifierController {
 		}
 		return month;
 	}
-
+/*
+    ajoute une seance dans la base de donné
+   * @param la vue modifier 
+     @return true si le cours a bien ete motifié ou ajouté
+   */
 	public boolean writeData(VueModifier view3) throws ParseException {
 
 		Object selected_hour_debut = view3.hour_debut.getItemAt(view3.hour_debut.getSelectedIndex());
