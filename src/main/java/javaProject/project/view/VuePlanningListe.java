@@ -150,10 +150,15 @@ public class VuePlanningListe extends JFrame{
 				if(data.get(d).length != 0) {
 					JTable dayJTable = new JTable(new TableCalendrier(data.get(d), titre));
 					dayJTable.setRowHeight(1,20);
-
-					if(data.get(d)[0][2].toString().split("<br>") != null) {
-						dayJTable.setRowHeight(d,20*data.get(d)[0][2].toString().split("<br>").length);
+					if(data.get(d)[0]!=null) {
+						if(data.get(d)[0][2] != null) {
+							if(data.get(d)[0][2].toString().split("<br>") != null) {
+								dayJTable.setRowHeight(d,20*data.get(d)[0][2].toString().split("<br>").length);
+							}
+						}
 					}
+					
+					
 					dayJTable.disable();
 					mesJours.add(dayJTable);
 					interJPanel.add(new JScrollPane(dayJTable),BorderLayout.CENTER);

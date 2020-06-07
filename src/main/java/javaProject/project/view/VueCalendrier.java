@@ -26,6 +26,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -34,6 +35,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import static util.cst.getCalendarBlankData;
@@ -48,10 +50,8 @@ public class VueCalendrier extends JFrame {
 
     public JTable tableau;
     private JMenuBar navigation = new JMenuBar();
-    private JMenu MenuReport = new JMenu("Reporting");
-    private JMenu MenuCours = new JMenu("Cours");
-    private JMenuItem ItemCours1 = new JMenuItem("Emploi du temps");
-    public JMenuItem ItemCours2 = new JMenuItem("Recapitulatif des cours");
+    public JButton Report = new JButton("Reporting");
+    private JButton Cours = new JButton("Cours");
     private JPanel navbar = new JPanel();
     public JPanel navbarInf = new JPanel();
     public JPanel navbarInfInter = new JPanel();
@@ -71,6 +71,7 @@ public class VueCalendrier extends JFrame {
     public JComboBox listeRecherhe = new JComboBox();
     public JPanel Onglet1 =new JPanel();
     public JPanel Onglet2 =new JPanel(); 
+    
 
 
 
@@ -104,11 +105,8 @@ public class VueCalendrier extends JFrame {
         navbarInf.setLayout(new GridLayout (1,5, 7, 0));
         navbarInfInter.setLayout(new BorderLayout());
 
-      
-        this.MenuCours.add(ItemCours1);
-        this.MenuCours.add(ItemCours2);
-        this.navigation.add(MenuCours);
-        this.navigation.add(MenuReport);
+        this.navigation.add(Cours);
+        this.navigation.add(Report);
 
         navbar.add(navigation);
         navbarInf.add(ComboAff);
@@ -151,6 +149,7 @@ public class VueCalendrier extends JFrame {
                 return comp;
             }
         };
+        
         tableau.setRowHeight(60);
         tableau.setCellSelectionEnabled(false);
         tableau.getTableHeader().setReorderingAllowed(false);

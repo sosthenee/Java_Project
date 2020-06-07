@@ -51,7 +51,7 @@ import javax.swing.JTable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javaProject.project.view.VueRecap;
-
+import javaProject.project.view.VueReporting;
 import util.cst;
 
 @Component
@@ -168,18 +168,26 @@ public class CalendrierController {
 			if (minute_fin == 30 ) {
 				index_fin += 1;
 			}
+			String state;
+			if(seance.getEtat() == 0) {
+				state = "Annulée-";
+			}else if (seance.getEtat() == 1) {
+				state="";
+			}else {
+				state="En cours de validation-";
+			}
 
 
 			for (int i = index_debut ; i < index_fin ; i++){
 
-				data[i][day_of_week-1]= "<html> type de cours : " + seance.getType_cours().getNom() + "<br>"+"  cours :  " + seance.getCours().getNom() +
-						"  Professeur :  " + enseiSenace +  "  salle :  " + salleSeance  +"</html>";
+				data[i][day_of_week-1]= "<html>"+"<strong>" + state + "</strong>" + seance.getCours().getNom() +" - " +seance.getType_cours().getNom() + "<br>"+
+						"  Mr/Mme " + enseiSenace +  "<br>" + salleSeance  +"</html>";
                         mapCoordToSeance.put(String.valueOf(i)+'-'+String.valueOf(day_of_week - 1), seance);
 
 			}
 			if (index_fin - index_debut < 2 ) {
-				data[index_debut][day_of_week-1]= "<html> type de cours : " + seance.getType_cours().getNom() + "<br>"+"  cours :  " + seance.getCours().getNom() +
-						"  Professeur :  " +  enseiSenace +  "  salle :  " + salleSeance   +"</html>";
+				data[index_debut][day_of_week-1]= "<html>"+"<strong>" + state + "</strong>" + seance.getCours().getNom() +" - " +seance.getType_cours().getNom() + "<br>"+
+						"  Mr/Mme " + enseiSenace +  "<br>" + salleSeance  +"</html>";
                         mapCoordToSeance.put(String.valueOf(index_debut)+'-'+String.valueOf(day_of_week - 1), seance);
 
 			}
@@ -214,7 +222,7 @@ public class CalendrierController {
 			Enseignant enseignant = (Enseignant) utilisateurDao.findByEmail(email);
 			findSeanceEnseignant(enseignant, semaine);
 		}
-		if(Singleton.getInfo().getDroit() == 1) {
+		if((Singleton.getInfo().getDroit() == 1)||(Singleton.getInfo().getDroit() == 2)) {
 			if((getEmailRechString()!= null)&&(getEmailRechString().split("/")[0].equals("groupeSearch")))
 			{
 				Groupe groupe = groupeDao.findByNom(getEmailRechString().split("/")[1]);
@@ -252,7 +260,7 @@ public class CalendrierController {
 	}
 
 	//ADMIN
-	public void edtFindByName(String name, VueCalendrier view, int semaine,VuePlanningListe vuePlanningListe, VueRecap vueRecap ,RecapController recapController, PlanListeController planListeController) {
+	public void edtFindByName(String name, VueCalendrier view, int semaine,VuePlanningListe vuePlanningListe, VueRecap vueRecap ,RecapController recapController, PlanListeController planListeController, VueReporting vueReporting) {
 
 		String typeTofecthString = view.ComboChoixSelect.getModel().getSelectedItem().toString();
 
@@ -268,7 +276,7 @@ public class CalendrierController {
 				if(utilisateur.getDroit() == 4) {
 					setEmailRechString(utilisateur.getEmail());
 					allSeances("", view, semaine);
-					recapController.allSeances(getEmailRechString(), vueRecap);
+					recapController.allSeances(getEmailRechString(), vueRecap,vueReporting);
 					planListeController.allSeances(getEmailRechString(), vuePlanningListe, semaine);
 				}
 				else {
@@ -297,7 +305,7 @@ public class CalendrierController {
 				if(utilisateur.getDroit() == 3) {
 					setEmailRechString(utilisateur.getEmail());
 					allSeances("", view, semaine);
-					recapController.allSeances(getEmailRechString(), vueRecap);
+					recapController.allSeances(getEmailRechString(), vueRecap,vueReporting);
 					planListeController.allSeances(getEmailRechString(), vuePlanningListe, semaine);
 
 				}
@@ -323,7 +331,7 @@ public class CalendrierController {
 			else {
 				setEmailRechString("groupeSearch/" + groupe.getNom());
 				allSeances("", view, semaine);
-				recapController.allSeances(getEmailRechString(), vueRecap);
+				recapController.allSeances(getEmailRechString(), vueRecap,vueReporting);
 				planListeController.allSeances(getEmailRechString(), vuePlanningListe, semaine);
 			}
 		}
@@ -341,7 +349,7 @@ public class CalendrierController {
 			else {
 				setEmailRechString("salleSearch/" + salle.getNom());
 				allSeances("", view, semaine);
-				recapController.allSeances(getEmailRechString(), vueRecap);
+				recapController.allSeances(getEmailRechString(), vueRecap,vueReporting);
 				planListeController.allSeances(getEmailRechString(), vuePlanningListe, semaine);
 			}
 		}
@@ -440,7 +448,7 @@ public class CalendrierController {
         view3.setCoordinates(hour, minute, hourEnd, minuteEnd, header);
     }
 
-	public void initController(VueCalendrier vueCalendrier , VueLogin vueLogin, VueModifier view3, VuePlanningListe vuePlanningListe , VueRecap vueRecap ,RecapController recapController ,PlanListeController planListeController) {
+	public void initController(VueCalendrier vueCalendrier , VueLogin vueLogin, VueModifier view3, VuePlanningListe vuePlanningListe , VueRecap vueRecap ,RecapController recapController ,PlanListeController planListeController, VueReporting vueReporting) {
 		System.out.println("Init Controller Calendrier");
 		allSeances(vueLogin.mail.getText(), vueCalendrier, 1);
 		setEmailRechString(vueLogin.mail.getText());
@@ -448,17 +456,23 @@ public class CalendrierController {
 		for ( int i =0 ; i< 52 ; i++){
 			final int semaine = Integer.parseInt(vueCalendrier.buttonList.get(i).getText());
 			vueCalendrier.buttonList.get(i).addActionListener(e -> allSeances(getEmailRechString(),vueCalendrier , semaine ));
-			vueCalendrier.Recherche.addActionListener(e -> edtFindByName(vueCalendrier.Recherche.getText(),vueCalendrier , semaine, vuePlanningListe , vueRecap , recapController , planListeController ));		
+			vueCalendrier.Recherche.addActionListener(e -> edtFindByName(vueCalendrier.Recherche.getText(),vueCalendrier , semaine, vuePlanningListe , vueRecap , recapController , planListeController,vueReporting ));		
 			vuePlanningListe.buttonList.get(i).addActionListener(e -> planListeController.allSeances(getEmailRechString(),vuePlanningListe , semaine ));
-			vueCalendrier.listeRecherhe.addActionListener(e ->edtFindByName(vueCalendrier.listeRecherhe.getModel().getSelectedItem().toString(),vueCalendrier , semaine, vuePlanningListe , vueRecap , recapController , planListeController ));
+			vueCalendrier.listeRecherhe.addActionListener(e ->edtFindByName(vueCalendrier.listeRecherhe.getModel().getSelectedItem().toString(),vueCalendrier , semaine, vuePlanningListe , vueRecap , recapController , planListeController,vueReporting ));
 		}
-		if(Singleton.getInfo().getDroit() != 1) {
+		if((Singleton.getInfo().getDroit() == 1)||(Singleton.getInfo().getDroit() == 2)) {
+			vueCalendrier.ComboChoixSelect.setVisible(true);
+			vueCalendrier.ComboRecherche.setVisible(true);
+			vueCalendrier.Recherche.setVisible(true);
+		}else {
 			vueCalendrier.ComboChoixSelect.setVisible(false);
 			vueCalendrier.ComboRecherche.setVisible(false);
 			vueCalendrier.Recherche.setVisible(false);
+			vueCalendrier.Report.setVisible(false);
 		}
 		vueCalendrier.ComboChoixSelect.addActionListener(l-> rechercheType((String)vueCalendrier.ComboRecherche.getModel().getSelectedItem(),vueCalendrier));
 		vueCalendrier.ComboRecherche.addActionListener(emailRechString -> rechercheType((String)vueCalendrier.ComboRecherche.getModel().getSelectedItem(),vueCalendrier));
+		vueCalendrier.Report.addActionListener(l -> vueReporting.frame.setVisible(true));
 		vueCalendrier.tableau.addMouseListener(new MouseAdapter() {
 			@Override
             public void mouseClicked(final MouseEvent e) {

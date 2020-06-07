@@ -79,6 +79,7 @@ public class PlanListeController {
 			else {
 				day[n][0] = hours + "h" + minutes + " - " + heure_fin+"h" + minute_fin;
 			}
+			
 
 
 			day[n][1] = itDay.getCours().getNom();
@@ -199,7 +200,7 @@ public class PlanListeController {
 			Enseignant enseignant = (Enseignant) utilisateurDao.findByEmail(email);
 			findSeanceEnseignant(enseignant, semaine);
 		}
-		if(Singleton.getInfo().getDroit() == 1) {
+		if((Singleton.getInfo().getDroit() == 1)||(Singleton.getInfo().getDroit() == 2)) {
 			if((email!= null)&&(email.split("/")[0].equals("groupeSearch")))
 			{
 				Groupe groupe = groupeDao.findByNom(email.split("/")[1]);
