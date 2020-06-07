@@ -273,7 +273,7 @@ public class ModifierController {
 			view3.currentSession.setHeure_fin(selected_hour_fin);
 			view3.currentSession.setMinute_fin(selected_minute_fin);
 			view3.currentSession.setSemaine(selected_semaine);
-			view3.currentSession.setEtat(1);
+			view3.currentSession.setEtat(selected_etat);
 			view3.currentSession.setCours(tmpC);
 			view3.currentSession.setType_cours(selected_type);
 			view3.currentSession.setGroupes(groupes);

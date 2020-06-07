@@ -119,14 +119,9 @@ public class PlanListeController {
 		List<Seance> seanceSamedi = new ArrayList<Seance>();
 		List<Object[][]> data = new ArrayList<Object[][]>();
 
-		if(this.listSeances == null)
-		{
-			Object[][] data2 = new Object[1][];
-			for(int it = 0;it<6;it++) {
-				data.add(data2);
-			}
-			
-			return data;
+		if((this.listSeances == null)||(this.listSeances.size() == 0))
+		{	
+			return null;
 		}else {
 
 

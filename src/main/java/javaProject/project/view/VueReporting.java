@@ -41,6 +41,7 @@ public class VueReporting extends JFrame {
 
 	public void setData(Object[][]data){
 		float total=0;
+		this.dataset.clear();
 		if(data.length != 0)
 		{
 			if(data[0][0] != null) {
@@ -53,7 +54,7 @@ public class VueReporting extends JFrame {
 				{
 					String matiere = (String) data[j][0];
 					float heure = (float) data[j][1];
-					dataset.setValue(matiere, (100/total)*heure);
+					this.dataset.setValue(matiere, (100/total)*heure);
 				}
 			}
 		}

@@ -137,10 +137,10 @@ public class CalendrierController {
 			if(seance.getSalle().size() > 1) {
 				for(Salle it : seance.getSalle())
 				{
-					salleSeance += it.getNom() + " / ";
+					salleSeance += it.getNom() +"-"+ it.getSite().getNom() + " / ";
 				}
 			}else if(seance.getSalle().size() == 1) {
-				salleSeance = seance.getSalle().get(0).getNom();
+				salleSeance = seance.getSalle().get(0).getNom()+"-"+ seance.getSalle().get(0).getSite().getNom();
 			}else {
 				salleSeance = "Pas de salle attribuée";
 			}
