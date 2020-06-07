@@ -74,6 +74,16 @@ public class VueCalendrier extends JFrame {
     public JComboBox listeRecherhe = new JComboBox();
     public JPanel Onglet1 =new JPanel();
     public JPanel Onglet2 =new JPanel(); 
+    
+    private String selectedSemaine;
+
+    public String getSelectedSemaine() {
+        return selectedSemaine;
+    }
+
+    public void setSelectedSemaine(String selectedSemaine) {
+        this.selectedSemaine = selectedSemaine;
+    }
 
 
 

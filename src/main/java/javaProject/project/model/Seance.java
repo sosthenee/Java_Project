@@ -106,7 +106,7 @@ public class Seance {
                 this.type_cours = type;
 	}
         
-           public Seance( Date date, int etat, int heure_fin, int minute_fin , int semaine , Cours matiere , Type_cours type, ArrayList<Groupe> groupe , ArrayList<Salle> salle , ArrayList<Enseignant> enseignant) {
+           public Seance( Date date, int etat, int heure_fin, int minute_fin , int semaine , Cours matiere , Type_cours type, ArrayList<Groupe> groupe , ArrayList<Salle> salle , ArrayList<Enseignant> enseignant ) {
 		super();		
 		this.date = date;
 		this.heure_fin = heure_fin;
@@ -118,6 +118,7 @@ public class Seance {
                 this.groupe = groupe;
                 this.salle = salle;
                 this.enseignant = enseignant;
+               
 	}
         
            
@@ -200,6 +201,10 @@ public class Seance {
         
         public void setGroupes(List<Groupe> groupes) {
 		this.groupe = groupes;
+	}
+        
+        public List<Groupe> getGroupe() {
+		return groupe;
 	}
 
 	@Override
